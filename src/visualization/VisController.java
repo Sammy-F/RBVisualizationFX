@@ -12,7 +12,11 @@ import javafx.scene.layout.AnchorPane;
 
 import javax.swing.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class VisController implements Initializable {
 
@@ -20,6 +24,9 @@ public class VisController implements Initializable {
     private boolean removeClicked = false;
 
     private double insertionX = 20;
+
+    private List<NodeCircle> nodeList;
+    private List<Connector> connectorList;
 
     @FXML
     private TextField tfValue;
@@ -41,13 +48,24 @@ public class VisController implements Initializable {
             Node newNode = new Node(value, Node.BLACK);
             NodeCircle newNodeCircle = new NodeCircle(10, newNode);
 
-            newNodeCircle.setAlignment(Pos.CENTER);
-//        childList.add(newNodeCircle);
-            newNodeCircle.setPadding(new Insets(20, 20, 20, insertionX));
+            int randomInt = ThreadLocalRandom.current().nextInt(20, 70);
+
+//            newNodeCircle.setAlignment(Pos.CENTER);
+            newNodeCircle.setPadding(new Insets(randomInt, 20, 20, insertionX));
 
             insertionX += 60;
 
             anchorPane.getChildren().add(newNodeCircle);
+
+            nodeList.add(newNodeCircle);
+
+            for (int i = 0; i < nodeList.size(); i++) {
+                if (i%2 == 0 && (i != nodeList.size()-1)) {
+                    Connector newConnector = new Connector(nodeList.get(i), nodeList.get(i+1));
+                    anchorPane.getChildren().add(newConnector);
+                    connectorList.add(newConnector);
+                }
+            }
         }
         else {
             for (javafx.scene.Node child : anchorPane.getChildren()) {
@@ -78,6 +96,8 @@ public class VisController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        nodeList = new ArrayList<>();
+        connectorList = new ArrayList<>();
     }
 
 }

@@ -68,4 +68,12 @@ public class NodeCircle extends StackPane {
     public int getValue() {
         return thisNode.getValue();
     }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public double getStroke() {
+        return radius/10;
+    }
 }

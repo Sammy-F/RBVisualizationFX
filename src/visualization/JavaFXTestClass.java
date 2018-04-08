@@ -23,10 +23,6 @@ public class JavaFXTestClass extends Application {
 
     private AnchorPane content;
 
-//    private ObservableList childList;
-
-    private RedBlackTree rbTree;
-
     private Parent root;
 
     @Override
@@ -38,9 +34,6 @@ public class JavaFXTestClass extends Application {
 
 //        childList = content.getChildren();
 
-        Node blackTestNode = new Node(10, Node.BLACK);
-        addNode(blackTestNode);
-
         Scene scene = new Scene(root);
 
         scene.setFill(Color.BEIGE);
@@ -48,43 +41,6 @@ public class JavaFXTestClass extends Application {
         primaryStage.setTitle("A Screen");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    /**
-     * Take a node and assign its color and draw it.
-     * @param aNode
-     */
-    @FXML
-    private void addNode(Node aNode) {
-
-        //TODO:NODE ADDING
-        //TODO:Automatically get color and assign location
-
-//        rbTree.addValue(aNode.getValue());
-
-        aNode.setColor(getColor());
-        NodeCircle newNodeCircle = new NodeCircle(30, aNode);
-        newNodeCircle.setAlignment(Pos.CENTER);
-//        childList.add(newNodeCircle);
-        newNodeCircle.setPadding(new Insets(WINDOW_HEIGHT/2, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, WINDOW_WIDTH/2));
-
-    }
-
-    /**
-     * Actually assign color. ^_^
-     */
-    private int getColor() {
-
-        return Node.BLACK;
-
-    }
-
-    public void handleButtonAction() {
-        //TODO:Handle button action
-    }
-
-    public static void main(String args[]) {
-        launch(args);
     }
 
 }
