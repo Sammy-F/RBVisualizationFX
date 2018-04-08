@@ -64,4 +64,8 @@ public class NodeCircle extends StackPane {
         thisCircle.setFill(Color.TRANSPARENT);
 
     }
+
+    public int getValue() {
+        return thisNode.getValue();
+    }
 }

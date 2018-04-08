@@ -27,12 +27,14 @@ public class JavaFXTestClass extends Application {
 
     private RedBlackTree rbTree;
 
+    private Parent root;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         /**
          * Code for application.
          */
-        Parent root = FXMLLoader.load(getClass().getResource("visualization_region.fxml"));
+        root = FXMLLoader.load(getClass().getResource("visualization_region.fxml"));
 
 //        childList = content.getChildren();
 
