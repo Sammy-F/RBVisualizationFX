@@ -29,15 +29,15 @@ public class Connector extends Line {
             setStartX(childInsets.getLeft() + childNode.getRadius());
             setEndX(parentInsets.getLeft() + parentNode.getRadius());
 
-            setStartY(parentInsets.getTop() + parentNode.getRadius()*2);
-            setEndY(childInsets.getTop());
+            setStartY(childInsets.getTop());
+            setEndY(parentInsets.getTop() + parentNode.getRadius()*2);
         }
         else {
             setStartX(parentInsets.getLeft() + parentNode.getRadius());
             setEndX(childInsets.getLeft() + childNode.getRadius());
 
-            setStartY(childInsets.getTop() + childNode.getRadius()*2);
-            setEndY(parentInsets.getTop());
+            setStartY(parentInsets.getTop() + parentNode.getRadius()*2);
+            setEndY(childInsets.getTop());
         }
 
 
