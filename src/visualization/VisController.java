@@ -28,6 +28,8 @@ public class VisController implements Initializable {
     private List<NodeCircle> nodeList;
     private List<Connector> connectorList;
 
+    private RedBlackTree<NodeCircle> mTree;
+
     @FXML
     private TextField tfValue;
 

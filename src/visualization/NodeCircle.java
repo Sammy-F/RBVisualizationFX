@@ -8,10 +8,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.util.Comparator;
+
 /**
  * Handles the graphical parts of a node
  */
-public class NodeCircle extends StackPane {
+public class NodeCircle extends StackPane implements Comparable<NodeCircle> {
 
     private Node thisNode;
 
@@ -75,5 +77,22 @@ public class NodeCircle extends StackPane {
 
     public double getStroke() {
         return radius/10;
+    }
+
+    @Override
+    public int compareTo(NodeCircle other) {
+        if (this.thisNode.getValue() < other.thisNode.getValue()) {
+            return -1;
+        } else if (this.thisNode.getValue() == other.thisNode.getValue()) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(this.thisNode.getValue());
     }
 }
