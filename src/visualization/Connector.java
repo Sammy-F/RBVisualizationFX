@@ -33,7 +33,7 @@ public class Connector extends Line {
             setEndY(parentInsets.getTop() + parentNode.getRadius()*2);
         }
         else {
-            setStartX(parentInsets.getLeft() + parentNode.getRadius()*2);  // these look slightly prettier now
+            setStartX(parentInsets.getLeft() + parentNode.getRadius()*2); // these look slightly prettier now
             setEndX(childInsets.getLeft() + childNode.getRadius()); //(also yeah, this change is tiny, I will do more!)
 
             setStartY(parentInsets.getTop() + parentNode.getRadius()*2);
