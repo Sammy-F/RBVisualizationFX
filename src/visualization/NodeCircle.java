@@ -13,7 +13,7 @@ import java.util.Comparator;
 /**
  * Handles the graphical parts of a node
  */
-public class NodeCircle extends StackPane implements Comparable<NodeCircle> {
+public class NodeCircle extends StackPane {
 
     private Node thisNode;
 
@@ -79,20 +79,9 @@ public class NodeCircle extends StackPane implements Comparable<NodeCircle> {
         return radius/10;
     }
 
-    @Override
-    public int compareTo(NodeCircle other) {
-        if (this.thisNode.getValue() < other.thisNode.getValue()) {
-            return -1;
-        } else if (this.thisNode.getValue() == other.thisNode.getValue()) {
-            return 0;
-        }
-        else {
-            return 1;
-        }
+    public Node getThisNode() {
+        return thisNode;
     }
 
-    @Override
-    public String toString() {
-        return Integer.toString(this.thisNode.getValue());
-    }
+
 }
