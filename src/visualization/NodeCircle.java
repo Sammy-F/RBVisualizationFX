@@ -45,7 +45,7 @@ public class NodeCircle extends StackPane implements Comparable<NodeCircle> {
 
         String valueText = Integer.toString(thisNode.getValue());
 
-        thisText.setFont(new Font((3*initRadius)/valueText.length()));
+        thisText.setFont(new Font((1.5*initRadius)/valueText.length()));
         thisText.setText(valueText);
     }
 
