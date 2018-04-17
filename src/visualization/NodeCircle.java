@@ -47,6 +47,8 @@ public class NodeCircle extends StackPane {
 
         thisText.setFont(new Font((1.5*initRadius)/valueText.length()));
         thisText.setText(valueText);
+        thisText.setStroke(Color.WHITE);
+        thisText.setFill(Color.WHITE);
     }
 
     private void initCircle(double initRadius) {
@@ -58,12 +60,12 @@ public class NodeCircle extends StackPane {
         thisCircle.setStrokeWidth(initRadius/10);
 
         if (thisNode.getColor() == Node.BLACK) {
-            thisCircle.setStroke(Color.BLACK);
+            thisCircle.setFill(Color.DARKSLATEGRAY);
         } else {
-            thisCircle.setStroke(Color.RED);
+            thisCircle.setFill(Color.RED);
         }
 
-        thisCircle.setFill(Color.TRANSPARENT);
+//        thisCircle.setFill(Color.TRANSPARENT);
 
     }
 

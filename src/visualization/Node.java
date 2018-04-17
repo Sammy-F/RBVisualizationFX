@@ -22,7 +22,9 @@ public class Node implements Comparable<Node> {
 
     private boolean hasLC;
     private boolean hasRC;
-    private boolean hasP;
+
+    private boolean isLC;
+    private boolean isRC;
 
     public Node(int value, int color, int level) {
 
@@ -32,7 +34,8 @@ public class Node implements Comparable<Node> {
 
         hasLC = false;
         hasRC = false;
-        hasP = false;
+        isLC = false;
+        isRC = false;
 
     }
 
@@ -50,9 +53,10 @@ public class Node implements Comparable<Node> {
     public int getLevel() { return level; }
 
 
-    public void setParent(Node p) {
+    public void setParent(Node p, boolean isLeftChild) {
         parent = p;
-        hasP = true;
+        isLC = isLeftChild;
+        isRC = !isLeftChild;
     }
     public Node getParent() { return parent; }
 
@@ -73,7 +77,8 @@ public class Node implements Comparable<Node> {
 
     public boolean hasLeftChild() { return hasLC; }
     public boolean hasRightChild() { return hasRC; }
-    public boolean hasParent() { return hasP; }
+    public boolean isLeftChild() { return isLC; }
+    public boolean isRightChild() { return isRC; }
 
 
     @Override

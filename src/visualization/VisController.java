@@ -18,6 +18,8 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
+import java.lang.Math;
+
 public class VisController implements Initializable {
 
     private boolean insertClicked = false;
@@ -25,7 +27,8 @@ public class VisController implements Initializable {
 
     private boolean firstNode = true;
 
-    private double insertionX = 80;
+    private double insertionX;
+    private double xSpacing;
 
 //    private List<NodeCircle> nodeList;
     private List<Connector> connectorList;
@@ -33,6 +36,7 @@ public class VisController implements Initializable {
     private Node root;
 
 //    private RedBlackTree<NodeCircle> mTree;
+    private double radius = 15;
 
     @FXML
     private TextField tfValue;
@@ -48,11 +52,12 @@ public class VisController implements Initializable {
 
     @FXML
     private void handleAction(ActionEvent event) {
-        Integer value = Integer.parseInt(tfValue.getText());
+        Integer value = Integer.parseInt(tfValue.getText());  //NOTE: WOULD WE WANT TO USE DOUBLES MAYBE? example: 4.5
 
         if (insertClicked) {
             Node newNode;
-            insertionX = 100;
+            insertionX = 370;           //ideally this would be the center of the screen
+            xSpacing = insertionX/2;
 
             if (firstNode) {
                 newNode = new Node(value, Node.BLACK, 0);
@@ -68,8 +73,10 @@ public class VisController implements Initializable {
                 boolean right = false;
 
                 while (haveNext) {
-                    if (n.getValue() < value) {
-                        insertionX -= 20;
+                    if (value < n.getValue()) {
+//                        insertionX -= xSpacing/(n.getLevel()+1);  //need a way so kids don't overlap in very full tree
+                        insertionX -= xSpacing;
+                        xSpacing /= 2;
                         if (n.hasLeftChild()) {
                             n = n.getLeftChild();
                         } else {
@@ -78,7 +85,9 @@ public class VisController implements Initializable {
                             left = true;
                         }
                     } else {
-                        insertionX += 20;
+//                        insertionX += xSpacing/Math.pow((n.getLevel()+1),2);
+                        insertionX += xSpacing;
+                        xSpacing /= 2;
                         if (n.hasRightChild()) {
                             n = n.getRightChild();
                         } else {
@@ -89,14 +98,14 @@ public class VisController implements Initializable {
                     }
                 }
                 newNode = new Node(value, Node.BLACK, 1+p.getLevel());
-                newNode.setParent(p);
+                newNode.setParent(p, left);
                 if (left) {
                     p.setLeftChild(newNode);
                 } else {
                     p.setRightChild(newNode);
                 }
             }
-            NodeCircle newNodeCircle = new NodeCircle(10, newNode);
+            NodeCircle newNodeCircle = new NodeCircle(radius, newNode);
             newNode.setCircle(newNodeCircle);
 
             int randomInt = ThreadLocalRandom.current().nextInt(20, 70);
@@ -104,7 +113,7 @@ public class VisController implements Initializable {
 //            newNodeCircle.setAlignment(Pos.CENTER);
 //            newNodeCircle.setPadding(new Insets(randomInt, 20, 20, insertionX));
 //            newNodeCircle.setPadding(new Insets(newNodeCircle.getThisNode().getLevel()*20, 20, 20, insertionX));
-            newNodeCircle.setPadding(new Insets(newNode.getLevel()*20+20, 20, 20, insertionX));
+            newNodeCircle.setPadding(new Insets(newNode.getLevel()*40+20, 20, 20, insertionX));
 
 //            insertionX += 60;
 
@@ -120,7 +129,7 @@ public class VisController implements Initializable {
 //                }
 //            }
             //new way of adding connectors:
-            if (newNode.hasParent()) {
+            if (newNode.isLeftChild() || newNode.isRightChild()) {
                 Connector newConnector = new Connector(newNode.getParent().getCircle(), newNode.getCircle());
                 anchorPane.getChildren().add(newConnector);
                 connectorList.add(newConnector);
