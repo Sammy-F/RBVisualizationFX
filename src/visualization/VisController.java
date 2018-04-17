@@ -97,6 +97,7 @@ public class VisController implements Initializable {
                 }
             }
             NodeCircle newNodeCircle = new NodeCircle(10, newNode);
+            newNode.setCircle(newNodeCircle);
 
             int randomInt = ThreadLocalRandom.current().nextInt(20, 70);
 

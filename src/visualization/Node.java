@@ -49,6 +49,7 @@ public class Node implements Comparable<Node> {
     public void setLevel(int level) { this.level = level; }
     public int getLevel() { return level; }
 
+
     public void setParent(Node p) {
         parent = p;
         hasP = true;
