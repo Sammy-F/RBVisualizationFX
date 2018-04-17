@@ -36,8 +36,8 @@ public class Connector extends Line {
             setStartX(parentInsets.getLeft() + parentNode.getRadius()*2); // these look slightly prettier now
             setEndX(childInsets.getLeft() + childNode.getRadius()); //(also yeah, this change is tiny, I will do more!)
 
-            setStartY(parentInsets.getTop() + parentNode.getRadius()*2);
-            setEndY(childInsets.getTop() + childNode.getRadius());
+            setStartY(parentInsets.getTop() + parentNode.getRadius());
+            setEndY(childInsets.getTop() + childNode.getRadius()*0);
         }
 
 
