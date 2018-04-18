@@ -10,7 +10,7 @@ public class Node implements Comparable<Node> {
 
     private int level;
 
-    private int value;
+    private double value;
     private int color;
 
     private Node parent;
@@ -26,7 +26,7 @@ public class Node implements Comparable<Node> {
     private boolean isLC;
     private boolean isRC;
 
-    public Node(int value, int color, int level) {
+    public Node(double value, int color, int level) {
 
         this.value = value;
         this.color = color;
@@ -46,8 +46,8 @@ public class Node implements Comparable<Node> {
     public void setColor(int color) { this.color = color; }
     public int getColor() { return color; }
 
-    public void setValue(int value) { this.value = value; }
-    public int getValue() { return value; }
+    public void setValue(double value) { this.value = value; }
+    public double getValue() { return value; }
 
     public void setLevel(int level) { this.level = level; }
     public int getLevel() { return level; }
@@ -95,7 +95,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public String toString() {
-        return Integer.toString(this.getValue());
+        return Double.toString(this.getValue());
     }
 
 }

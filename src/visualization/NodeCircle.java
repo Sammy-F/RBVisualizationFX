@@ -43,7 +43,7 @@ public class NodeCircle extends StackPane {
 
         thisText = new Text();
 
-        String valueText = Integer.toString(thisNode.getValue());
+        String valueText = Double.toString(thisNode.getValue());
 
         thisText.setFont(new Font((1.5*initRadius)/valueText.length()));
         thisText.setText(valueText);
@@ -69,7 +69,7 @@ public class NodeCircle extends StackPane {
 
     }
 
-    public int getValue() {
+    public double getValue() {
         return thisNode.getValue();
     }
 
@@ -83,6 +83,10 @@ public class NodeCircle extends StackPane {
 
     public Node getThisNode() {
         return thisNode;
+    }
+
+    public void setFillColor(Color newColor) {
+        thisCircle.setFill(newColor);
     }
 
 

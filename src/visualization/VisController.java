@@ -1,5 +1,6 @@
 package visualization;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -9,6 +10,8 @@ import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import javax.swing.*;
 import java.net.URL;
@@ -19,6 +22,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
 import java.lang.Math;
+import java.util.concurrent.TimeUnit;
 
 public class VisController implements Initializable {
 
@@ -52,72 +56,124 @@ public class VisController implements Initializable {
 
     @FXML
     private void handleAction(ActionEvent event) {
-        Integer value = Integer.parseInt(tfValue.getText());  //NOTE: WOULD WE WANT TO USE DOUBLES MAYBE? example: 4.5
+        Double value = Double.parseDouble(tfValue.getText());  //NOTE: WOULD WE WANT TO USE DOUBLES MAYBE? example: 4.5
 
         if (insertClicked) {
-            Node newNode;
-            insertionX = 370;           //ideally this would be the center of the screen
-            xSpacing = insertionX/2;
+            insertNode(value);
+        }
+        else {
+            Node tobeDeleted = findNode(value, root);
+            tobeDeleted.getCircle().setFillColor(Color.GOLDENROD);
+            System.out.println("color changed");
+            PauseTransition pause = new PauseTransition(Duration.seconds(.5));
+            pause.setOnFinished(event1 -> tobeDeleted.getCircle().setFillColor(Color.DARKSLATEGRAY));
+            pause.play();
+        }
 
-            if (firstNode) {
-                newNode = new Node(value, Node.BLACK, 0);
-                root = newNode;
-                firstNode = false;
+    }
+
+    /**
+     * Find the first node with the given value
+     * @param value
+     */
+    private Node findNode(Double value, Node root) {
+
+        if (root.getValue() == value) {
+            return root;
+        } else if (root.hasLeftChild() && root.hasRightChild()) {
+            if (findNode(value, root.getLeftChild()) != null) {
+                return findNode(value, root.getLeftChild());
+            } else if (findNode(value, root.getRightChild()) != null) {
+                return findNode(value, root.getRightChild());
             } else {
-                boolean haveNext = true;
-                Node n = root;
+                return null;
+            }
+        } else if (root.hasLeftChild()) {
+            if (findNode(value, root.getLeftChild()) != null) {
+                return findNode(value, root.getLeftChild());
+            }
+        } else if (root.hasRightChild()) {
+            if (findNode(value, root.getRightChild()) != null) {
+                return findNode(value, root.getRightChild());
+            }
+        } else {
+            return null;
+        }
 
-                Node p = n;
+        return null;
+    }
 
-                boolean left = false;
-                boolean right = false;
+    private void deleteNode(Node nodeToDelete) {
 
-                while (haveNext) {
-                    if (value < n.getValue()) {
+    }
+
+    /**
+     * Handles insertion of a new node with the value
+     * input by the user.
+     */
+    private void insertNode(Double value) {
+
+        Node newNode;
+        insertionX = 370;           //ideally this would be the center of the screen
+        xSpacing = insertionX/2;
+
+        if (firstNode) {
+            newNode = new Node(value, Node.BLACK, 0);
+            root = newNode;
+            firstNode = false;
+        } else {
+            boolean haveNext = true;
+            Node n = root;
+
+            Node p = n;
+
+            boolean left = false;
+            boolean right = false;
+
+            while (haveNext) {
+                if (value < n.getValue()) {
 //                        insertionX -= xSpacing/(n.getLevel()+1);  //need a way so kids don't overlap in very full tree
-                        insertionX -= xSpacing;
-                        xSpacing /= 2;
-                        if (n.hasLeftChild()) {
-                            n = n.getLeftChild();
-                        } else {
-                            haveNext = false;
-                            p = n;
-                            left = true;
-                        }
+                    insertionX -= xSpacing;
+                    xSpacing /= 2;
+                    if (n.hasLeftChild()) {
+                        n = n.getLeftChild();
                     } else {
+                        haveNext = false;
+                        p = n;
+                        left = true;
+                    }
+                } else {
 //                        insertionX += xSpacing/Math.pow((n.getLevel()+1),2);
-                        insertionX += xSpacing;
-                        xSpacing /= 2;
-                        if (n.hasRightChild()) {
-                            n = n.getRightChild();
-                        } else {
-                            haveNext = false;
-                            p = n;
-                            right = true;
-                        }
+                    insertionX += xSpacing;
+                    xSpacing /= 2;
+                    if (n.hasRightChild()) {
+                        n = n.getRightChild();
+                    } else {
+                        haveNext = false;
+                        p = n;
+                        right = true;
                     }
                 }
-                newNode = new Node(value, Node.BLACK, 1+p.getLevel());
-                newNode.setParent(p, left);
-                if (left) {
-                    p.setLeftChild(newNode);
-                } else {
-                    p.setRightChild(newNode);
-                }
             }
-            NodeCircle newNodeCircle = new NodeCircle(radius, newNode);
-            newNode.setCircle(newNodeCircle);
-
-            int randomInt = ThreadLocalRandom.current().nextInt(20, 70);
+            newNode = new Node(value, Node.BLACK, 1+p.getLevel());
+            newNode.setParent(p, left);
+            if (left) {
+                p.setLeftChild(newNode);
+            } else {
+                p.setRightChild(newNode);
+            }
+        }
+        NodeCircle newNodeCircle = new NodeCircle(radius, newNode);
+        newNode.setCircle(newNodeCircle);
 
 //            newNodeCircle.setAlignment(Pos.CENTER);
 //            newNodeCircle.setPadding(new Insets(randomInt, 20, 20, insertionX));
 //            newNodeCircle.setPadding(new Insets(newNodeCircle.getThisNode().getLevel()*20, 20, 20, insertionX));
-            newNodeCircle.setPadding(new Insets(newNode.getLevel()*40+20, 20, 20, insertionX));
+        newNodeCircle.setPadding(new Insets(newNode.getLevel()*40+20, 20, 20, insertionX));
 
 //            insertionX += 60;
 
-            anchorPane.getChildren().add(newNodeCircle);
+        anchorPane.getChildren().add(newNodeCircle);
 
 //            nodeList.add(newNodeCircle);
 //
@@ -128,21 +184,11 @@ public class VisController implements Initializable {
 //                    connectorList.add(newConnector);
 //                }
 //            }
-            //new way of adding connectors:
-            if (newNode.isLeftChild() || newNode.isRightChild()) {
-                Connector newConnector = new Connector(newNode.getParent().getCircle(), newNode.getCircle());
-                anchorPane.getChildren().add(newConnector);
-                connectorList.add(newConnector);
-            }
-
-        }
-        else {
-            for (javafx.scene.Node child : anchorPane.getChildren()) {
-                if (child instanceof NodeCircle && (((NodeCircle) child).getValue() == value)) {
-                    anchorPane.getChildren().remove(child);
-                    break;
-                }
-            }
+        //new way of adding connectors:
+        if (newNode.isLeftChild() || newNode.isRightChild()) {
+            Connector newConnector = new Connector(newNode.getParent().getCircle(), newNode.getCircle());
+            anchorPane.getChildren().add(newConnector);
+            connectorList.add(newConnector);
         }
 
     }
