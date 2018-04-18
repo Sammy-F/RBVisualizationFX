@@ -63,11 +63,17 @@ public class VisController implements Initializable {
         }
         else {
             Node tobeDeleted = findNode(value, root);
-            tobeDeleted.getCircle().setFillColor(Color.GOLDENROD);
-            System.out.println("color changed");
-            PauseTransition pause = new PauseTransition(Duration.seconds(.5));
-            pause.setOnFinished(event1 -> tobeDeleted.getCircle().setFillColor(Color.DARKSLATEGRAY));
-            pause.play();
+            if (tobeDeleted != null) {
+                tobeDeleted.getCircle().setFillColor(Color.GOLDENROD);
+                PauseTransition pause = new PauseTransition(Duration.seconds(.5));
+                pause.setOnFinished(event1 -> tobeDeleted.getCircle().setFillColor(Color.DARKSLATEGRAY));
+                pause.play();
+                PauseTransition pause2 = new PauseTransition(Duration.seconds(.5));
+                pause2.setOnFinished(event1 -> deleteNode(tobeDeleted));
+                pause2.play();
+            } else {
+                System.out.println("Node does not exist.");
+            }
         }
 
     }
@@ -104,7 +110,102 @@ public class VisController implements Initializable {
     }
 
     private void deleteNode(Node nodeToDelete) {
+        if (!nodeToDelete.hasRightChild() && !nodeToDelete.hasLeftChild()) { //Check if the node has no children
+            System.out.println("I have no children.");
+            anchorPane.getChildren().remove(nodeToDelete.getCircle());
+            anchorPane.getChildren().remove(nodeToDelete.getCToParent());
+            if (nodeToDelete.isRightChild()) {
+                nodeToDelete.getParent().setRightChild(null);
+            } else {
+                nodeToDelete.getParent().setLeftChild(null);
+            }
+        } else if (nodeToDelete.hasLeftChild() && !nodeToDelete.hasRightChild()) { //Check if the node has a left child
+            anchorPane.getChildren().remove(nodeToDelete.getCircle());
+            anchorPane.getChildren().remove(nodeToDelete.getLeftChild().getCToParent());
 
+            System.out.println("I have a left child.");
+
+            if (nodeToDelete.isLeftChild()) {
+                nodeToDelete.getParent().getLCToChild().setChildNode(nodeToDelete.getLeftChild().getCircle());  //switch the parent's connector to have the new node
+                nodeToDelete.getLeftChild().setCToParent(nodeToDelete.getCToParent()); //switch the child node to use the parent's connector
+                nodeToDelete.getParent().setLeftChild(nodeToDelete.getLeftChild());
+                nodeToDelete.getLeftChild().setParent(nodeToDelete.getParent(), true);
+                nodeToDelete.getLeftChild().notifyConnectorsUpdated();
+            } else if (nodeToDelete.isRightChild()) {
+                nodeToDelete.getParent().getRCToChild().setChildNode(nodeToDelete.getLeftChild().getCircle());  //switch the parent's connector to have the new node
+                nodeToDelete.getLeftChild().setCToParent(nodeToDelete.getCToParent()); //switch the child node to use the parent's connector
+                nodeToDelete.getParent().setLeftChild(nodeToDelete.getLeftChild());
+                nodeToDelete.getLeftChild().setParent(nodeToDelete.getParent(), true);
+                nodeToDelete.getLeftChild().notifyConnectorsUpdated();
+            } else {
+                root = nodeToDelete.getLeftChild(); //TODO: Add handling for root case in node logic
+            }
+
+            reduceTreeLevelsByOne(nodeToDelete);
+
+        } else if (nodeToDelete.hasRightChild() && !nodeToDelete.hasLeftChild()) { //Check if the node has a right child
+            anchorPane.getChildren().remove(nodeToDelete.getCircle());
+            anchorPane.getChildren().remove(nodeToDelete.getRightChild().getCToParent());
+
+            System.out.println("I have a right child.");
+
+            if (nodeToDelete.isLeftChild()) {
+                nodeToDelete.getParent().getLCToChild().setChildNode(nodeToDelete.getRightChild().getCircle());  //switch the parent's connector to have the new node
+                nodeToDelete.getRightChild().setCToParent(nodeToDelete.getCToParent()); //switch the child node to use the parent's connector
+                nodeToDelete.getParent().setLeftChild(nodeToDelete.getRightChild());
+                nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), true);
+                nodeToDelete.getRightChild().notifyConnectorsUpdated();
+            } else if (nodeToDelete.isRightChild()) {
+                nodeToDelete.getParent().getRCToChild().setChildNode(nodeToDelete.getRightChild().getCircle());
+                nodeToDelete.getRightChild().setCToParent(nodeToDelete.getCToParent());
+                nodeToDelete.getParent().setRightChild(nodeToDelete.getRightChild());
+                nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), false);
+                nodeToDelete.getRightChild().notifyConnectorsUpdated();
+            } else {
+                root = nodeToDelete.getRightChild(); //TODO: Add handling for root case in node logic
+            }
+
+        } else { //Case where the node has two children (shit!)
+            //TODO: Deletion with two nodes.
+            System.out.println("I have two children and don't currently do anything.");
+        }
+    }
+
+    /**
+     * Decrements the level of all nodes in a subtree, including
+     * the root. In addition, it modifies the padding vals for nodes to the
+     * appropriate and notifies any Connectors of the change.
+     * @param toReduce
+     */
+    private void reduceTreeLevelsByOne(Node toReduce) {
+
+        if (!toReduce.hasLeftChild() && !toReduce.hasRightChild()) {
+            toReduce.decrementLevel();
+            toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20, toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            toReduce.notifyConnectorsUpdated();
+        }
+        else if (toReduce.hasLeftChild() && !toReduce.hasRightChild()) {
+
+            toReduce.decrementLevel();
+//            root.getLeftChild().setCToParent(root.getCToParent());
+//            root.getCToParent().setChildNode(root.getLeftChild().getCircle());
+            toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20, toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            toReduce.notifyConnectorsUpdated();
+            reduceTreeLevelsByOne(toReduce.getLeftChild());
+        } else if (toReduce.hasRightChild() && !toReduce.hasLeftChild()) {
+            toReduce.decrementLevel();
+//            root.getRightChild().setCToParent(root.getCToParent());
+//            root.getCToParent().setChildNode(root.getRightChild().getCircle());
+            toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20, toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            toReduce.notifyConnectorsUpdated();
+            reduceTreeLevelsByOne(toReduce.getRightChild());
+        } else {
+            toReduce.decrementLevel();
+            toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20, toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            toReduce.notifyConnectorsUpdated();
+            reduceTreeLevelsByOne(toReduce.getLeftChild());
+            reduceTreeLevelsByOne(toReduce.getRightChild());
+        }
     }
 
     /**
@@ -163,13 +264,14 @@ public class VisController implements Initializable {
                 p.setRightChild(newNode);
             }
         }
-        NodeCircle newNodeCircle = new NodeCircle(radius, newNode);
+        NodeCircle newNodeCircle = new NodeCircle(radius, newNode, insertionX, xSpacing);
         newNode.setCircle(newNodeCircle);
 
 //            newNodeCircle.setAlignment(Pos.CENTER);
 //            newNodeCircle.setPadding(new Insets(randomInt, 20, 20, insertionX));
 //            newNodeCircle.setPadding(new Insets(newNodeCircle.getThisNode().getLevel()*20, 20, 20, insertionX));
-        newNodeCircle.setPadding(new Insets(newNode.getLevel()*40+20, 20, 20, insertionX));
+
+//        newNodeCircle.setPadding(new Insets(newNode.getLevel()*40+20, 20, 20, insertionX)); //added this to the NodeCircle initialization instead
 
 //            insertionX += 60;
 
@@ -185,8 +287,16 @@ public class VisController implements Initializable {
 //                }
 //            }
         //new way of adding connectors:
-        if (newNode.isLeftChild() || newNode.isRightChild()) {
+        if (newNode.isLeftChild()) {
             Connector newConnector = new Connector(newNode.getParent().getCircle(), newNode.getCircle());
+            newNode.getParent().setlCToChild(newConnector);
+            newNode.setCToParent(newConnector);
+            anchorPane.getChildren().add(newConnector);
+            connectorList.add(newConnector);
+        } else if (newNode.isRightChild()) {
+            Connector newConnector = new Connector(newNode.getParent().getCircle(), newNode.getCircle());
+            newNode.getParent().setRCToChild(newConnector);
+            newNode.setCToParent(newConnector);
             anchorPane.getChildren().add(newConnector);
             connectorList.add(newConnector);
         }

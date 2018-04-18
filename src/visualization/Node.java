@@ -26,6 +26,10 @@ public class Node implements Comparable<Node> {
     private boolean isLC;
     private boolean isRC;
 
+    private Connector cToParent;
+    private Connector lCToChild;
+    private Connector rCToChild;
+
     public Node(double value, int color, int level) {
 
         this.value = value;
@@ -61,15 +65,26 @@ public class Node implements Comparable<Node> {
     public Node getParent() { return parent; }
 
     public void setLeftChild(Node lc) {
-        leftChild = lc;
-        hasLC = true;
+        if (lc == null) {
+            leftChild = null;
+            hasLC = false;
+        } else {
+            leftChild = lc;
+            hasLC = true;
+        }
     }
     public Node getLeftChild() { return leftChild; }
 
     public void setRightChild(Node rc) {
-        rightChild = rc;
-        hasRC = true;
+        if (rc == null) {
+            rightChild = null;
+            hasRC = false;
+        } else {
+            rightChild = rc;
+            hasRC = true;
+        }
     }
+
     public Node getRightChild() { return rightChild; }
 
     public void setCircle(NodeCircle nc) { circle = nc; }
@@ -93,9 +108,40 @@ public class Node implements Comparable<Node> {
         }
     }
 
+    public void notifyConnectorsUpdated() {
+        if (cToParent != null) {
+            cToParent.notifyNodesUpdated();
+        }
+        if (lCToChild != null) {
+            lCToChild.notifyNodesUpdated();
+        }
+        if (rCToChild != null) {
+            rCToChild.notifyNodesUpdated();
+        }
+    }
+
     @Override
     public String toString() {
         return Double.toString(this.getValue());
     }
+
+    public void setCToParent(Connector newConnector) {
+        this.cToParent = newConnector;
+    }
+    public Connector getCToParent() { return cToParent; }
+
+    public void setlCToChild(Connector newConnector) {
+        this.lCToChild = newConnector;
+    }
+    public Connector getLCToChild() { return lCToChild; }
+
+    public void setRCToChild(Connector newConnector) {
+        this.rCToChild = newConnector;
+    }
+    public Connector getRCToChild() { return rCToChild; }
+
+    public void decrementLevel() { level--; }
+
+    public void incrementLevel() { level++; }
 
 }

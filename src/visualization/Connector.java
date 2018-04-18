@@ -36,7 +36,6 @@ public class Connector extends Line {
         setStartY(parentInsets.getTop() + parentNode.getRadius()*2);
         setEndY(childInsets.getTop());
 
-
         //from the side:
 //        if (childNode.getThisNode().isLeftChild()) {
 //            setStartX(parentInsets.getLeft());
@@ -98,8 +97,14 @@ public class Connector extends Line {
 //            setEndY(childInsets.getTop());
 //        }
         // i did maths and i failed :( oh well
-
-
-
     }
+
+    /**
+     * Simple method added for clarity - call when nodes are updated so that
+     * the connector can readjust
+     */
+    public void notifyNodesUpdated() { initConnector(); }
+
+    public void setParentNode(NodeCircle parentNode) { this.parentNode = parentNode; }
+    public void setChildNode(NodeCircle childNode) { this.childNode = parentNode; }
 }

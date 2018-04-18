@@ -22,9 +22,14 @@ public class NodeCircle extends StackPane {
 
     private double radius;
 
-    public NodeCircle(double initRadius, Node thisNode) {
+    double insertionX;
+    double xSpacing;
+
+    public NodeCircle(double initRadius, Node thisNode, double insertionX, double xSpacing) {
 
         this.thisNode = thisNode;
+        this.insertionX = insertionX;
+        this.xSpacing = xSpacing;
         radius = initRadius;
 
         initCircle(initRadius);
@@ -36,6 +41,8 @@ public class NodeCircle extends StackPane {
         getChildren().addAll(thisCircle, thisText);
         setAlignment(thisCircle, Pos.CENTER);
         setAlignment(thisText, Pos.CENTER);
+
+        this.setPadding(new Insets(thisNode.getLevel()*40+20, 20, 20, insertionX));
 
     }
 
@@ -88,6 +95,10 @@ public class NodeCircle extends StackPane {
     public void setFillColor(Color newColor) {
         thisCircle.setFill(newColor);
     }
+
+    public double getInsertionX() { return insertionX; }
+
+    public double getxSpacing() { return xSpacing; }
 
 
 }
