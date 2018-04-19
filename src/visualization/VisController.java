@@ -259,14 +259,27 @@ public class VisController implements Initializable {
         Node substitute = findMinOfSubtree(tobeDeleted.getRightChild());
 
         if (substitute.hasRightChild()) { //the node is not a leaf so we need to handle its subtree
-            anchorPane.getChildren().remove(tobeDeleted); //first get rid of the original
+            tobeDeleted.setValue(substitute.getValue()); //instead of deleting, just replace value
 
-        } else { //the node is a leaf (easy!)
-            anchorPane.getChildren().remove(tobeDeleted);
-            substitute.getCircle().setPadding(tobeDeleted.getCircle().getPadding()); // move the substitute to the old node's location
-            substitute.getCircle().setXSpacing(tobeDeleted.getCircle().getxSpacing());
-            substitute.getCircle().setInsertionX(tobeDeleted.getCircle().getInsertionX());
+            reduceTreeLevelsByOne(substitute.getRightChild());
 
+        } else { //the node is a leaf (easy!) (sort of!)
+
+            tobeDeleted.setValue(substitute.getValue());
+            anchorPane.getChildren().remove(substitute.getCircle());
+            anchorPane.getChildren().remove(substitute.getCToParent());
+
+            tobeDeleted.getCircle().getThisText().setText(Double.toString(tobeDeleted.getValue()));
+
+            if (substitute.isLeftChild()) {
+                substitute.getParent().setlCToChild(null);
+                substitute.getParent().setHasLeftChild(false);
+                substitute.getParent().setLeftChild(null);
+            } else {
+                substitute.getParent().setRCToChild(null);
+                substitute.setHasRightChild(false);
+                substitute.getParent().setRightChild(null);
+            }
         }
 
     }
@@ -347,6 +360,8 @@ public class VisController implements Initializable {
         boolean left = false;
         boolean right = false;
 
+        int thisLevel = 0;
+
         if (root == null) {
             newNode = new Node(value, Node.BLACK, 0);
             root = newNode;
@@ -359,6 +374,9 @@ public class VisController implements Initializable {
             Node p = n;
 
             while (haveNext) {
+                thisLevel++;
+                System.out.println("Insertion value = " + value);
+                System.out.println("Check value = " + n.getValue());
                 if (value < n.getValue()) {
 //                        insertionX -= xSpacing/(n.getLevel()+1);  //need a way so kids don't overlap in very full tree
                     insertionX -= xSpacing;
@@ -383,7 +401,7 @@ public class VisController implements Initializable {
                     }
                 }
             }
-            newNode = new Node(value, Node.BLACK, 1+p.getLevel());
+            newNode = new Node(value, Node.BLACK, thisLevel);
             newNode.setParent(p, left);
             if (left) {
                 p.setLeftChild(newNode);

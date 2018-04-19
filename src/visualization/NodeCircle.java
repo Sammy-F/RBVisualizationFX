@@ -107,5 +107,7 @@ public class NodeCircle extends StackPane {
 
     public void setXSpacing(double xSpacing) { this.xSpacing = xSpacing; }
 
+    public Text getThisText() { return thisText; }
+
 
 }
