@@ -208,7 +208,13 @@ public class VisController implements Initializable {
 
         if (!toReduce.hasLeftChild() && !toReduce.hasRightChild()) {
             toReduce.decrementLevel();
-            toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20, toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            if (toReduce.isRightChild()) {
+                toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20,
+                        toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2))));
+            } else {
+                toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20,
+                        toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            }
             toReduce.notifyConnectorsUpdated();
         }
         else if (toReduce.hasLeftChild() && !toReduce.hasRightChild()) {
@@ -216,19 +222,37 @@ public class VisController implements Initializable {
             toReduce.decrementLevel();
 //            root.getLeftChild().setCToParent(root.getCToParent());
 //            root.getCToParent().setChildNode(root.getLeftChild().getCircle());
-            toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20, toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            if (toReduce.isRightChild()) {
+                toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20,
+                        toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2))));
+            } else {
+                toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20,
+                        toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            }
             toReduce.notifyConnectorsUpdated();
             reduceTreeLevelsByOne(toReduce.getLeftChild());
         } else if (toReduce.hasRightChild() && !toReduce.hasLeftChild()) {
             toReduce.decrementLevel();
 //            root.getRightChild().setCToParent(root.getCToParent());
 //            root.getCToParent().setChildNode(root.getRightChild().getCircle());
-            toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20, toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            if (toReduce.isRightChild()) {
+                toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20,
+                        toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2))));
+            } else {
+                toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20,
+                        toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            }
             toReduce.notifyConnectorsUpdated();
             reduceTreeLevelsByOne(toReduce.getRightChild());
         } else {
             toReduce.decrementLevel();
-            toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20, toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            if (toReduce.isRightChild()) {
+                toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20,
+                        toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2))));
+            } else {
+                toReduce.getCircle().setPadding(new Insets(toReduce.getLevel()*40+20, 20, 20,
+                        toReduce.getCircle().getInsertionX() + ((toReduce.getCircle().getxSpacing()*2)-(toReduce.getCircle().getxSpacing()))));
+            }
             toReduce.notifyConnectorsUpdated();
             reduceTreeLevelsByOne(toReduce.getLeftChild());
             reduceTreeLevelsByOne(toReduce.getRightChild());
