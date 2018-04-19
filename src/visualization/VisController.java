@@ -258,10 +258,31 @@ public class VisController implements Initializable {
 
         Node substitute = findMinOfSubtree(tobeDeleted.getRightChild());
 
-        if (substitute.hasRightChild()) { //the node is not a leaf so we need to handle its subtree
+        if (substitute.hasRightChild()) { //the node is not a leaf so we need to handle its subtree, THIS IS A BAD SOLUTION
+            //TODO: BETTER SOLUTION
             tobeDeleted.setValue(substitute.getValue()); //instead of deleting, just replace value
+            tobeDeleted.getCircle().getThisText().setText(Double.toString(tobeDeleted.getValue()));
 
             reduceTreeLevelsByOne(substitute.getRightChild());
+
+            Connector childConnector = new Connector(substitute.getParent().getCircle(), substitute.getRightChild().getCircle());
+            anchorPane.getChildren().remove(substitute.getCToParent());
+            anchorPane.getChildren().remove(substitute.getRCToChild());
+
+            if (substitute.isLeftChild()) {
+                substitute.getParent().setLeftChild(substitute.getRightChild());
+                substitute.getRightChild().setParent(substitute.getParent(), true);
+                substitute.getRightChild().setIsLeftChild(true);
+                substitute.getRightChild().setIsRightChild(false);
+            } else {
+                substitute.getParent().setRightChild(substitute.getRightChild());
+                substitute.getRightChild().setParent(substitute, false);
+
+            }
+
+            anchorPane.getChildren().add(childConnector);
+            substitute.getParent().notifyConnectorsUpdated();
+            substitute.getRightChild().notifyConnectorsUpdated();
 
         } else { //the node is a leaf (easy!) (sort of!)
 
