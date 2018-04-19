@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 public class VisController implements Initializable {
 
+    private Node tobeDeleted;
+
     private boolean insertClicked = false;
     private boolean removeClicked = false;
 
@@ -62,7 +64,8 @@ public class VisController implements Initializable {
             insertNode(value);
         }
         else {
-            Node tobeDeleted = findNode(value, root);
+            tobeDeleted = findFirstNode(value, root);
+            findDeepestNode(value, root);
             if (tobeDeleted != null) {
                 tobeDeleted.getCircle().setFillColor(Color.GOLDENROD);
                 PauseTransition pause = new PauseTransition(Duration.seconds(.5));
@@ -78,29 +81,53 @@ public class VisController implements Initializable {
 
     }
 
+
+    /**
+     * Modifies currentDeepest, which should be the first occurrence of the
+     * node, found using findFirstNode
+     * @param value
+     * @param root
+     */
+    private void findDeepestNode(Double value, Node root) {
+
+        System.out.println("modified");
+
+        if (root.getValue() == value) {
+            if (root.getLevel() > tobeDeleted.getLevel()) {
+                tobeDeleted = root;
+            }
+        }
+        if (root.hasLeftChild() && root.hasRightChild()) {
+            findDeepestNode(value, root.getLeftChild());
+        } else if (root.hasLeftChild()) {
+            findDeepestNode(value, root.getLeftChild());
+        } else if (root.hasRightChild()) {
+            findDeepestNode(value, root.getRightChild());
+        }
+    }
     /**
      * Find the first node with the given value
      * @param value
      */
-    private Node findNode(Double value, Node root) {
+    private Node findFirstNode(Double value, Node root) {
 
         if (root.getValue() == value) {
             return root;
         } else if (root.hasLeftChild() && root.hasRightChild()) {
-            if (findNode(value, root.getLeftChild()) != null) {
-                return findNode(value, root.getLeftChild());
-            } else if (findNode(value, root.getRightChild()) != null) {
-                return findNode(value, root.getRightChild());
+            if (findFirstNode(value, root.getLeftChild()) != null) {
+                return findFirstNode(value, root.getLeftChild());
+            } else if (findFirstNode(value, root.getRightChild()) != null) {
+                return findFirstNode(value, root.getRightChild());
             } else {
                 return null;
             }
         } else if (root.hasLeftChild()) {
-            if (findNode(value, root.getLeftChild()) != null) {
-                return findNode(value, root.getLeftChild());
+            if (findFirstNode(value, root.getLeftChild()) != null) {
+                return findFirstNode(value, root.getLeftChild());
             }
         } else if (root.hasRightChild()) {
-            if (findNode(value, root.getRightChild()) != null) {
-                return findNode(value, root.getRightChild());
+            if (findFirstNode(value, root.getRightChild()) != null) {
+                return findFirstNode(value, root.getRightChild());
             }
         } else {
             return null;
