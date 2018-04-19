@@ -15,6 +15,9 @@ import java.util.Comparator;
  */
 public class NodeCircle extends StackPane {
 
+    private final int HEIGHT_SCALAR = 150;
+    private final int SHIFT_CONSTANT = 50;
+
     private Node thisNode;
 
     private Circle thisCircle;
@@ -42,7 +45,7 @@ public class NodeCircle extends StackPane {
         setAlignment(thisCircle, Pos.CENTER);
         setAlignment(thisText, Pos.CENTER);
 
-        this.setPadding(new Insets(thisNode.getLevel()*40+20, 20, 20, insertionX));
+        this.setPadding(new Insets(thisNode.getLevel()*HEIGHT_SCALAR+20, 20, 20, insertionX));
 
     }
 
@@ -99,6 +102,10 @@ public class NodeCircle extends StackPane {
     public double getInsertionX() { return insertionX; }
 
     public double getxSpacing() { return xSpacing; }
+
+    public void setInsertionX(double insertionX) { this.insertionX = insertionX; }
+
+    public void setXSpacing(double xSpacing) { this.xSpacing = xSpacing; }
 
 
 }

@@ -76,6 +76,7 @@ public class Node implements Comparable<Node> {
     public Node getLeftChild() { return leftChild; }
 
     public void setRightChild(Node rc) {
+        System.out.println(isRC);
         if (rc == null) {
             rightChild = null;
             hasRC = false;
@@ -83,6 +84,7 @@ public class Node implements Comparable<Node> {
             rightChild = rc;
             hasRC = true;
         }
+        System.out.println(isRC);
     }
 
     public Node getRightChild() { return rightChild; }
@@ -94,6 +96,11 @@ public class Node implements Comparable<Node> {
     public boolean hasRightChild() { return hasRC; }
     public boolean isLeftChild() { return isLC; }
     public boolean isRightChild() { return isRC; }
+
+    public void setIsLeftChild(boolean isLC) { this.isLC = isLC; }
+    public void setIsRightChild(boolean isRC) { this.isRC = isRC; }
+    public void setHasLeftChild(boolean hasLeftChild) { this.hasLC = hasLeftChild; }
+    public void setHasRightChild(boolean hasRightChild) { this.hasRC = hasRightChild; }
 
 
     @Override
@@ -143,5 +150,9 @@ public class Node implements Comparable<Node> {
     public void decrementLevel() { level--; }
 
     public void incrementLevel() { level++; }
+
+    public double getXSpacingFromLevel(double initSpacing) {
+        return initSpacing/(Math.pow(2,(level)));
+    }
 
 }
