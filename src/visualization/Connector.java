@@ -107,4 +107,6 @@ public class Connector extends Line {
 
     public void setParentNode(NodeCircle parentNode) { this.parentNode = parentNode; }
     public void setChildNode(NodeCircle childNode) { this.childNode = parentNode; }
+    public NodeCircle getParentNode() { return this.parentNode; }
+    public NodeCircle getChildNode() { return this.childNode; }
 }

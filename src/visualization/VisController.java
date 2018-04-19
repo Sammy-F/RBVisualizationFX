@@ -148,22 +148,29 @@ public class VisController implements Initializable {
             }
         } else if (nodeToDelete.hasLeftChild() && !nodeToDelete.hasRightChild()) { //Check if the node has a left child
             anchorPane.getChildren().remove(nodeToDelete.getCircle());
-            anchorPane.getChildren().remove(nodeToDelete.getLeftChild().getCToParent());
+            anchorPane.getChildren().remove(nodeToDelete.getCToParent());
 
             System.out.println("I have a left child.");
 
             if (nodeToDelete.isLeftChild()) {
-                nodeToDelete.getParent().getLCToChild().setChildNode(nodeToDelete.getLeftChild().getCircle());  //switch the parent's connector to have the new node
-                nodeToDelete.getLeftChild().setCToParent(nodeToDelete.getCToParent()); //switch the child node to use the parent's connector
-                nodeToDelete.getParent().setLeftChild(nodeToDelete.getLeftChild());
-                nodeToDelete.getLeftChild().setParent(nodeToDelete.getParent(), true);
+                anchorPane.getChildren().remove(nodeToDelete.getLCToChild());
+                Connector connector = new Connector(nodeToDelete.getParent().getCircle(), nodeToDelete.getLeftChild().getCircle());
+                nodeToDelete.getLeftChild().setCToParent(connector);
+                nodeToDelete.getParent().setlCToChild(connector);
+//                nodeToDelete.getParent().getLCToChild().setChildNode(nodeToDelete.getLeftChild().getCircle());  //switch the parent's connector to have the new node
+//                System.out.println("My new child has value = " + nodeToDelete.getParent().getLCToChild().getChildNode().getThisNode().getValue());
+//                nodeToDelete.getLeftChild().setCToParent(nodeToDelete.getCToParent()); //switch the child node to use the parent's connector
+//                nodeToDelete.getParent().setLeftChild(nodeToDelete.getLeftChild());
+//                nodeToDelete.getLeftChild().setParent(nodeToDelete.getParent(), true);
                 nodeToDelete.getLeftChild().notifyConnectorsUpdated();
+                anchorPane.getChildren().add(connector);
             } else if (nodeToDelete.isRightChild()) {
-                nodeToDelete.getParent().getRCToChild().setChildNode(nodeToDelete.getLeftChild().getCircle());  //switch the parent's connector to have the new node
-                nodeToDelete.getLeftChild().setCToParent(nodeToDelete.getCToParent()); //switch the child node to use the parent's connector
-                nodeToDelete.getParent().setLeftChild(nodeToDelete.getLeftChild());
-                nodeToDelete.getLeftChild().setParent(nodeToDelete.getParent(), true);
+                anchorPane.getChildren().remove(nodeToDelete.getRCToChild());
+                Connector connector = new Connector(nodeToDelete.getParent().getCircle(), nodeToDelete.getLeftChild().getCircle());
+                nodeToDelete.getLeftChild().setCToParent(connector);
+                nodeToDelete.getParent().setRCToChild(connector);
                 nodeToDelete.getLeftChild().notifyConnectorsUpdated();
+                anchorPane.getChildren().add(connector);
             } else {
                 root = nodeToDelete.getLeftChild(); //TODO: Add handling for root case in node logic
             }
@@ -177,17 +184,19 @@ public class VisController implements Initializable {
             System.out.println("I have a right child.");
 
             if (nodeToDelete.isLeftChild()) {
-                nodeToDelete.getParent().getLCToChild().setChildNode(nodeToDelete.getRightChild().getCircle());  //switch the parent's connector to have the new node
-                nodeToDelete.getRightChild().setCToParent(nodeToDelete.getCToParent()); //switch the child node to use the parent's connector
-                nodeToDelete.getParent().setLeftChild(nodeToDelete.getRightChild());
-                nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), true);
+                anchorPane.getChildren().remove(nodeToDelete.getParent().getLCToChild());
+                Connector connector = new Connector(nodeToDelete.getParent().getCircle(), nodeToDelete.getRightChild().getCircle());
+                nodeToDelete.getRightChild().setCToParent(connector);
+                nodeToDelete.getParent().setlCToChild(connector);
                 nodeToDelete.getRightChild().notifyConnectorsUpdated();
+                anchorPane.getChildren().add(connector);
             } else if (nodeToDelete.isRightChild()) {
-                nodeToDelete.getParent().getRCToChild().setChildNode(nodeToDelete.getRightChild().getCircle());
-                nodeToDelete.getRightChild().setCToParent(nodeToDelete.getCToParent());
-                nodeToDelete.getParent().setRightChild(nodeToDelete.getRightChild());
-                nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), false);
+                anchorPane.getChildren().remove(nodeToDelete.getParent().getRCToChild());
+                Connector connector = new Connector(nodeToDelete.getParent().getCircle(), nodeToDelete.getRightChild().getCircle());
+                nodeToDelete.getRightChild().setCToParent(connector);
+                nodeToDelete.getParent().setRCToChild(connector);
                 nodeToDelete.getRightChild().notifyConnectorsUpdated();
+                anchorPane.getChildren().add(connector);
             } else {
                 root = nodeToDelete.getRightChild(); //TODO: Add handling for root case in node logic
             }
