@@ -1,8 +1,13 @@
 package visualization;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
+
 import java.lang.Math;
 
 public class Connector extends Line {
@@ -28,12 +33,24 @@ public class Connector extends Line {
         Insets childInsets = childNode.getInsets();
         Insets parentInsets = parentNode.getInsets();
 
-
         //from the center of the bottom
         setStartX(parentInsets.getLeft() + parentNode.getRadius());
-        setEndX(childInsets.getLeft() + childNode.getRadius());
-
         setStartY(parentInsets.getTop() + parentNode.getRadius()*2);
+
+        setEndX(parentInsets.getLeft() + parentNode.getRadius());
+        setEndY(parentInsets.getTop() + parentNode.getRadius()*2);
+
+        KeyValue xKey = new KeyValue(this.endXProperty(), childInsets.getLeft() + childNode.getRadius());
+        KeyValue yKey = new KeyValue(this.endYProperty(), childInsets.getTop());
+
+        KeyFrame mKeyFrame = new KeyFrame(Duration.millis(300), xKey, yKey);
+
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(1);
+        timeline.getKeyFrames().add(mKeyFrame);
+        timeline.play();
+
+        setEndX(childInsets.getLeft() + childNode.getRadius());
         setEndY(childInsets.getTop());
 
         //from the side:
