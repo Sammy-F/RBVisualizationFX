@@ -206,7 +206,7 @@ public class VisController implements Initializable {
             nodeToDelete.getLeftChild().notifyConnectorsUpdated();
         }
 
-        reduceTreeLevelsByOne(nodeToDelete);
+        reduceTreeLevelsByOne(nodeToDelete.getLeftChild());
 
     }
 
@@ -229,6 +229,7 @@ public class VisController implements Initializable {
         if (nodeToDelete.isLeftChild()) {
             anchorPane.getChildren().remove(nodeToDelete.getParent().getLCToChild());
             Connector connector = new Connector(nodeToDelete.getParent().getCircle(), nodeToDelete.getRightChild().getCircle());
+
             nodeToDelete.getRightChild().setCToParent(connector);
             nodeToDelete.getParent().setlCToChild(connector);
             nodeToDelete.getRightChild().notifyConnectorsUpdated();
@@ -237,7 +238,9 @@ public class VisController implements Initializable {
             nodeToDelete.getParent().setLeftChild(nodeToDelete.getRightChild());
             nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), true);
             anchorPane.getChildren().add(connector);
+
         } else if (nodeToDelete.isRightChild()) {
+
             anchorPane.getChildren().remove(nodeToDelete.getParent().getRCToChild());
             Connector connector = new Connector(nodeToDelete.getParent().getCircle(), nodeToDelete.getRightChild().getCircle());
             nodeToDelete.getRightChild().setCToParent(connector);
@@ -246,6 +249,7 @@ public class VisController implements Initializable {
             nodeToDelete.getParent().setRightChild(nodeToDelete.getRightChild());
             nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), false);
             anchorPane.getChildren().add(connector);
+
         } else {
             root = nodeToDelete.getRightChild(); //TODO: Add handling for root case in node logic
             anchorPane.getChildren().remove(nodeToDelete.getCircle());
@@ -255,7 +259,7 @@ public class VisController implements Initializable {
             nodeToDelete.getRightChild().notifyConnectorsUpdated();
         }
 
-        reduceTreeLevelsByOne(nodeToDelete);
+        reduceTreeLevelsByOne(nodeToDelete.getRightChild());
 
     }
 
