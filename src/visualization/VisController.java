@@ -183,6 +183,8 @@ public class VisController implements Initializable {
             nodeToDelete.getLeftChild().setCToParent(connector);
             nodeToDelete.getParent().setlCToChild(connector);
             nodeToDelete.getLeftChild().notifyConnectorsUpdated();
+            nodeToDelete.getParent().setLeftChild(nodeToDelete.getLeftChild());
+            nodeToDelete.getLeftChild().setParent(nodeToDelete.getParent(), true);
             anchorPane.getChildren().add(connector);
         } else if (nodeToDelete.isRightChild()) { //check if the node is a right child
             anchorPane.getChildren().remove(nodeToDelete.getRCToChild());
@@ -192,6 +194,8 @@ public class VisController implements Initializable {
             nodeToDelete.getLeftChild().notifyConnectorsUpdated();
             nodeToDelete.getLeftChild().setIsRightChild(true);
             nodeToDelete.getLeftChild().setIsLeftChild(false);
+            nodeToDelete.getParent().setRightChild(nodeToDelete.getLeftChild());
+            nodeToDelete.getLeftChild().setParent(nodeToDelete.getLeftChild(), false);
             anchorPane.getChildren().add(connector);
         } else { //the node must be the root
             root = nodeToDelete.getLeftChild(); //TODO: Add handling for root case in node logic
@@ -230,6 +234,8 @@ public class VisController implements Initializable {
             nodeToDelete.getRightChild().notifyConnectorsUpdated();
             nodeToDelete.getRightChild().setIsLeftChild(true);
             nodeToDelete.getRightChild().setIsRightChild(false);
+            nodeToDelete.getParent().setLeftChild(nodeToDelete.getRightChild());
+            nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), true);
             anchorPane.getChildren().add(connector);
         } else if (nodeToDelete.isRightChild()) {
             anchorPane.getChildren().remove(nodeToDelete.getParent().getRCToChild());
@@ -237,6 +243,8 @@ public class VisController implements Initializable {
             nodeToDelete.getRightChild().setCToParent(connector);
             nodeToDelete.getParent().setRCToChild(connector);
             nodeToDelete.getRightChild().notifyConnectorsUpdated();
+            nodeToDelete.getParent().setRightChild(nodeToDelete.getRightChild());
+            nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), false);
             anchorPane.getChildren().add(connector);
         } else {
             root = nodeToDelete.getRightChild(); //TODO: Add handling for root case in node logic
