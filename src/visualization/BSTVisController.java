@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class VisController implements Initializable {
+public class BSTVisController implements Initializable {
 
     private final int DEFAULT_RADIUS = 30;
     private final int HEIGHT_SCALAR = 150;
