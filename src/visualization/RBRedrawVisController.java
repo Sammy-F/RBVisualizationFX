@@ -33,7 +33,7 @@ public class RBRedrawVisController implements Initializable {
 //    private double insertionX;
 //    private double xSpacing;
 
-    RedBlackTree<Double> rbt;
+    private RedBlackTree<Double> rbt;
 
     @FXML
     private TextField tfValue;
@@ -104,6 +104,6 @@ public class RBRedrawVisController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 //        nodeList = new ArrayList<>();
 //        connectorList = new ArrayList<>();
-        rbt = new RedBlackTree<Double>();
+        rbt = new RedBlackTree<>();
     }
 }
