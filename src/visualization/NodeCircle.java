@@ -8,26 +8,33 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.Comparator;
 
 /**
  * Handles the graphical parts of a node
  */
 public class NodeCircle extends StackPane {
 
-    private final int HEIGHT_SCALAR = 150;
-    private final int SHIFT_CONSTANT = 50;
+    private final int HEIGHT_SCALAR = 150;  //the height difference between nodes on different levels
+    private final int SHIFT_CONSTANT = 50;  //WHAT IS THIS FOR? ??????? (all caps so I won't forget this Q)
 
-    private Node thisNode;
+    private Node thisNode; //the node tied to this graphical representation
 
-    private Circle thisCircle;
-    private Text thisText;
+    private Circle thisCircle; //the circle graphic used for a node
+    private Text thisText; //text to display the value in the circle graphic
 
-    private double radius;
+    private double radius; //radius of the circle for node
 
-    double insertionX;
-    double xSpacing;
+    double insertionX; //x value where the node will be displayed, this is tied to the level and left/rightness of node
+    double xSpacing;  //THIS TOO, WHAT IS THIS FOR? ??????????????
 
+    /**
+     * Constructor for the NodeCircle that sets the node, insertionX, xSpacing, and radius; initializes the circle and
+     * text in the circle;
+     * @param initRadius
+     * @param thisNode
+     * @param insertionX
+     * @param xSpacing
+     */
     public NodeCircle(double initRadius, Node thisNode, double insertionX, double xSpacing) {
 
         this.thisNode = thisNode;
@@ -49,6 +56,10 @@ public class NodeCircle extends StackPane {
 
     }
 
+    /**
+     * Initializes the text in the circle for the node on the screen
+     * @param initRadius
+     */
     private void initText(double initRadius) {
 
         thisText = new Text();
@@ -61,6 +72,10 @@ public class NodeCircle extends StackPane {
         thisText.setFill(Color.WHITE);
     }
 
+    /**
+     * Initializes the circle for the node graphical representation
+     * @param initRadius
+     */
     private void initCircle(double initRadius) {
 
         thisCircle = new Circle();
@@ -78,6 +93,10 @@ public class NodeCircle extends StackPane {
 //        thisCircle.setFill(Color.TRANSPARENT);
 
     }
+
+    /*
+     * Public Getters and Setters:
+     */
 
     public double getValue() {
         return thisNode.getValue();

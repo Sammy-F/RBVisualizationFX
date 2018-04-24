@@ -10,12 +10,16 @@ import javafx.util.Duration;
 
 import java.lang.Math;
 
+
+/**
+ * Handles the connectors between nodes
+ */
 public class Connector extends Line {
 
     private NodeCircle parentNode;
     private NodeCircle childNode;
 
-    public static final int maxConnectors = 8; //maximum before connectors look bad
+//    public static final int maxConnectors = 8; //maximum before connectors look bad
 
     public Connector(NodeCircle parentNode, NodeCircle childNode) {
 
@@ -26,6 +30,9 @@ public class Connector extends Line {
 
     }
 
+    /**
+     * Method for initializing connector between parent and child nodes
+     */
     private void initConnector() {
 
         setStrokeWidth(parentNode.getStroke());
@@ -43,7 +50,7 @@ public class Connector extends Line {
         KeyValue xKey = new KeyValue(this.endXProperty(), childInsets.getLeft() + childNode.getRadius());
         KeyValue yKey = new KeyValue(this.endYProperty(), childInsets.getTop());
 
-        KeyFrame mKeyFrame = new KeyFrame(Duration.millis(300), xKey, yKey);
+        KeyFrame mKeyFrame = new KeyFrame(Duration.millis(600), xKey, yKey);
 
         Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
