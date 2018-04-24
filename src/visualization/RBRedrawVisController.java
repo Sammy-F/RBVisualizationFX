@@ -33,8 +33,8 @@ public class RBRedrawVisController implements Initializable {
 //    private double insertionX;
 //    private double xSpacing;
 
-    RBTree thisTree;
-    RBTree lastTree;
+    private RBTree thisTree;
+    private RBTree lastTree;
 
     @FXML
     private TextField tfValue;
