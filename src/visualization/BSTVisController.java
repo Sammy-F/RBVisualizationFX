@@ -259,6 +259,8 @@ public class BSTVisController implements Initializable {
 
         anchorPane.getChildren().remove(nodeToDelete.getCircle()); //remove the node from the scene
 
+        reduceTreeLevelsByOne(lc);
+
         if (nodeToDelete.isLeftChild() || nodeToDelete.isRightChild()) {
 
             Node p = nodeToDelete.getParent(); //we know it has a parent
@@ -347,13 +349,13 @@ public class BSTVisController implements Initializable {
 
             root.setCToParent(null);
 
-            root.getCircle().setInsertionX(ix);
-            root.getCircle().setInsertionX(xs);
+//            root.getCircle().setInsertionX(ix);
+//            root.getCircle().setInsertionX(xs);
 
             root.notifyConnectorsUpdated();  //TODO: CHECK if notifyConnectorsUpdated method MAYBE has bugs? I didn't get to that yet...
         }
 
-        reduceTreeLevelsByOne(lc);
+//        reduceTreeLevelsByOne(lc);
 
     }
 
@@ -367,12 +369,15 @@ public class BSTVisController implements Initializable {
 
         anchorPane.getChildren().remove(nodeToDelete.getCircle()); //remove the node from the scene
 
+        reduceTreeLevelsByOne(rc);
+
         if (nodeToDelete.isLeftChild() || nodeToDelete.isRightChild()) {
 
             Node p = nodeToDelete.getParent(); //we know it has a parent
 
             //remove the node's parent connector from the scene
             anchorPane.getChildren().remove(nodeToDelete.getCToParent());
+
 
             if (nodeToDelete.isRightChild()) { //check if the node is a right child
 
@@ -450,7 +455,7 @@ public class BSTVisController implements Initializable {
 
             root = rc;
 
-            root.setLevel(0);
+//            root.setLevel(0);
             root.setParent(null, false);
 
             root.setIsRightChild(false);
@@ -458,8 +463,8 @@ public class BSTVisController implements Initializable {
 
             root.setCToParent(null);
 
-            root.getCircle().setInsertionX(ix);
-            root.getCircle().setInsertionX(xs);
+//            root.getCircle().setInsertionX(ix);
+//            root.getCircle().setInsertionX(xs);
 
             root.notifyConnectorsUpdated();
 
@@ -472,7 +477,7 @@ public class BSTVisController implements Initializable {
 //            rc.notifyConnectorsUpdated();
         }
 
-        reduceTreeLevelsByOne(rc);
+//        reduceTreeLevelsByOne(rc);
 
     }
 
