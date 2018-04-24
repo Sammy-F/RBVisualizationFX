@@ -8,7 +8,8 @@ import sun.plugin.javascript.navig.Anchor;
  */
 public class RBTree {
 
-    Node root;
+    private Node root;
+    private RBTree lastTree;
 
     public final int RED_INT = 0;
     public final int BLACK_INT = 1;
@@ -17,15 +18,26 @@ public class RBTree {
 
     }
 
-    public void insertNode(Node node) {
+    public RBTree insertNode(Node node, AnchorPane anchorPane) {
+
+        RBTree newTree = new RBTree();
+        newTree.setLastTree(this);
+        removeAll(anchorPane, root);
+
+        return newTree;
 
     }
 
-    public void deleteNode(int value, RBTree existingTree) {
-        if (existingTree.getRoot() != null) {
-            RBTree newTree = new RBTree();
+    public RBTree deleteNode(int value, AnchorPane anchorPane) {
+        if (root != null) {
+            RBTree newTree = new RBTree(); // Generate a new tree to insert nodes into
+            newTree.setLastTree(this); // Set the new tree's last tree to be this tree
+            removeAll(anchorPane, root); // Remove from the drawing space all of the nodes in this tree
+
+            return newTree;
         } else {
             System.out.println("No nodes exist.");
+            return this;
         }
     }
 
@@ -49,6 +61,10 @@ public class RBTree {
 
     public Node getRoot() {
         return root;
+    }
+
+    public void setLastTree(RBTree lastTree) {
+        this.lastTree = lastTree;
     }
 
 }
