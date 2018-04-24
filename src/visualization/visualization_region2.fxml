@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="visualization.RBRedrawViscontroller">
+<AnchorPane fx:id="anchorPane" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="visualization.RBRedrawVisController">
    <children>
       <GridPane layoutX="10.0" layoutY="343.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
          <columnConstraints>
@@ -29,5 +29,3 @@
       </GridPane>
    </children>
 </AnchorPane>
-
-\\aaaaaaah how do I make this work for rbredrawviscontroller idk
