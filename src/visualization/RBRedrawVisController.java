@@ -33,7 +33,8 @@ public class RBRedrawVisController implements Initializable {
 //    private double insertionX;
 //    private double xSpacing;
 
-    RedBlackTree<Double> rbt;
+    private RBTree thisTree;
+    private RBTree lastTree;
 
     @FXML
     private TextField tfValue;
@@ -66,20 +67,22 @@ public class RBRedrawVisController implements Initializable {
 
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(double value) {
-        rbt.addValue(value);
+        lastTree = thisTree.returnCopy();
+        thisTree.insertNode(value);
         redraw();
     }
 
     //delete node by deleting from rbt data structure then redraw
     private void deleteNode(double value) {
-        rbt.removeValue(value);
+        lastTree = thisTree.returnCopy();
+        thisTree.deleteNode(value);
         redraw();
     }
 
     private void redraw() {
-        RedBlackTree.Node<Double> n = rbt.root;
+        Node root = thisTree.getRoot();
 
-        while(n != null) {
+        while(root != null) {
           //  n.getLeftChild()  \\ok, so we would have to implement methods like this in our rbt class, but maybe it can be done... though I feel like it'll be sloppy idk :( oh well
         }
     }
@@ -104,6 +107,7 @@ public class RBRedrawVisController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 //        nodeList = new ArrayList<>();
 //        connectorList = new ArrayList<>();
-        rbt = new RedBlackTree<Double>();
+        thisTree = new RBTree();
+
     }
 }
