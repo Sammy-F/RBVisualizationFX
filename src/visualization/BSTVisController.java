@@ -339,7 +339,7 @@ public class BSTVisController implements Initializable {
 
             root = lc;
 
-            root.setLevel(0);
+//            root.setLevel(1);
             root.setParent(null, false);
 
             root.setIsRightChild(false);
