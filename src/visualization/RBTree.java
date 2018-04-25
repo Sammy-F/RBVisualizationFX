@@ -17,7 +17,6 @@ public class RBTree {
 
     public RBTree copy() {
         //TODO: return an actual copy of this tree
-//        return this;
 
         RBTree copy = new RBTree();
 

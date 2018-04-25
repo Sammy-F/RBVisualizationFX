@@ -1,6 +1,7 @@
 package visualization;
 
 import javafx.animation.PauseTransition;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -15,6 +16,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
 
 /**
@@ -33,7 +35,10 @@ public class RBRedrawVisController implements Initializable {
 //    private double insertionX;
 //    private double xSpacing;
 
-    private RedBlackTree<Double> rbt;
+    private RBTree mTree;
+
+    private List<NodeCircle> circleList;
+    private List<Connector> connectorList;
 
     @FXML
     private TextField tfValue;
@@ -66,21 +71,44 @@ public class RBRedrawVisController implements Initializable {
 
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(double value) {
-        rbt.addValue(value);
-        redraw();
+        clearTree();
+        mTree.insert(value);
+        redraw(mTree.getRoot());
     }
 
     //delete node by deleting from rbt data structure then redraw
     private void deleteNode(double value) {
-        rbt.removeValue(value);
-        redraw();
+        clearTree();
+        mTree.delete(value);
+        redraw(mTree.getRoot());
     }
 
-    private void redraw() {
-        RedBlackTree.Node<Double> n = rbt.root;
+    /**
+     * Method clears all NodeCircles and Connectors
+     */
+    private void clearTree() {
 
-        while(n != null) {
-          //  n.getLeftChild()  \\ok, so we would have to implement methods like this in our rbt class, but maybe it can be done... though I feel like it'll be sloppy idk :( oh well
+        ObservableList<javafx.scene.Node> paneChildren = anchorPane.getChildren();
+
+        paneChildren.removeAll(circleList);
+        paneChildren.removeAll(connectorList);
+
+    }
+
+    private void redraw(Node thisRoot) {
+        anchorPane.getChildren().add(thisRoot.getCircle()); //first, add the node in
+
+        if (thisRoot.hasRightChild() && thisRoot.hasLeftChild()) {
+            anchorPane.getChildren().add(thisRoot.getLCToChild()); //TODO: We will modify connectors in the insert/delete method, right?
+            anchorPane.getChildren().add(thisRoot.getRCToChild());
+            redraw(thisRoot.getLeftChild());
+            redraw(thisRoot.getRightChild());
+        } else if (thisRoot.hasRightChild()) {
+            anchorPane.getChildren().add(thisRoot.getRCToChild());
+            redraw(thisRoot.getRightChild());
+        } else if (thisRoot.hasLeftChild()) {
+            anchorPane.getChildren().add(thisRoot.getLCToChild());
+            redraw(thisRoot.getLeftChild());
         }
     }
 
@@ -104,6 +132,8 @@ public class RBRedrawVisController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 //        nodeList = new ArrayList<>();
 //        connectorList = new ArrayList<>();
-        rbt = new RedBlackTree<>();
+        mTree = new RBTree();
+        circleList = new ArrayList<>();
+        connectorList = new ArrayList<>();
     }
 }

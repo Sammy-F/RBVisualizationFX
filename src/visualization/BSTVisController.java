@@ -544,6 +544,8 @@ public class BSTVisController implements Initializable {
 
         Node sub = findMinOfSubtree(tobeDeleted.getRightChild());
 
+        System.out.println("Sub val = " + sub.getValue());
+
         // The substitute node can't have a left child, so it can only have a right child or no children
         if (sub.hasRightChild()) {
             //TODO: BETTER SOLUTION
