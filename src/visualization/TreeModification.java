@@ -3,22 +3,22 @@ package visualization;
 /**
  * Created by katya on 4/24/2018.
  */
-public class TreeModification {
+public class TreeModification<T> {
 
-    private double val;
+    private T key;
 
     private boolean insert;
 
     private boolean delete;
 
-    public TreeModification(double val, boolean insert) {
-        this.val = val;
+    public TreeModification(T key, boolean insert) {
+        this.key = key;
         this.insert = insert;
         this.delete = !insert;
     }
 
-    public double getVal() {
-        return val;
+    public T getKey() {
+        return key;
     }
 
 

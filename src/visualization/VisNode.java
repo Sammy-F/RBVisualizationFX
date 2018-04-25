@@ -2,8 +2,12 @@ package visualization;
 
 /**
  * Handles a Node Object
+ *
+ * NOTE: I RENAMED THIS BECAUSE I DIDN'T WANT TO ACCIDENTALLY USE NODE INSTEAD OF REDBLACKNODE, VISNODE SEEMED MORE
+ * DISTINCTIVE AND IT DOES CONTAIN SOME VISUAL INFO WE DON'T NEED IT TO HAVE ANYMORE FOR RBTREE, FEEL FREE TO CHANGE
+ * THE NAME
  */
-public class Node implements Comparable<Node> {
+public class VisNode implements Comparable<VisNode> {
 
     public static final int BLACK = 0;          //representation of the two colors
     public static final int RED = 1;
@@ -13,10 +17,10 @@ public class Node implements Comparable<Node> {
     private double value;   //numerical value of node
     private int color;      //red (1) or black (0)
 
-    private Node parent;    //the parent node
+    private VisNode parent;    //the parent node
 
-    private Node leftChild;   //the left child node
-    private Node rightChild;    //the right child node
+    private VisNode leftChild;   //the left child node
+    private VisNode rightChild;    //the right child node
 
     private NodeCircle circle; //graphical representation
 
@@ -33,7 +37,7 @@ public class Node implements Comparable<Node> {
     /**
      * the constructor, takes and sets the value, color, and level and initializes some boolean variables
      */
-    public Node(double value, int color, int level) {
+    public VisNode(double value, int color, int level) {
 
         this.value = value;
         this.color = color;
@@ -105,16 +109,16 @@ public class Node implements Comparable<Node> {
 
 
     //set and get parent node
-    public void setParent(Node p, boolean isLeftChild) {
+    public void setParent(VisNode p, boolean isLeftChild) {
         parent = p;
         isLC = isLeftChild;
         isRC = !isLeftChild;
     }
-    public Node getParent() { return parent; }
+    public VisNode getParent() { return parent; }
 
 
     //set and get the left and right children
-    public void setLeftChild(Node lc) {
+    public void setLeftChild(VisNode lc) {
         if (lc == null) {
             leftChild = null;
             hasLC = false;
@@ -123,9 +127,9 @@ public class Node implements Comparable<Node> {
             hasLC = true;
         }
     }
-    public Node getLeftChild() { return leftChild; }
+    public VisNode getLeftChild() { return leftChild; }
 
-    public void setRightChild(Node rc) {
+    public void setRightChild(VisNode rc) {
         System.out.println(isRC);
         if (rc == null) {
             rightChild = null;
@@ -137,7 +141,7 @@ public class Node implements Comparable<Node> {
         System.out.println(isRC);
     }
 
-    public Node getRightChild() { return rightChild; }
+    public VisNode getRightChild() { return rightChild; }
 
 
     //set and get the associated graphical representation
@@ -159,7 +163,7 @@ public class Node implements Comparable<Node> {
 
 
     @Override
-    public int compareTo(Node other) {
+    public int compareTo(VisNode other) {
         if (this.getValue() < other.getValue()) {
             return -1;
         } else if (this.getValue() == other.getValue()) {

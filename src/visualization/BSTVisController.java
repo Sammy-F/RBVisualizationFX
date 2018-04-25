@@ -24,7 +24,7 @@ public class BSTVisController implements Initializable {
     private final double INIT_INSERTIONX = 470;
     private final double INIT_XSPACING = INIT_INSERTIONX/2;
 
-    private Node tobeDeleted;
+    private VisNode tobeDeleted;
 
     private boolean insertClicked = false;
     private boolean removeClicked = false;
@@ -35,7 +35,7 @@ public class BSTVisController implements Initializable {
 //    private List<NodeCircle> nodeList;
     private List<Connector> connectorList;
 
-    private Node root = null;
+    private VisNode root = null;
 
     @FXML
     private TextField tfValue;
@@ -159,13 +159,13 @@ public class BSTVisController implements Initializable {
      * @param root
      * @return
      */
-    private Node findDelete(Double value, Node root) {
-        Node toDelete = null;
+    private VisNode findDelete(Double value, VisNode root) {
+        VisNode toDelete = null;
         if (root.getValue() == value) {
             toDelete = root;
         }
 
-        Node n = root;
+        VisNode n = root;
 
         while (true) {
             if (value < n.getValue() && n.hasLeftChild()) { //could only be in n's left subtree
@@ -200,7 +200,7 @@ public class BSTVisController implements Initializable {
      * and then calls the relevant method
      * @param nodeToDelete
      */
-    private void deleteNode(Node nodeToDelete) {
+    private void deleteNode(VisNode nodeToDelete) {
         //TODO: I think there is stuff just buggy in general, even when there is a single child, because I can get
         //weirddd things to happen with a tree containing only parents of single children
 
@@ -227,7 +227,7 @@ public class BSTVisController implements Initializable {
      * Method for handling deletion with no children
      * @param nodeToDelete
      */
-    private void deleteNodeWithNoChildren(Node nodeToDelete) {
+    private void deleteNodeWithNoChildren(VisNode nodeToDelete) {
         System.out.println("I have no children.");
         anchorPane.getChildren().remove(nodeToDelete.getCircle());
         anchorPane.getChildren().remove(nodeToDelete.getCToParent());
@@ -249,15 +249,15 @@ public class BSTVisController implements Initializable {
      * Method for handling deletion of a node with a left child only
      * @param nodeToDelete
      */
-    private void deleteNodeWithLeftChild(Node nodeToDelete) { //Sorry, this is super convoluted!
+    private void deleteNodeWithLeftChild(VisNode nodeToDelete) { //Sorry, this is super convoluted!
 
-        Node lc = nodeToDelete.getLeftChild(); //we know it has a left child, this var makes code more concise
+        VisNode lc = nodeToDelete.getLeftChild(); //we know it has a left child, this var makes code more concise
 
         anchorPane.getChildren().remove(nodeToDelete.getCircle()); //remove the node from the scene
 
         if (nodeToDelete.isLeftChild() || nodeToDelete.isRightChild()) {
 
-            Node p = nodeToDelete.getParent(); //we know it has a parent
+            VisNode p = nodeToDelete.getParent(); //we know it has a parent
 
             //remove the node's parent connector from the scene
             anchorPane.getChildren().remove(nodeToDelete.getCToParent());
@@ -357,15 +357,15 @@ public class BSTVisController implements Initializable {
      * Method for handling deletion of a node with a right child only
      * @param nodeToDelete
      */
-    private void deleteNodeWithRightChild(Node nodeToDelete) {
+    private void deleteNodeWithRightChild(VisNode nodeToDelete) {
 
-        Node rc = nodeToDelete.getRightChild(); //we know it has a right child, this var makes code more concise
+        VisNode rc = nodeToDelete.getRightChild(); //we know it has a right child, this var makes code more concise
 
         anchorPane.getChildren().remove(nodeToDelete.getCircle()); //remove the node from the scene
 
         if (nodeToDelete.isLeftChild() || nodeToDelete.isRightChild()) {
 
-            Node p = nodeToDelete.getParent(); //we know it has a parent
+            VisNode p = nodeToDelete.getParent(); //we know it has a parent
 
             //remove the node's parent connector from the scene
             anchorPane.getChildren().remove(nodeToDelete.getCToParent());
@@ -542,7 +542,7 @@ public class BSTVisController implements Initializable {
      */
     private void deleteNodeWithTwoChildren() {
 
-        Node sub = findMinOfSubtree(tobeDeleted.getRightChild());
+        VisNode sub = findMinOfSubtree(tobeDeleted.getRightChild());
 
         System.out.println("Sub val = " + sub.getValue());
 
@@ -603,7 +603,7 @@ public class BSTVisController implements Initializable {
      * @param root
      * @return
      */
-    private Node findMinOfSubtree(Node root) {
+    private VisNode findMinOfSubtree(VisNode root) {
 
         if (!root.hasLeftChild() && !root.hasRightChild()) { //I'm a leaf so just return me ^_^
             return root;
@@ -621,7 +621,7 @@ public class BSTVisController implements Initializable {
      * appropriate and notifies any Connectors of the change.
      * @param toReduce
      */
-    private void reduceTreeLevelsByOne(Node toReduce) {
+    private void reduceTreeLevelsByOne(VisNode toReduce) {
 
         // First we decrement the level of toReduce
         toReduce.decrementLevel();
@@ -673,7 +673,7 @@ public class BSTVisController implements Initializable {
      */
     private void insertNode(Double value) {
 
-        Node newNode;
+        VisNode newNode;
         double insertionX = INIT_INSERTIONX; //ideally this would be the center of the screen
         double xSpacing = INIT_XSPACING;
 
@@ -683,15 +683,15 @@ public class BSTVisController implements Initializable {
         int thisLevel = 0;
 
         if (root == null) {
-            newNode = new Node(value, Node.BLACK, 0);
+            newNode = new VisNode(value, VisNode.BLACK, 0);
             root = newNode;
             root.setIsRightChild(false);
             root.setIsLeftChild(false);
         } else {
             boolean haveNext = true;
-            Node n = root;
+            VisNode n = root;
 
-            Node p = n;
+            VisNode p = n;
 
             while (haveNext) {
                 thisLevel++;
@@ -721,7 +721,7 @@ public class BSTVisController implements Initializable {
                     }
                 }
             }
-            newNode = new Node(value, Node.BLACK, thisLevel);
+            newNode = new VisNode(value, VisNode.BLACK, thisLevel);
             newNode.setParent(p, left);
             if (left) {
                 p.setLeftChild(newNode);

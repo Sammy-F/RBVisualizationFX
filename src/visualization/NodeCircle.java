@@ -14,10 +14,12 @@ import javafx.scene.text.Text;
  */
 public class NodeCircle extends StackPane {
 
+    //TODO: MAJOR IMPORTANT!!!!!!!!!!!! NEED TO REFACTOR FOR DIFFERENT NODE CLASS. ALSO, LATER WE MAY WANT TO CUT EXCESS STUFF, SINCE WE DON'T DO AS MUCH. WAIT WE STILL NEED THIS FOR BSTVISCONTROLLER. OMG I AM SORRY. MAYBE WE CAN JUST MAKE A COPY OF THIS CLASS FOR THE RBT DRAWING STUFF. IF WE GET SUPER AMBITIOUS WE COULD MAKE BOTH EXTEND THE SAME ABSTRACT CLASS OR SOMETHING WHO KNOWS. SORRY, I MESSED UP SOME CODE...
+
     private final int HEIGHT_SCALAR = 150;  //the height difference between nodes on different levels
     private final int SHIFT_CONSTANT = 50;  //WHAT IS THIS FOR? ??????? (all caps so I won't forget this Q)
 
-    private Node thisNode; //the node tied to this graphical representation
+    private VisNode thisNode; //the node tied to this graphical representation
 
     private Circle thisCircle; //the circle graphic used for a node
     private Text thisText; //text to display the value in the circle graphic
@@ -35,7 +37,7 @@ public class NodeCircle extends StackPane {
      * @param insertionX
      * @param xSpacing
      */
-    public NodeCircle(double initRadius, Node thisNode, double insertionX, double xSpacing) {
+    public NodeCircle(double initRadius, VisNode thisNode, double insertionX, double xSpacing) {
 
         this.thisNode = thisNode;
         this.insertionX = insertionX;
@@ -84,7 +86,7 @@ public class NodeCircle extends StackPane {
 
         thisCircle.setStrokeWidth(initRadius/10);
 
-        if (thisNode.getColor() == Node.BLACK) {
+        if (thisNode.getColor() == VisNode.BLACK) {
             thisCircle.setFill(Color.DARKSLATEGRAY);
         } else {
             thisCircle.setFill(Color.RED);
@@ -110,7 +112,7 @@ public class NodeCircle extends StackPane {
         return radius/10;
     }
 
-    public Node getThisNode() {
+    public VisNode getThisNode() {
         return thisNode;
     }
 

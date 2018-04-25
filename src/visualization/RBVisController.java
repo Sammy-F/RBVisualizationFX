@@ -1,16 +1,12 @@
 package visualization;
 
-import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,7 +20,7 @@ public class RBVisController implements Initializable {
     private final double INIT_INSERTIONX = 470;
     private final double INIT_XSPACING = INIT_INSERTIONX/2;
 
-    private Node tobeDeleted;
+    private VisNode tobeDeleted;
 
     private boolean insertClicked = false;
     private boolean removeClicked = false;
@@ -35,7 +31,7 @@ public class RBVisController implements Initializable {
     //    private List<NodeCircle> nodeList;
     private List<Connector> connectorList;
 
-    private Node root = null;
+    private VisNode root = null;
 
     @FXML
     private TextField tfValue;
