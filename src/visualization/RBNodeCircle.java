@@ -42,9 +42,9 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
         radius = initRadius;
 
         if (color == RedBlackNode.BLACK) {
-            System.out.println("Node is black");
+//            System.out.println("Node is black");
         } else {
-            System.out.println("Node is red");
+//            System.out.println("Node is red");
         }
 
         initCircle(initRadius);
@@ -92,7 +92,7 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
         if (color == RedBlackNode.BLACK) {
             thisCircle.setFill(Color.DARKSLATEGRAY);
         } else {
-            thisCircle.setFill(Color.RED);
+            thisCircle.setFill(Color.ORANGERED);
         }
 
 //        thisCircle.setFill(Color.TRANSPARENT);

@@ -395,9 +395,9 @@ public class RBTree<T extends Comparable<T>> {
             transplant(z, z.getRight());
         } else if (z.getRight() == nil) {
             x = z.getLeft();
-            transplant(z, z.getRight());
+            transplant(z, z.getLeft());
         } else {
-            y = treeMinimum(z.getRight());
+            y = treeMinimum(z.getRight()); //TODO: FOR A DEBUG TYPE OF THING, CHECK THAT WE CAN BE CERTAIN WE NEVER GET NIL HERE... WE MIGHT NOT NEED TO DIRECTLY CHECK WITH AN IF STATEMENT, SINCE THE BOOK DOESN'T, BUT MAYBE AT LEAST SKIM THE PROOFS TO SEE IF THIS IS SAFE... OR LOGIC THROUGH IT OURSELVES
             yOriginalColor = y.getColor();
             x = y.getRight();
             if (y.getParent() == z) {
@@ -426,47 +426,63 @@ public class RBTree<T extends Comparable<T>> {
     private void afterDeleteFixTree(RedBlackNode<T> x) {
 
         while (x != root && x.getColor() == RedBlackNode.BLACK) {
+
             if (x == x.getParent().getLeft()) {
+
                 RedBlackNode<T> w = x.getParent().getRight();
+
                 if (w.getColor() == RedBlackNode.RED) { //case one start
+
                     w.setColor(RedBlackNode.BLACK);
                     x.getParent().setColor(RedBlackNode.RED);
-                    leftRotate(x.getParent()); //case one end
+                    leftRotate(x.getParent());
+                    w = x.getParent().getRight(); //case one end
                 }
+
                 if (w.getLeft().getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.BLACK) { //case two start
                     w.setColor(RedBlackNode.RED);
                     x = x.getParent(); //case two end
-                } else if (w.getRight().getColor() == RedBlackNode.BLACK) { //case 3 start
-                    w.getLeft().setColor(RedBlackNode.BLACK);
-                    w.setColor(RedBlackNode.RED);
-                    rightRotate(w);
-                    w = x.getParent().getRight(); //case 3 end
-                }
-                if (w.getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.RED) { //case four start
-                    w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
+
+                //I COMMENTED THE STUFF BELOW OUT AND REDID RIGHT BELOW, I THINKK THIS IS HOW IT WORKS
+                } else {
+                    if (w.getRight().getColor() == RedBlackNode.BLACK) { //case 3 start
+
+                        w.getLeft().setColor(RedBlackNode.BLACK);
+                        w.setColor(RedBlackNode.RED);
+                        rightRotate(w);
+                        w = x.getParent().getRight(); //case 3 end
+
+                    }
+
+                    w.setColor(x.getParent().getColor());        //case four start
                     x.getParent().setColor(RedBlackNode.BLACK);
                     w.getRight().setColor(RedBlackNode.BLACK);
                     leftRotate(x.getParent());
+
                     x = root; //case four end
+
                 }
-            } else { // NOTE: not sure that I did this right - it just said i should exchange left and right, so i did that
+
+            } else {
+
                 RedBlackNode<T> w = x.getParent().getLeft();
-                if (w.getColor() == RedBlackNode.RED) {
+                if (w.getColor() == RedBlackNode.RED) { //case one start
                     w.setColor(RedBlackNode.BLACK);
                     x.getParent().setColor(RedBlackNode.RED);
-                    rightRotate(x.getParent()); // especially not sure if I was supposed to flip this to right or not
+                    rightRotate(x.getParent());
+                    w = x.getParent().getLeft();   //case one end
                 }
-                if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) {
+                if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) { //case two start
                     w.setColor(RedBlackNode.RED);
-                    x = x.getParent();
+                    x = x.getParent(); //case two end
                 } else {
-                    if (w.getLeft().getColor() == RedBlackNode.BLACK) {
+                    if (w.getLeft().getColor() == RedBlackNode.BLACK) { //case 3 start
                         w.getRight().setColor(RedBlackNode.BLACK);
                         w.setColor(RedBlackNode.RED);
-                        leftRotate(w); //again, not sure if I was supposed to flip the type of rotation
-                        w = x.getParent().getLeft();
+                        leftRotate(w);
+                        w = x.getParent().getLeft(); //case 3 end
                     }
-                    w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
+                    w.setColor(x.getParent().getColor());        //case four start
                     x.getParent().setColor(RedBlackNode.BLACK);
                     w.getLeft().setColor(RedBlackNode.BLACK);
                     rightRotate(x.getParent());
@@ -478,6 +494,50 @@ public class RBTree<T extends Comparable<T>> {
         x.setColor(RedBlackNode.BLACK);
 
     }
+
+
+//                } else if (w.getRight().getColor() == RedBlackNode.BLACK) { //case 3 start
+//                    w.getLeft().setColor(RedBlackNode.BLACK);
+//                    w.setColor(RedBlackNode.RED);
+//                    rightRotate(w);
+//                    w = x.getParent().getRight(); //case 3 end
+//                }
+//                if (w.getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.RED) { //case four start
+//                    w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
+//                    x.getParent().setColor(RedBlackNode.BLACK);
+//                    w.getRight().setColor(RedBlackNode.BLACK);
+//                    leftRotate(x.getParent());
+//                    x = root; //case four end
+
+
+
+
+
+//            } else { // NOTE: not sure that I did this right - it just said i should exchange left and right, so i did that
+//                RedBlackNode<T> w = x.getParent().getLeft();
+//                if (w.getColor() == RedBlackNode.RED) {
+//                    w.setColor(RedBlackNode.BLACK);
+//                    x.getParent().setColor(RedBlackNode.RED);
+//                    rightRotate(x.getParent()); // especially not sure if I was supposed to flip this to right or not
+//        NOTE!!!!!!!!!!!!! LINE MISSING RIGHT HERE (WAS ALSO MISSING IN THE IF CORRESPONDING TO THIS BIG ELSE)
+//                }
+//                if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) {
+//                    w.setColor(RedBlackNode.RED);
+//                    x = x.getParent();
+//                } else {
+//                    if (w.getLeft().getColor() == RedBlackNode.BLACK) {
+//                        w.getRight().setColor(RedBlackNode.BLACK);
+//                        w.setColor(RedBlackNode.RED);
+//                        leftRotate(w); //again, not sure if I was supposed to flip the type of rotation
+//                        w = x.getParent().getLeft();
+//                    }
+//                    w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
+//                    x.getParent().setColor(RedBlackNode.BLACK);
+//                    w.getLeft().setColor(RedBlackNode.BLACK);
+//                    rightRotate(x.getParent());
+//                    x = root; //case four end
+//                }
+
 
 
     //COOL, MORE PUBLIC STUFF:

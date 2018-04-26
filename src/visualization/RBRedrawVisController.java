@@ -66,13 +66,23 @@ public class RBRedrawVisController implements Initializable {
         clearTree();
         mTree.insert(value);
         redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
+
+        //debug
+
+        RedBlackNode<Double> n = mTree.getRoot();
+
+        int num = 1;
+
+        ArrayList<Double> nodes;
+
+        //what if we debug by printing an array representation of the tree to check that the tree itself does/doesn't hate us, or if it is just graphics
+        //we could do the same thing for deleteNode
     }
 
     //delete node by deleting from rbt data structure then redraw
     private void deleteNode(double value) {
-        Double key = (Double)value;
         clearTree();
-        mTree.delete(key);
+        mTree.delete(value);
         redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
     }
 
@@ -114,19 +124,19 @@ public class RBRedrawVisController implements Initializable {
                 thisInsertionX = xVal;
                 thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
             }
-            anchorPane.getChildren().add(thisCircle); //first, add the node in
+            anchorPane.getChildren().add(thisCircle); //first, add the node in              //TODO: CURRENTLY GET ERROR HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             circleList.add(thisCircle);
         } else {
             thisCircle = new RBNodeCircle<>();
             thisInsertionX = 0.0;
         }
 
-        if (thisRoot.getRight() != mTree.getNil() && thisRoot.getRight() != mTree.getNil()) { //TODO: Add connectors
-            RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));
+        if (thisRoot.getRight() != mTree.getNil() && thisRoot.getLeft() != mTree.getNil()) { //TODO: Add connectors
+            RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));   //TODO: AND ERROR HERE!!!!!!!!!!!!!!!!
             connectorList.add(mLConnector);
             anchorPane.getChildren().add(mLConnector);
 
-            RBConnector mRConnector = new RBConnector(thisCircle, redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1));
+            RBConnector mRConnector = new RBConnector(thisCircle, redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1));  //TODO: AND ERROR HERE!!!!!!!!!!!!!!!!
             connectorList.add(mRConnector);
             anchorPane.getChildren().add(mRConnector);
         } else if (thisRoot.getRight() != mTree.getNil()) {
