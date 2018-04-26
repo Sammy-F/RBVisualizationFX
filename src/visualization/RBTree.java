@@ -459,13 +459,13 @@ public class RBTree<T extends Comparable<T>> {
                 if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) {
                     w.setColor(RedBlackNode.RED);
                     x = x.getParent();
-                } else if (w.getLeft().getColor() == RedBlackNode.BLACK) {
-                    w.getRight().setColor(RedBlackNode.BLACK);
-                    w.setColor(RedBlackNode.RED);
-                    leftRotate(w); //again, not sure if I was supposed to flip the type of rotation
-                    w = x.getParent().getLeft();
-                }
-                if (w.getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.RED) { //case four start
+                } else {
+                    if (w.getLeft().getColor() == RedBlackNode.BLACK) {
+                        w.getRight().setColor(RedBlackNode.BLACK);
+                        w.setColor(RedBlackNode.RED);
+                        leftRotate(w); //again, not sure if I was supposed to flip the type of rotation
+                        w = x.getParent().getLeft();
+                    }
                     w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
                     x.getParent().setColor(RedBlackNode.BLACK);
                     w.getLeft().setColor(RedBlackNode.BLACK);
