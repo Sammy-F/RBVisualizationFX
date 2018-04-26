@@ -264,7 +264,7 @@ public class RBTree<T extends Comparable<T>> {
                     rightRotate(z.getParent().getParent());                //case 3 (end)
                 }
 
-            } else {  //SHOULD HAVE ALL LEFTS/RIGHTS SWAPPED!!! //TODO: MAKE SURE THAT I SWAPPED THEM
+            } else {  //SHOULD HAVE ALL LEFTS/RIGHTS SWAPPED!!! //MAKE SURE THAT I SWAPPED THEM -- I think you did ^_^
 
                 RedBlackNode<T> y = z.getParent().getParent().getLeft();
 
@@ -276,11 +276,11 @@ public class RBTree<T extends Comparable<T>> {
                 } else {
                     if (z == z.getParent().getLeft()) {        //case 2 (start)
                         z = z.getParent();
-                        this.rightRotate(z);                     //case 2 (end)
+                        rightRotate(z);                     //case 2 (end)
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);                 //case 3 (start)
                     z.getParent().getParent().setColor(RedBlackNode.RED);
-                    this.leftRotate(z.getParent().getParent());                //case 3 (end)
+                    leftRotate(z.getParent().getParent());                //case 3 (end)
                 }
 
             }
@@ -315,7 +315,7 @@ public class RBTree<T extends Comparable<T>> {
                 if (key.compareTo(n.getKey()) > 0) {        //could only be in n's right subtree
                     n = n.getRight();
                 } else {
-                    if (key.compareTo(n.getKey()) == 0) {   //could only be n or in n's right subtree
+                    if (key.compareTo(n.getKey()) == 0) {   //could only be n or in n's right subtree //TODO: not necessarily, especially after rotations occur
                         toDelete = n;
                         n = n.getRight();
                     }
@@ -323,54 +323,18 @@ public class RBTree<T extends Comparable<T>> {
             }
         }
 
-        return toDelete;
-
-        //similar code from the bstviscontroller that I used as a reference, since we already coded it:
-
-//        VisNode toDelete = null;
-//        if (root.getValue() == value) {
-//            toDelete = root;
-//        }
-//
-//        VisNode n = root;
-//
-//        while (true) {
-//            if (value < n.getValue() && n.hasLeftChild()) { //could only be in n's left subtree
-//                n = n.getLeftChild();
-//            } else {
-//                if (value > n.getValue() && n.hasRightChild()) { //could only be in n's right subtree
-//                    n = n.getRightChild();
-//                } else {
-//                    if (n.getValue() == value) { //could only be n or in n's right subtree, if n has right subtree
-//                        toDelete = n;
-//                        if (n.hasRightChild()) {
-//                            n = n.getRightChild();
-//                        } else {
-//                            break; //the value was a leaf or had no right children and we found it
-//                        }
-//                    } else {
-//                        break; //no lower instances possible anymore
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (toDelete != null) {
-//            return toDelete;
-//        } else {
-//            return null;
-//        }
+        if (toDelete != nil) {
+            return toDelete;
+        } else {
+            System.out.println("No such node exists.");
+            return nil; //TODO: How should we handle this?
+        }
     }
-
-    //TODO: THE DELETION STUFF BELOW, THE THREE METHODS (see pages 320something in book, the pseudocode helps so much)
 
     /**
      * Method for moving subtrees around; replaces subtree rooted at node
      * u with subtree rooted at node v; u's parent becomes v's parent and u's
      * parent gets v as its child
-     *
-     *
-     * EDIT THIS EDIT THIS EDIT THIS EDIT THIS EDIT EDIT EDIT EDIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      *
      * @param u
      * @param v
@@ -389,11 +353,16 @@ public class RBTree<T extends Comparable<T>> {
 
     }
 
+    /**
+     * Deletes a given node.
+     * @param z
+     */
     private void deleteNode(RedBlackNode<T> z) { //Finished converting the pseudocode
 
         RedBlackNode<T> y = z;
         RedBlackNode<T> x;
-        int yOriginalColor = z.getColor();
+
+        int yOriginalColor = y.getColor();
         if (z.getLeft() == nil) {
             x = z.getRight();
             transplant(z, z.getRight());
@@ -402,6 +371,9 @@ public class RBTree<T extends Comparable<T>> {
             transplant(z, z.getLeft());
         } else {
             y = treeMinimum(z.getRight()); //TODO: FOR A DEBUG TYPE OF THING, CHECK THAT WE CAN BE CERTAIN WE NEVER GET NIL HERE... WE MIGHT NOT NEED TO DIRECTLY CHECK WITH AN IF STATEMENT, SINCE THE BOOK DOESN'T, BUT MAYBE AT LEAST SKIM THE PROOFS TO SEE IF THIS IS SAFE... OR LOGIC THROUGH IT OURSELVES
+            if (y == nil) {
+                System.out.println("An error occurred in deleteNode where y = treeMinimum(z.getRight()) was nil"); //TODO: Remove after done debugging
+            }
             yOriginalColor = y.getColor();
             x = y.getRight();
             if (y.getParent() == z) {
@@ -415,19 +387,32 @@ public class RBTree<T extends Comparable<T>> {
             y.getLeft().setParent(y);
             y.setColor(z.getColor());
         }
-        if (yOriginalColor == RedBlackNode.BLACK) {
+
+        if (yOriginalColor == RedBlackNode.BLACK && x != null && x != nil) {
             afterDeleteFixTree(x);
         }
     }
 
-    private RedBlackNode<T> treeMinimum(RedBlackNode<T> root) { //TODO: Implement
-        while (root.getLeft() != nil) {
+    /**
+     * Return the leftmost node starting from a node, root
+     * If the node has no left children, the node itself is returned
+     * @param root
+     * @return
+     */
+    private RedBlackNode<T> treeMinimum(RedBlackNode<T> root) {
+        while (root.getLeft() != nil && root.getLeft() != null) {
             root = root.getLeft();
         }
         return root;
     }
 
-    private void afterDeleteFixTree(RedBlackNode<T> x) {
+    /**
+     * We run this from our deletion method when y's original color is Black since it could cause
+     * issues if it is deleted.
+     * @param x
+     */
+    private void afterDeleteFixTree(RedBlackNode<T> x) { //TODO: I think this is where the issue is occurring but I'm not positive, I think it's not being called when it should be
+        System.out.println("Fixing");
 
         while (x != root && x.getColor() == RedBlackNode.BLACK) {
 
