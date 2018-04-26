@@ -70,6 +70,8 @@ public class RBTree<T extends Comparable<T>> {
         RedBlackNode<T> node = new RedBlackNode<>(key);
 
         insertNode(node);
+
+        System.out.println(toString()); //TODO: Remove or comment out when no longer needed for debugging
     }
 
     /**
@@ -83,8 +85,10 @@ public class RBTree<T extends Comparable<T>> {
         RedBlackNode<T> toDelete = findLowest(key);
 
         if (toDelete != nil) {
-            deleteNode(toDelete);       //TODO: the delete function, which calls both transplant and afterDeleteFix, which are also both incomplete
+            deleteNode(toDelete);
         }
+
+        System.out.println(toString()); //TODO: Remove or comment out when no longer needed for debugging
     }
 
     //MYSTERIOUS MAGICAL PRIVATE BEHIND THE SCENES STUFF:
@@ -577,6 +581,34 @@ public class RBTree<T extends Comparable<T>> {
      */
     public RedBlackNode<T> getNil() {
         return nil;
+    }
+
+    public String traverseToString(String rootStr, RedBlackNode root, int num) {
+        if (root != nil) {
+            num = num + 1;
+            rootStr += num + ": " + root.toString();
+            rootStr += "\n";
+            if (root.getLeft() != nil) {
+                rootStr = traverseToString(rootStr, root.getLeft(), num);
+            }
+            if (root.getRight() != nil) {
+                rootStr = traverseToString(rootStr, root.getRight(), num);
+            }
+        }
+        return rootStr;
+    }
+
+    public String toString() {
+        String toStr = "";
+
+        if (root == nil) {
+            toStr = "Tree is empty";
+        } else {
+            int num = -1;
+            toStr = traverseToString(toStr, root, num);
+        }
+
+        return toStr;
     }
 
 }

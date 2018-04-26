@@ -99,4 +99,23 @@ public class RedBlackNode<T extends Comparable<T>> {
         this.circle = circle;
     }
 
+    public String toString() {
+        String colorStr;
+        if (color == BLACK) {
+            colorStr = "Black,";
+        } else {
+            colorStr = "Red,";
+        }
+        String toStr = "Node color: " + colorStr + " Node value: " + key.toString();
+        try {
+            toStr += ", Left Child Value: " + left.getKey().toString();
+        } catch (NullPointerException e) { }
+
+        try {
+            toStr += ", Right Child Value: " + right.getKey().toString();
+        } catch (NullPointerException e) {}
+
+        return toStr;
+    }
+
 }
