@@ -96,9 +96,11 @@ public class RBRedrawVisController implements Initializable {
     }
 
     private void redraw(RedBlackNode thisRoot, int xVal) {
-        RBNodeCircle<Double> thisCircle = new RBNodeCircle(DEFAULT_RADIUS, INIT_INSERTIONX, xVal, thisRoot.getKey(), thisRoot.getColor());
-        anchorPane.getChildren().add(thisCircle); //first, add the node in
-        circleList.add(thisCircle);
+        if (thisRoot != mTree.getNil()) {
+            RBNodeCircle<Double> thisCircle = new RBNodeCircle(DEFAULT_RADIUS, INIT_INSERTIONX, xVal, thisRoot.getKey(), thisRoot.getColor());
+            anchorPane.getChildren().add(thisCircle); //first, add the node in
+            circleList.add(thisCircle);
+        }
 
         System.out.println(circleList.toString());
 

@@ -253,11 +253,11 @@ public class RBTree<T extends Comparable<T>> {
                 } else {
                     if (z == z.getParent().getRight()) {        //case 2 (start)
                         z = z.getParent(); // SWITCHED THIS TO z = z.getParent()
-                        this.leftRotate(z);                     //case 2 (end)
+                        leftRotate(z);                     //case 2 (end)
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);                 //case 3 (start)
                     z.getParent().getParent().setColor(RedBlackNode.RED);
-                    this.rightRotate(z.getParent().getParent());                //case 3 (end)
+                    rightRotate(z.getParent().getParent());                //case 3 (end)
                 }
 
             } else {  //SHOULD HAVE ALL LEFTS/RIGHTS SWAPPED!!! //TODO: MAKE SURE THAT I SWAPPED THEM
@@ -271,7 +271,7 @@ public class RBTree<T extends Comparable<T>> {
                     z = z.getParent().getParent();                       //case 1 (end)
                 } else {
                     if (z == z.getParent().getLeft()) {        //case 2 (start)
-                        z.setParent(z);
+                        z = z.getParent();
                         this.rightRotate(z);                     //case 2 (end)
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);                 //case 3 (start)
