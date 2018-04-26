@@ -442,11 +442,13 @@ public class RBTree<T extends Comparable<T>> {
                     rightRotate(w);
                     w = x.getParent().getRight(); //case 3 end
                 }
-                w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
-                x.getParent().setColor(RedBlackNode.BLACK);
-                w.getRight().setColor(RedBlackNode.BLACK);
-                leftRotate(x.getParent());
-                x = root; //case four end
+                if (w.getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.RED) { //case four start
+                    w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
+                    x.getParent().setColor(RedBlackNode.BLACK);
+                    w.getRight().setColor(RedBlackNode.BLACK);
+                    leftRotate(x.getParent());
+                    x = root; //case four end
+                }
             } else { // NOTE: not sure that I did this right - it just said i should exchange left and right, so i did that
                 RedBlackNode<T> w = x.getParent().getLeft();
                 if (w.getColor() == RedBlackNode.RED) {
@@ -463,11 +465,13 @@ public class RBTree<T extends Comparable<T>> {
                     leftRotate(w); //again, not sure if I was supposed to flip the type of rotation
                     w = x.getParent().getLeft();
                 }
-                w.setColor(x.getParent().getColor());
-                x.getParent().setColor(RedBlackNode.BLACK);
-                w.getLeft().setColor(RedBlackNode.BLACK);
-                rightRotate(x.getParent()); //aaaand one more time for consistency's sake, not sure that I did this right
-                x = root;
+                if (w.getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.RED) { //case four start
+                    w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
+                    x.getParent().setColor(RedBlackNode.BLACK);
+                    w.getLeft().setColor(RedBlackNode.BLACK);
+                    rightRotate(x.getParent());
+                    x = root; //case four end
+                }
             }
         }
 
