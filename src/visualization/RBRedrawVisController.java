@@ -19,17 +19,13 @@ import java.util.ResourceBundle;
  */
 public class RBRedrawVisController implements Initializable {
 
-    private final int DEFAULT_RADIUS = 20;
+    private final int DEFAULT_RADIUS = 30;
     private final int HEIGHT_SCALAR = 150;
     private final double INIT_INSERTIONX = 470;
-    private final double INIT_XSPACING = INIT_INSERTIONX/2;
+    private final double INIT_XSPACING = INIT_INSERTIONX;
 
     private boolean insertClicked = false;
     private boolean removeClicked = false;
-
-    private double insertionX = INIT_INSERTIONX;
-    private double xSpacing = INIT_XSPACING;
-    private int currentLevel = 0;
 
     private RBTree<Double> mTree; //we need to set the input class or we get an unchecked call error
 
@@ -69,7 +65,7 @@ public class RBRedrawVisController implements Initializable {
     private void insertNode(Double value) {
         clearTree();
         mTree.insert(value);
-        redraw(mTree.getRoot(), 20);
+        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
     }
 
     //delete node by deleting from rbt data structure then redraw
@@ -77,7 +73,7 @@ public class RBRedrawVisController implements Initializable {
         Double key = (Double)value;
         clearTree();
         mTree.delete(key);
-        redraw(mTree.getRoot(), 20);
+        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
     }
 
     /**
@@ -95,11 +91,24 @@ public class RBRedrawVisController implements Initializable {
 
     }
 
-    private void redraw(RedBlackNode thisRoot, int xVal) {
+    private void redraw(RedBlackNode thisRoot, double xSpacing, double xVal, int level) {
+        RBNodeCircle<Double> thisCircle;
+        Double thisInsertionX;
         if (thisRoot != mTree.getNil()) {
-            RBNodeCircle<Double> thisCircle = new RBNodeCircle(DEFAULT_RADIUS, INIT_INSERTIONX, xVal, thisRoot.getKey(), thisRoot.getColor());
+            if (thisRoot.getParent().getRight() == thisRoot) {
+                thisInsertionX = xVal + xSpacing;
+                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 3*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
+            } else if (thisRoot.getParent().getLeft() == thisRoot) {
+                thisInsertionX = xVal - xSpacing;
+                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 3*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
+            } else {
+                thisInsertionX = xVal;
+                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
+            }
             anchorPane.getChildren().add(thisCircle); //first, add the node in
             circleList.add(thisCircle);
+        } else {
+            thisInsertionX = 0.0;
         }
 
         System.out.println(circleList.toString());
@@ -109,12 +118,12 @@ public class RBRedrawVisController implements Initializable {
         //TO CHECK FOR RIGHT CHILD, SIMPLY DO NODE.GETRIGHT(), AND THEN CHECK IF THIS IS NOT EQUAL TO TREE.GETNIL()! pretty simple.... we got this
 
         if (thisRoot.getRight() != mTree.getNil() && thisRoot.getRight() != mTree.getNil()) { //TODO: Add connectors
-            redraw(thisRoot.getLeft(), xVal + HEIGHT_SCALAR);
-            redraw(thisRoot.getRight(), xVal + HEIGHT_SCALAR);
+            redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1);
+            redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1);
         } else if (thisRoot.getRight() != mTree.getNil()) {
-            redraw(thisRoot.getRight(), xVal + HEIGHT_SCALAR);
+            redraw(thisRoot.getRight(), xSpacing/2,  thisInsertionX, level + 1);
         } else if (thisRoot.getLeft() != mTree.getNil()) {
-            redraw(thisRoot.getLeft(), xVal + HEIGHT_SCALAR);
+            redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1);
         }
 
     }
