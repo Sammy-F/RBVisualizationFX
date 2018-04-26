@@ -98,4 +98,5 @@ public class RedBlackNode<T extends Comparable<T>> {
     public void setCircle(NodeCircle circle) {
         this.circle = circle;
     }
+
 }

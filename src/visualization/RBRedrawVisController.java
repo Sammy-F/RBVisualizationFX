@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
  */
 public class RBRedrawVisController implements Initializable {
 
-    private final int DEFAULT_RADIUS = 30;
+    private final int DEFAULT_RADIUS = 20;
     private final int HEIGHT_SCALAR = 150;
     private final double INIT_INSERTIONX = 470;
     private final double INIT_XSPACING = INIT_INSERTIONX/2;
@@ -27,12 +27,13 @@ public class RBRedrawVisController implements Initializable {
     private boolean insertClicked = false;
     private boolean removeClicked = false;
 
-//    private double insertionX;
-//    private double xSpacing;
+    private double insertionX = INIT_INSERTIONX;
+    private double xSpacing = INIT_XSPACING;
+    private int currentLevel = 0;
 
     private RBTree<Double> mTree; //we need to set the input class or we get an unchecked call error
 
-    private List<NodeCircle> circleList;
+    private List<RBNodeCircle> circleList;
     private List<Connector> connectorList;
 
     @FXML
@@ -65,11 +66,10 @@ public class RBRedrawVisController implements Initializable {
     }
 
     //insert node by inserting into rbt data structure then redraw
-    private void insertNode(double value) {
-        Double key = (Double) value;
+    private void insertNode(Double value) {
         clearTree();
-        mTree.insert(key);
-        redraw(mTree.getRoot());
+        mTree.insert(value);
+        redraw(mTree.getRoot(), 20);
     }
 
     //delete node by deleting from rbt data structure then redraw
@@ -77,7 +77,7 @@ public class RBRedrawVisController implements Initializable {
         Double key = (Double)value;
         clearTree();
         mTree.delete(key);
-        redraw(mTree.getRoot());
+        redraw(mTree.getRoot(), 20);
     }
 
     /**
@@ -90,36 +90,31 @@ public class RBRedrawVisController implements Initializable {
         paneChildren.removeAll(circleList);
         paneChildren.removeAll(connectorList);
 
+        circleList.clear();
+        connectorList.clear();
+
     }
 
-    private void redraw(RedBlackNode thisRoot) {
-        anchorPane.getChildren().add(thisRoot.getCircle()); //first, add the node in
+    private void redraw(RedBlackNode thisRoot, int xVal) {
+        RBNodeCircle<Double> thisCircle = new RBNodeCircle(DEFAULT_RADIUS, INIT_INSERTIONX, xVal, thisRoot.getKey(), thisRoot.getColor());
+        anchorPane.getChildren().add(thisCircle); //first, add the node in
+        circleList.add(thisCircle);
+
+        System.out.println(circleList.toString());
 
         //TODO: I DID NOT COMMENT OUT YOUR CODE BECAUSE I DISLIKE IT OR ANYTHING, JUST NEED TO REFACTOR BECAUSE OF ALTERATIONS TO NODE...
         //HOW TO ALTER:
         //TO CHECK FOR RIGHT CHILD, SIMPLY DO NODE.GETRIGHT(), AND THEN CHECK IF THIS IS NOT EQUAL TO TREE.GETNIL()! pretty simple.... we got this
 
         if (thisRoot.getRight() != mTree.getNil() && thisRoot.getRight() != mTree.getNil()) { //TODO: Add connectors
-            redraw(thisRoot.getLeft());
-            redraw(thisRoot.getRight());
+            redraw(thisRoot.getLeft(), xVal + HEIGHT_SCALAR);
+            redraw(thisRoot.getRight(), xVal + HEIGHT_SCALAR);
         } else if (thisRoot.getRight() != mTree.getNil()) {
-            redraw(thisRoot.getRight());
+            redraw(thisRoot.getRight(), xVal + HEIGHT_SCALAR);
         } else if (thisRoot.getLeft() != mTree.getNil()) {
-            redraw(thisRoot.getLeft());
+            redraw(thisRoot.getLeft(), xVal + HEIGHT_SCALAR);
         }
 
-//        if (thisRoot.hasRightChild() && thisRoot.hasLeftChild()) {
-//            anchorPane.getChildren().add(thisRoot.getLCToChild());
-//            anchorPane.getChildren().add(thisRoot.getRCToChild());
-//            redraw(thisRoot.getLeftChild());
-//            redraw(thisRoot.getRightChild());
-//        } else if (thisRoot.hasRightChild()) {
-//            anchorPane.getChildren().add(thisRoot.getRCToChild());
-//            redraw(thisRoot.getRightChild());
-//        } else if (thisRoot.hasLeftChild()) {
-//            anchorPane.getChildren().add(thisRoot.getLCToChild());
-//            redraw(thisRoot.getLeftChild());
-//        }
     }
 
     @FXML
