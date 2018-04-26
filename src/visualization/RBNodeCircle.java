@@ -25,6 +25,8 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
 
     String value;
 
+    public RBNodeCircle() {}
+
     /**
      * Constructor for the NodeCircle that sets the node, insertionX, xSpacing, and radius; initializes the circle and
      * text in the circle;
@@ -98,5 +100,7 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
     }
 
     public String getValue() { return value; }
+
+    public Circle getThisCircle() { return thisCircle; }
 
 }

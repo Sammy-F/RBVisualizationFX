@@ -30,7 +30,7 @@ public class RBRedrawVisController implements Initializable {
     private RBTree<Double> mTree; //we need to set the input class or we get an unchecked call error
 
     private List<RBNodeCircle> circleList;
-    private List<Connector> connectorList;
+    private List<RBConnector> connectorList;
 
     @FXML
     private TextField tfValue;
@@ -91,7 +91,7 @@ public class RBRedrawVisController implements Initializable {
 
     }
 
-    private void redraw(RedBlackNode thisRoot, double xSpacing, double xVal, int level) {
+    private RBNodeCircle redraw(RedBlackNode thisRoot, double xSpacing, double xVal, int level) {
         RBNodeCircle<Double> thisCircle;
         Double thisInsertionX;
         if (thisRoot != mTree.getNil()) {
@@ -108,6 +108,7 @@ public class RBRedrawVisController implements Initializable {
             anchorPane.getChildren().add(thisCircle); //first, add the node in
             circleList.add(thisCircle);
         } else {
+            thisCircle = new RBNodeCircle<>();
             thisInsertionX = 0.0;
         }
 
@@ -118,13 +119,24 @@ public class RBRedrawVisController implements Initializable {
         //TO CHECK FOR RIGHT CHILD, SIMPLY DO NODE.GETRIGHT(), AND THEN CHECK IF THIS IS NOT EQUAL TO TREE.GETNIL()! pretty simple.... we got this
 
         if (thisRoot.getRight() != mTree.getNil() && thisRoot.getRight() != mTree.getNil()) { //TODO: Add connectors
-            redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1);
-            redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1);
+            RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));
+            connectorList.add(mLConnector);
+            anchorPane.getChildren().add(mLConnector);
+
+            RBConnector mRConnector = new RBConnector(thisCircle, redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1));
+            connectorList.add(mRConnector);
+            anchorPane.getChildren().add(mRConnector);
         } else if (thisRoot.getRight() != mTree.getNil()) {
-            redraw(thisRoot.getRight(), xSpacing/2,  thisInsertionX, level + 1);
+            RBConnector mRConnector = new RBConnector(thisCircle, redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1));
+            connectorList.add(mRConnector);
+            anchorPane.getChildren().add(mRConnector);
         } else if (thisRoot.getLeft() != mTree.getNil()) {
-            redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1);
+            RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));
+            connectorList.add(mLConnector);
+            anchorPane.getChildren().add(mLConnector);
         }
+
+        return thisCircle;
 
     }
 
