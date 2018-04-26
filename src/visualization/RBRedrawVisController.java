@@ -91,6 +91,15 @@ public class RBRedrawVisController implements Initializable {
 
     }
 
+    /**
+     * Method redraws the entire RBTree recursively. As each new RBNodeCircle is added,
+     * it is returned at the end so that we can generate an RBConnector.
+     * @param thisRoot
+     * @param xSpacing
+     * @param xVal
+     * @param level
+     * @return
+     */
     private RBNodeCircle redraw(RedBlackNode thisRoot, double xSpacing, double xVal, int level) {
         RBNodeCircle<Double> thisCircle;
         Double thisInsertionX;
@@ -111,12 +120,6 @@ public class RBRedrawVisController implements Initializable {
             thisCircle = new RBNodeCircle<>();
             thisInsertionX = 0.0;
         }
-
-        System.out.println(circleList.toString());
-
-        //TODO: I DID NOT COMMENT OUT YOUR CODE BECAUSE I DISLIKE IT OR ANYTHING, JUST NEED TO REFACTOR BECAUSE OF ALTERATIONS TO NODE...
-        //HOW TO ALTER:
-        //TO CHECK FOR RIGHT CHILD, SIMPLY DO NODE.GETRIGHT(), AND THEN CHECK IF THIS IS NOT EQUAL TO TREE.GETNIL()! pretty simple.... we got this
 
         if (thisRoot.getRight() != mTree.getNil() && thisRoot.getRight() != mTree.getNil()) { //TODO: Add connectors
             RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));
