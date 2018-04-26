@@ -67,7 +67,7 @@ public class RBTree<T extends Comparable<T>> {
         TreeModification<T> change = new TreeModification<T>(key, true);
         changes.addLast(change);                                        //keeping track of changes for copying
 
-        RedBlackNode<T> node = new RedBlackNode<T>(key);
+        RedBlackNode<T> node = new RedBlackNode<>(key);
 
         insertNode(node);
     }
@@ -77,7 +77,7 @@ public class RBTree<T extends Comparable<T>> {
      */
     public void delete(T key) {
         //TODO
-        TreeModification<T> change = new TreeModification<T>(key, false);
+        TreeModification<T> change = new TreeModification<>(key, false);
         changes.addLast(change);                                        //keeping track of changes for copying
 
         RedBlackNode<T> toDelete = findLowest(key);
@@ -373,13 +373,105 @@ public class RBTree<T extends Comparable<T>> {
      */
     private void transplant(RedBlackNode<T> u, RedBlackNode<T> v) {
 
+        if (u.getParent() == nil) {
+            root = v;
+        } else if (u == u.getParent().getLeft()) {
+            u.getParent().setLeft(v);
+        } else { // if
+            u.getParent().setRight(v);
+        }
+
+        v.setParent(u.getParent());
+
     }
 
-    private void deleteNode(RedBlackNode<T> z) {
+    private void deleteNode(RedBlackNode<T> z) { //Finished converting the pseudocode
 
+        RedBlackNode<T> y = z;
+        RedBlackNode<T> x;
+        int yOriginalColor = z.getColor();
+        if (z.getLeft() == nil) {
+            x = z.getRight();
+            transplant(z, z.getRight());
+        } else if (z.getRight() == nil) {
+            x = z.getLeft();
+            transplant(z, z.getRight());
+        } else {
+            y = treeMinimum(z.getRight());
+            yOriginalColor = y.getColor();
+            x = y.getRight();
+            if (y.getParent() == z) {
+                x.setParent(y);
+            } else {
+                transplant(y, y.getRight());
+                y.setRight(z.getRight());
+                y.getRight().setParent(y);
+            }
+            y.setLeft(z.getLeft());
+            y.getLeft().setParent(y);
+            y.setColor(z.getColor());
+        }
+        if (yOriginalColor == RedBlackNode.BLACK) {
+            afterDeleteFixTree(x);
+        }
     }
 
-    private void afterDeleteFixTree(RedBlackNode<T> Z) {
+    private RedBlackNode<T> treeMinimum(RedBlackNode<T> root) { //TODO: Implement
+        while (root.getLeft() != nil) {
+            root = root.getLeft();
+        }
+        return root;
+    }
+
+    private void afterDeleteFixTree(RedBlackNode<T> x) {
+
+        while (x != root && x.getColor() == RedBlackNode.BLACK) {
+            if (x == x.getParent().getLeft()) {
+                RedBlackNode<T> w = x.getParent().getRight();
+                if (w.getColor() == RedBlackNode.RED) { //case one start
+                    w.setColor(RedBlackNode.BLACK);
+                    x.getParent().setColor(RedBlackNode.RED);
+                    leftRotate(x.getParent()); //case one end
+                }
+                if (w.getLeft().getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.BLACK) { //case two start
+                    w.setColor(RedBlackNode.RED);
+                    x = x.getParent(); //case two end
+                } else if (w.getRight().getColor() == RedBlackNode.BLACK) { //case 3 start
+                    w.getLeft().setColor(RedBlackNode.BLACK);
+                    w.setColor(RedBlackNode.RED);
+                    rightRotate(w);
+                    w = x.getParent().getRight(); //case 3 end
+                }
+                w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
+                x.getParent().setColor(RedBlackNode.BLACK);
+                w.getRight().setColor(RedBlackNode.BLACK);
+                leftRotate(x.getParent());
+                x = root; //case four end
+            } else { // NOTE: not sure that I did this right - it just said i should exchange left and right, so i did that
+                RedBlackNode<T> w = x.getParent().getLeft();
+                if (w.getColor() == RedBlackNode.RED) {
+                    w.setColor(RedBlackNode.BLACK);
+                    x.getParent().setColor(RedBlackNode.RED);
+                    rightRotate(x.getParent()); // especially not sure if I was supposed to flip this to right or not
+                }
+                if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) {
+                    w.setColor(RedBlackNode.RED);
+                    x = x.getParent();
+                } else if (w.getLeft().getColor() == RedBlackNode.BLACK) {
+                    w.getRight().setColor(RedBlackNode.BLACK);
+                    w.setColor(RedBlackNode.RED);
+                    leftRotate(w); //again, not sure if I was supposed to flip the type of rotation
+                    w = x.getParent().getLeft();
+                }
+                w.setColor(x.getParent().getColor());
+                x.getParent().setColor(RedBlackNode.BLACK);
+                w.getLeft().setColor(RedBlackNode.BLACK);
+                rightRotate(x.getParent()); //aaaand one more time for consistency's sake, not sure that I did this right
+                x = root;
+            }
+        }
+
+        x.setColor(RedBlackNode.BLACK);
 
     }
 

@@ -30,7 +30,7 @@ public class RBRedrawVisController implements Initializable {
 //    private double insertionX;
 //    private double xSpacing;
 
-    private RBTree mTree;
+    private RBTree<Double> mTree; //we need to set the input class or we get an unchecked call error
 
     private List<NodeCircle> circleList;
     private List<Connector> connectorList;
@@ -66,7 +66,7 @@ public class RBRedrawVisController implements Initializable {
 
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(double value) {
-        Double key = (Double)value;
+        Double key = (Double) value;
         clearTree();
         mTree.insert(key);
         redraw(mTree.getRoot());
@@ -99,8 +99,17 @@ public class RBRedrawVisController implements Initializable {
         //HOW TO ALTER:
         //TO CHECK FOR RIGHT CHILD, SIMPLY DO NODE.GETRIGHT(), AND THEN CHECK IF THIS IS NOT EQUAL TO TREE.GETNIL()! pretty simple.... we got this
 
+        if (thisRoot.getRight() != mTree.getNil() && thisRoot.getRight() != mTree.getNil()) { //TODO: Add connectors
+            redraw(thisRoot.getLeft());
+            redraw(thisRoot.getRight());
+        } else if (thisRoot.getRight() != mTree.getNil()) {
+            redraw(thisRoot.getRight());
+        } else if (thisRoot.getLeft() != mTree.getNil()) {
+            redraw(thisRoot.getLeft());
+        }
+
 //        if (thisRoot.hasRightChild() && thisRoot.hasLeftChild()) {
-//            anchorPane.getChildren().add(thisRoot.getLCToChild()); //TODO: We will modify connectors in the insert/delete method, right?
+//            anchorPane.getChildren().add(thisRoot.getLCToChild());
 //            anchorPane.getChildren().add(thisRoot.getRCToChild());
 //            redraw(thisRoot.getLeftChild());
 //            redraw(thisRoot.getRightChild());
