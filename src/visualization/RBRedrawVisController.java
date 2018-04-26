@@ -97,10 +97,10 @@ public class RBRedrawVisController implements Initializable {
         if (thisRoot != mTree.getNil()) {
             if (thisRoot.getParent().getRight() == thisRoot) {
                 thisInsertionX = xVal + xSpacing;
-                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 3*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
+                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 3.5*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
             } else if (thisRoot.getParent().getLeft() == thisRoot) {
                 thisInsertionX = xVal - xSpacing;
-                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 3*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
+                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 3.5*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
             } else {
                 thisInsertionX = xVal;
                 thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
