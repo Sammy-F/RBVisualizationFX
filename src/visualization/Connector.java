@@ -2,6 +2,7 @@ package visualization;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -26,8 +27,10 @@ public class Connector extends Line {
         this.parentNode = parentNode;
         this.childNode = childNode;
 
-        initConnector();
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(.1));
+        pauseTransition.setOnFinished(event -> initConnector());
 
+        pauseTransition.play();
     }
 
     /**
@@ -50,7 +53,7 @@ public class Connector extends Line {
         KeyValue xKey = new KeyValue(this.endXProperty(), childInsets.getLeft() + childNode.getRadius());
         KeyValue yKey = new KeyValue(this.endYProperty(), childInsets.getTop());
 
-        KeyFrame mKeyFrame = new KeyFrame(Duration.millis(600), xKey, yKey);
+        KeyFrame mKeyFrame = new KeyFrame(Duration.millis(200), xKey, yKey);
 
         Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
@@ -122,7 +125,6 @@ public class Connector extends Line {
 //        }
         // i did maths and i failed :( oh well
     }
-
     /**
      * Simple method added for clarity - call when nodes are updated so that
      * the connector can readjust
