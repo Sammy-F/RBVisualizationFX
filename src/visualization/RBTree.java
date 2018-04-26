@@ -200,25 +200,25 @@ public class RBTree<T extends Comparable<T>> {
             } else {
                 x = x.getRight();
             }
+        } // the while loop closes after this
 
-            z.setParent(y);
+        z.setParent(y);
 
-            if (y == nil) {
-                root = z;
-            } else if (z.getKey().compareTo(y.getKey()) < 0) {
-                y.setLeft(z);
-            } else {
-                y.setRight(z);
-            }
-
-            z.setLeft(nil);
-            z.setRight(nil);
-            z.setColor(RedBlackNode.RED);
-
-            this.afterInsertFixTree(z);
+        if (y == nil) {
+            root = z;
+        } else if (z.getKey().compareTo(y.getKey()) < 0) {
+            y.setLeft(z);
+        } else {
+            y.setRight(z);
         }
 
+        z.setLeft(nil);
+        z.setRight(nil);
+        z.setColor(RedBlackNode.RED);
+
+        this.afterInsertFixTree(z);
     }
+
 
     /**
      * This method handles fixing the tree to preserve its red-black
@@ -252,7 +252,7 @@ public class RBTree<T extends Comparable<T>> {
                     z = z.getParent().getParent();                       //case 1 (end)
                 } else {
                     if (z == z.getParent().getRight()) {        //case 2 (start)
-                        z.setParent(z);
+                        z = z.getParent(); // SWITCHED THIS TO z = z.getParent()
                         this.leftRotate(z);                     //case 2 (end)
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);                 //case 3 (start)

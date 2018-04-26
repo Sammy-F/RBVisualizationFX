@@ -23,7 +23,6 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
 
     int color;
 
-    T key;
     String value;
 
     /**
@@ -36,9 +35,7 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
 
         this.insertionX = insertionX;
         this.insertionY = insertionY;
-        key = value;
-//        this.value = key.toString();
-        this.value = "0";
+        this.value = value.toString();
         this.color = color;
         radius = initRadius;
 
