@@ -44,15 +44,24 @@ public class RBRedrawVisController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
+    private RBTree<Double> backTree;
+
+    private RBTree<Double> backBackTree;
+
+    private RBTree<Double> forwardTree;
+
+    private RBTree<Double> forwardForwardTree;
+
     /**
      * Handles what to do when go is clicked; differs for insertions/deletions
      * @param event
      */
     @FXML
     private void handleAction(ActionEvent event) {
+
+        backTree = mTree;
+
         Double value = Double.parseDouble(tfValue.getText()); //the value entered by user is set for the insert/delete
-
-
 
         if (insertClicked) {
             insertNode(value);
@@ -62,6 +71,20 @@ public class RBRedrawVisController implements Initializable {
         }
 
     }
+
+
+    @FXML
+    private void handleBack(ActionEvent event) {
+
+
+    }
+
+    @FXML
+    private void handleForward(ActionEvent event) {
+
+
+    }
+
 
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(Double value) {
@@ -176,6 +199,9 @@ public class RBRedrawVisController implements Initializable {
 //        nodeList = new ArrayList<>();
 //        connectorList = new ArrayList<>();
         mTree = new RBTree();
+//        backTree = new RBTree();
+//        backBackTree = new RBTree();
+//        forwardTree =
         circleList = new ArrayList<>();
         connectorList = new ArrayList<>();
     }
