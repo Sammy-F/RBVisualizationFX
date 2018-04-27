@@ -75,7 +75,7 @@ public class RBTree<T extends Comparable<T>> {
 
             insertNode(node);
 
-            System.out.println("INSERT: \n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
+            System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
 
         }
     }
@@ -95,7 +95,7 @@ public class RBTree<T extends Comparable<T>> {
             deleteNode(toDelete);
         }
 
-        System.out.println("DELETE: \n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
+        System.out.println("DELETE: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
     }
 
     //MYSTERIOUS MAGICAL PRIVATE BEHIND THE SCENES STUFF:
@@ -385,7 +385,7 @@ public class RBTree<T extends Comparable<T>> {
             root = v;
         } else if (u == u.getParent().getLeft()) {
             u.getParent().setLeft(v);
-        } else { // if
+        } else {
             u.getParent().setRight(v);
         }
 
@@ -403,32 +403,49 @@ public class RBTree<T extends Comparable<T>> {
         RedBlackNode<T> x;
 
         int yOriginalColor = y.getColor();
+
         if (z.getLeft() == nil) {
+
             x = z.getRight();
             transplant(z, z.getRight());
+
         } else if (z.getRight() == nil) {
+
             x = z.getLeft();
             transplant(z, z.getLeft());
+
         } else {
+
             y = treeMinimum(z.getRight()); //TODO: FOR A DEBUG TYPE OF THING, CHECK THAT WE CAN BE CERTAIN WE NEVER GET NIL HERE... WE MIGHT NOT NEED TO DIRECTLY CHECK WITH AN IF STATEMENT, SINCE THE BOOK DOESN'T, BUT MAYBE AT LEAST SKIM THE PROOFS TO SEE IF THIS IS SAFE... OR LOGIC THROUGH IT OURSELVES
+
             if (y == nil) {
                 System.out.println("An error occurred in deleteNode where y = treeMinimum(z.getRight()) was nil"); //TODO: Remove after done debugging
             }
+
             yOriginalColor = y.getColor();
             x = y.getRight();
+
             if (y.getParent() == z) {
                 x.setParent(y);
+
             } else {
                 transplant(y, y.getRight());
                 y.setRight(z.getRight());
                 y.getRight().setParent(y);
             }
+
             y.setLeft(z.getLeft());
             y.getLeft().setParent(y);
             y.setColor(z.getColor());
         }
 
-        if (yOriginalColor == RedBlackNode.BLACK && x != null && x != nil) {
+        System.out.println("here is z: " + z.toString());
+
+        System.out.println("here is y: " + y.toString());
+
+//        if (yOriginalColor == RedBlackNode.BLACK && x != null && x != nil) {
+        if (yOriginalColor == RedBlackNode.BLACK) {
+            System.out.println("we fix the tree!");
             afterDeleteFixTree(x);
         }
     }
@@ -495,26 +512,35 @@ public class RBTree<T extends Comparable<T>> {
             } else {
 
                 RedBlackNode<T> w = x.getParent().getLeft();
+
                 if (w.getColor() == RedBlackNode.RED) { //case one start
+
                     w.setColor(RedBlackNode.BLACK);
                     x.getParent().setColor(RedBlackNode.RED);
                     rightRotate(x.getParent());
                     w = x.getParent().getLeft();   //case one end
                 }
+
                 if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) { //case two start
+
                     w.setColor(RedBlackNode.RED);
                     x = x.getParent(); //case two end
+
                 } else {
+
                     if (w.getLeft().getColor() == RedBlackNode.BLACK) { //case 3 start
+
                         w.getRight().setColor(RedBlackNode.BLACK);
                         w.setColor(RedBlackNode.RED);
                         leftRotate(w);
                         w = x.getParent().getLeft(); //case 3 end
                     }
+
                     w.setColor(x.getParent().getColor());        //case four start
                     x.getParent().setColor(RedBlackNode.BLACK);
                     w.getLeft().setColor(RedBlackNode.BLACK);
                     rightRotate(x.getParent());
+
                     x = root; //case four end
                 }
             }
