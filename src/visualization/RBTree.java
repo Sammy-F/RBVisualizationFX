@@ -63,32 +63,39 @@ public class RBTree<T extends Comparable<T>> {
      * Handle logic for node insertion and return the new tree
      */
     public void insert(T key) {
-        //TODO
-        TreeModification<T> change = new TreeModification<T>(key, true);
-        changes.addLast(change);                                        //keeping track of changes for copying
 
-        RedBlackNode<T> node = new RedBlackNode<>(key);
+        RedBlackNode<T> alreadyExists = findLowest(key);
 
-        insertNode(node);
+        if (alreadyExists == nil) {
 
-        System.out.println(toString()); //TODO: Remove or comment out when no longer needed for debugging
+            TreeModification<T> change = new TreeModification<T>(key, true);
+            changes.addLast(change);                                        //keeping track of changes for copying
+
+            RedBlackNode<T> node = new RedBlackNode<>(key);
+
+            insertNode(node);
+
+            System.out.println("INSERT: \n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
+
+        }
     }
 
     /**
      * Handle logic for node deletion and return the new tree
      */
     public void delete(T key) {
-        //TODO
+
         TreeModification<T> change = new TreeModification<>(key, false);
         changes.addLast(change);                                        //keeping track of changes for copying
 
-        RedBlackNode<T> toDelete = findLowest(key);
+//        RedBlackNode<T> toDelete = findLowest(key);
+        RedBlackNode<T> toDelete = findKeyNode(key);
 
         if (toDelete != nil) {
             deleteNode(toDelete);
         }
 
-        System.out.println(toString()); //TODO: Remove or comment out when no longer needed for debugging
+        System.out.println("DELETE: \n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
     }
 
     //MYSTERIOUS MAGICAL PRIVATE BEHIND THE SCENES STUFF:
@@ -327,8 +334,41 @@ public class RBTree<T extends Comparable<T>> {
             return toDelete;
         } else {
             System.out.println("No such node exists.");
-            return nil; //TODO: How should we handle this?
+            return nil; //TODO: How should we handle this?      //TODO ANSWER: We check if the return is NIL, we already do this actually right after we call the function
         }
+    }
+
+    /**
+     * Essentially same as above, but without any duplicates
+     *
+     * Used for both deletion AND insertion now, since we need to check if the value exists already before inserts
+     * (if we don't allow duplicates)
+     *
+     * @param key
+     * @return
+     */
+    private RedBlackNode<T> findKeyNode(T key) {
+        RedBlackNode<T> toDelete = nil;
+
+        RedBlackNode<T> n = root;
+
+        while (n != nil) {      //we stop when we hit a NIL leaf
+            if (key.compareTo(n.getKey()) < 0) {        //could only be in n's left subtree
+                n = n.getLeft();
+            } else {
+                if (key.compareTo(n.getKey()) > 0) {        //could only be in n's right subtree
+                    n = n.getRight();
+                } else {
+                    if (key.compareTo(n.getKey()) == 0) {   //found it!
+                        toDelete = n;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return toDelete;        //NOTE: This MAY be NIL, make sure to always check!!
+
     }
 
     /**
@@ -570,14 +610,13 @@ public class RBTree<T extends Comparable<T>> {
 
     public String traverseToString(String rootStr, RedBlackNode root, int num) {
         if (root != nil) {
-            num = num + 1;
-            rootStr += num + ": " + root.toString();
-            rootStr += "\n";
+//            num = num + 1;
+            rootStr += num + ": " + root.toString() + "\n";
             if (root.getLeft() != nil) {
-                rootStr = traverseToString(rootStr, root.getLeft(), num);
+                rootStr = traverseToString(rootStr, root.getLeft(), 2*num);
             }
             if (root.getRight() != nil) {
-                rootStr = traverseToString(rootStr, root.getRight(), num);
+                rootStr = traverseToString(rootStr, root.getRight(), 2*num+1);
             }
         }
         return rootStr;
@@ -589,7 +628,7 @@ public class RBTree<T extends Comparable<T>> {
         if (root == nil) {
             toStr = "Tree is empty";
         } else {
-            int num = -1;
+            int num = 1;
             toStr = traverseToString(toStr, root, num);
         }
 
