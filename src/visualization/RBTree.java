@@ -434,6 +434,8 @@ public class RBTree<T extends Comparable<T>> {
                 y.getRight().setParent(y);
             }
 
+            transplant(y, y.getRight()); //NOTE: THIS WAS MISSING, MAY HAVE BEEN SOURCE OF BUGS
+
             y.setLeft(z.getLeft());
             y.getLeft().setParent(y);
             y.setColor(z.getColor());

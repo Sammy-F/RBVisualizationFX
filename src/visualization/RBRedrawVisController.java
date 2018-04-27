@@ -52,6 +52,8 @@ public class RBRedrawVisController implements Initializable {
     private void handleAction(ActionEvent event) {
         Double value = Double.parseDouble(tfValue.getText()); //the value entered by user is set for the insert/delete
 
+
+
         if (insertClicked) {
             insertNode(value);
         } else {
