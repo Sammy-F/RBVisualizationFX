@@ -10,9 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Creates RB Tree Visualization by redrawing tree each time.
@@ -43,14 +41,18 @@ public class RBRedrawVisController implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
+//
+//    private RBTree<Double> backTree;
+//
+//    private RBTree<Double> backBackTree;
+//
+//    private RBTree<Double> forwardTree;
+//
+//    private RBTree<Double> forwardForwardTree;
 
-    private RBTree<Double> backTree;
+    private Deque<RBTree> backTreeStack;
 
-    private RBTree<Double> backBackTree;
-
-    private RBTree<Double> forwardTree;
-
-    private RBTree<Double> forwardForwardTree;
+    private Deque<RBTree> forwardTreeStack;
 
     /**
      * Handles what to do when go is clicked; differs for insertions/deletions
@@ -59,7 +61,16 @@ public class RBRedrawVisController implements Initializable {
     @FXML
     private void handleAction(ActionEvent event) {
 
-        backTree = mTree;
+//        backBackTree = backTree;
+//        backTree = mTree;
+//
+//        forwardTree = new RBTree();         //overwrite any forward steps we were saving before
+//        forwardForwardTree = new RBTree();
+
+
+        backTreeStack.push(mTree.copy());                    //add old tree to back steps in case we choose to step back
+        forwardTreeStack = new ArrayDeque<RBTree>();    //empty any stored forward steps
+
 
         Double value = Double.parseDouble(tfValue.getText()); //the value entered by user is set for the insert/delete
 
@@ -75,40 +86,42 @@ public class RBRedrawVisController implements Initializable {
 
     @FXML
     private void handleBack(ActionEvent event) {
-
-
+        if (backTreeStack.peek() != null) {
+            forwardTreeStack.push(mTree.copy());
+            mTree = backTreeStack.pop();
+            updateTree();
+        }
     }
 
     @FXML
     private void handleForward(ActionEvent event) {
+        if (forwardTreeStack.peek() != null) {
+            backTreeStack.push(mTree.copy());
+            mTree = forwardTreeStack.pop();
+            updateTree();
+        }
+    }
 
-
+    private void updateTree() {
+        clearTree();
+        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
     }
 
 
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(Double value) {
-        clearTree();
+//        clearTree();
         mTree.insert(value);
-        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
-
-        //debug
-
-        RedBlackNode<Double> n = mTree.getRoot();
-
-        int num = 1;
-
-        ArrayList<Double> nodes;
-
-        //what if we debug by printing an array representation of the tree to check that the tree itself does/doesn't hate us, or if it is just graphics
-        //we could do the same thing for deleteNode
+//        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
+        updateTree();
     }
 
     //delete node by deleting from rbt data structure then redraw
     private void deleteNode(double value) {
-        clearTree();
+//        clearTree();
         mTree.delete(value);
-        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
+//        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
+        updateTree();
     }
 
     /**
@@ -196,12 +209,11 @@ public class RBRedrawVisController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        nodeList = new ArrayList<>();
-//        connectorList = new ArrayList<>();
         mTree = new RBTree();
-//        backTree = new RBTree();
-//        backBackTree = new RBTree();
-//        forwardTree =
+
+        backTreeStack = new ArrayDeque<RBTree>();
+        forwardTreeStack = new ArrayDeque<RBTree>();
+
         circleList = new ArrayList<>();
         connectorList = new ArrayList<>();
     }
