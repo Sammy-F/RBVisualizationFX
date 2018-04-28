@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Handles the graphical parts of a node
@@ -25,6 +27,8 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
 
     String value;
 
+    NumberFormat formatter;
+
     public RBNodeCircle() {}
 
     /**
@@ -38,9 +42,17 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
         this.insertionX = insertionX;
         this.insertionY = insertionY;
 
-//        NumberFormat formatter = new DecimalFormat("#0.00");
+//        if ((double)value % .1 > 0) {
+        formatter = new DecimalFormat("#0.0");
+//        } else {
+//            formatter = new DecimalFormat("#0");
+//        }
 
-        this.value = value.toString();
+
+
+//        this.value = value.toString();
+        this.value = formatter.format(value);
+
         this.color = color;
         radius = initRadius;
 

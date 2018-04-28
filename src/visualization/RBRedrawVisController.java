@@ -110,15 +110,15 @@ public class RBRedrawVisController implements Initializable {
 
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(Double value) {
-        if (value >= 0) {
+        if (0 <= value && value < 999) {
 
-            if (value % .1 > 0) {
-                if (value % .1 < .05) {
-                    value = value - (value % .1);       //round to nearest .1
-                } else {
-                    value = value - (value % .1) + .1;
-                }
-            }
+//            if (value % .1 > 0) {
+//                if (value % .1 < .05) {
+//                    value = value - (value % .1);       //round to nearest .1
+//                } else {
+//                    value = value - (value % .1) + .1;
+//                }
+//            }
 
             mTree.insert(value);
             updateTree();
@@ -127,15 +127,15 @@ public class RBRedrawVisController implements Initializable {
 
     //delete node by deleting from rbt data structure then redraw
     private void deleteNode(double value) {
-        if (value >= 0) {
+        if (0 <= value && value < 999) {
 
-            if (value % .1 > 0) {
-                if (value % .1 < .05) {
-                    value = value - (value % .1);       //round to nearest .1
-                } else {
-                    value = value - (value % .1) + .1;
-                }
-            }
+//            if (value % .1 > 0) {
+//                if (value % .1 < .05) {
+//                    value = value - (value % .1);       //round to nearest .1
+//                } else {
+//                    value = value - (value % .1) + .1;
+//                }
+//            }
 
             mTree.delete(value);
             updateTree();
