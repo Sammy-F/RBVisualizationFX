@@ -77,6 +77,8 @@ public class RBTree<T extends Comparable<T>> {
 
             System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
 
+        } else {
+            System.out.println("Node already exists.");
         }
     }
 
