@@ -110,7 +110,7 @@ public class RBRedrawVisController implements Initializable {
 
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(Double value) {
-        if (0 <= value && value < 999) {
+        if (0 <= value && value <= 999) {
 
 //            if (value % .1 > 0) {
 //                if (value % .1 < .05) {
@@ -127,7 +127,7 @@ public class RBRedrawVisController implements Initializable {
 
     //delete node by deleting from rbt data structure then redraw
     private void deleteNode(double value) {
-        if (0 <= value && value < 999) {
+        if (0 <= value && value <= 999) {
 
 //            if (value % .1 > 0) {
 //                if (value % .1 < .05) {
