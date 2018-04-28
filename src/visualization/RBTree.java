@@ -64,7 +64,7 @@ public class RBTree<T extends Comparable<T>> {
      */
     public void insert(T key) {
 
-        RedBlackNode<T> alreadyExists = findLowest(key);
+        RedBlackNode<T> alreadyExists = findKeyNode(key);
 
         if (alreadyExists == nil) {
 
@@ -436,7 +436,7 @@ public class RBTree<T extends Comparable<T>> {
                 y.getRight().setParent(y);
             }
 
-            transplant(y, y.getRight()); //NOTE: THIS WAS MISSING, MAY HAVE BEEN SOURCE OF BUGS
+            transplant(z, y); //NOTE: THIS WAS MISSING, MAY HAVE BEEN SOURCE OF BUGS
 
             y.setLeft(z.getLeft());
             y.getLeft().setParent(y);

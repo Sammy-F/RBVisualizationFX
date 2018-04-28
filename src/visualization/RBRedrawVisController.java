@@ -110,18 +110,36 @@ public class RBRedrawVisController implements Initializable {
 
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(Double value) {
-//        clearTree();
-        mTree.insert(value);
-//        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
-        updateTree();
+        if (value >= 0) {
+
+            if (value % .1 > 0) {
+                if (value % .1 < .05) {
+                    value = value - (value % .1);       //round to nearest .1
+                } else {
+                    value = value - (value % .1) + .1;
+                }
+            }
+
+            mTree.insert(value);
+            updateTree();
+        }
     }
 
     //delete node by deleting from rbt data structure then redraw
     private void deleteNode(double value) {
-//        clearTree();
-        mTree.delete(value);
-//        redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
-        updateTree();
+        if (value >= 0) {
+
+            if (value % .1 > 0) {
+                if (value % .1 < .05) {
+                    value = value - (value % .1);       //round to nearest .1
+                } else {
+                    value = value - (value % .1) + .1;
+                }
+            }
+
+            mTree.delete(value);
+            updateTree();
+        }
     }
 
     /**

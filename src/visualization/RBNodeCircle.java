@@ -37,6 +37,9 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
 
         this.insertionX = insertionX;
         this.insertionY = insertionY;
+
+//        NumberFormat formatter = new DecimalFormat("#0.00");
+
         this.value = value.toString();
         this.color = color;
         radius = initRadius;
