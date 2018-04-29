@@ -36,6 +36,8 @@ public class RBRedrawVisController implements Initializable {
     private Deque<RBTree> backTreeStack; //stores old versions of the current tree
     private Deque<RBTree> forwardTreeStack; //stores more recent versions of the current tree
 
+    private RBTree.TreeChangedListener treeListener;
+
     Label infoText;
 
     @FXML
@@ -97,7 +99,10 @@ public class RBRedrawVisController implements Initializable {
             forwardTreeStack.push(copyTree);
 
             RBTree poppedTree = backTreeStack.pop();
+            poppedTree.setTreeChangedListener(mTree.getTreeChangedListener());
+            mTree.removeTreeChangedListener();
             mTree = poppedTree;
+            mTree.setTreeChangedListener(treeListener);
             updateTree();
 
             infoText.setText(mTree.getLog().getLogString());
@@ -120,7 +125,9 @@ public class RBRedrawVisController implements Initializable {
             backTreeStack.push(copyTree);
 
             RBTree poppedTree = forwardTreeStack.pop();
+            mTree.removeTreeChangedListener();
             mTree = poppedTree;
+            mTree.setTreeChangedListener(treeListener);
             updateTree();
 
             try {
@@ -249,15 +256,17 @@ public class RBRedrawVisController implements Initializable {
      */
     private void initStuff() {
         mTree = new RBTree();
-
-        mTree.setTreeChangedListener(new RBTree.TreeChangedListener() {
+        treeListener = new RBTree.TreeChangedListener() {
             @Override
             public void onTreeChanged() {
-                PauseTransition pause = new PauseTransition(Duration.seconds(.5));
-                pause.setOnFinished(event -> redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0));
+                PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                pause.setOnFinished(event -> updateTree());
                 pause.play();
+                System.out.println("Fired");
             }
-        });
+        };
+
+        mTree.setTreeChangedListener(treeListener);
 
         backTreeStack = new ArrayDeque<RBTree>();
         forwardTreeStack = new ArrayDeque<RBTree>();

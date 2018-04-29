@@ -50,7 +50,6 @@ public class RBTree<T extends Comparable<T>> {
     public RBTree<T> copy() {
 
         RBTree<T> copy = new RBTree<T>();
-        copy.setTreeChangedListener(mListener);
 
         for (TreeModification<T> change: changes) {
             if (change.isInsert()) {
@@ -88,7 +87,9 @@ public class RBTree<T extends Comparable<T>> {
             RedBlackNode<T> node = new RedBlackNode<>(key);
 
             insertNode(node);
-            mListener.onTreeChanged();
+            try {
+                mListener.onTreeChanged();
+            } catch (NullPointerException e) {}
 
             //DEBUG:
             System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: comment out when no longer needed for debugging
@@ -139,6 +140,10 @@ public class RBTree<T extends Comparable<T>> {
      */
     private void leftRotate(RedBlackNode<T> x) {
 
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
+
         mLog.addChange(LogModification.LEFTROTATE, -1);
 
         RedBlackNode<T> y = x.getRight();  //set y
@@ -162,6 +167,9 @@ public class RBTree<T extends Comparable<T>> {
 
         x.setParent(y);
 
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
     }
 
     /**
@@ -179,6 +187,10 @@ public class RBTree<T extends Comparable<T>> {
      * @param x         the current root of the subtree we want to rotate right
      */
     private void rightRotate(RedBlackNode<T> x) {
+
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
 
         mLog.addChange(LogModification.RIGHTROTATE, -1);
 
@@ -202,6 +214,10 @@ public class RBTree<T extends Comparable<T>> {
         y.setRight(x);       //x is now y's right kid
 
         x.setParent(y);
+
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
 
     }
 
@@ -275,6 +291,11 @@ public class RBTree<T extends Comparable<T>> {
      * @param z         the node we just inserted
      */
     private void afterInsertFixTree(RedBlackNode<T> z) {
+
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
+
         Double zVal;
         if (z != nil) {
             zVal = (Double) z.getKey();
@@ -353,6 +374,10 @@ public class RBTree<T extends Comparable<T>> {
             }
         }
 
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
+
         root.setColor(RedBlackNode.BLACK);
     }
 
@@ -405,8 +430,16 @@ public class RBTree<T extends Comparable<T>> {
      */
     private void transplant(RedBlackNode<T> u, RedBlackNode<T> v) {
 
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
+
         System.out.println("Transplanting");
-        mLog.addChange(LogModification.TRANSPLANT, (Double) u.getKey(), (Double) v.getKey());
+        try {
+            mLog.addChange(LogModification.TRANSPLANT, (Double) u.getKey(), (Double) v.getKey());
+        } catch (NullPointerException e) {
+            mLog.addChange(LogModification.MAKEROOT, -1);
+        }
 
         if (u.getParent() == nil) {
             root = v;
@@ -416,7 +449,15 @@ public class RBTree<T extends Comparable<T>> {
             u.getParent().setRight(v);
         }
 
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
+
         v.setParent(u.getParent());
+
+        try {
+            mListener.onTreeChanged();
+        } catch (NullPointerException e) {}
 
     }
 
@@ -523,6 +564,10 @@ public class RBTree<T extends Comparable<T>> {
 
                 RedBlackNode<T> w = x.getParent().getRight();
 
+                try {
+                    mListener.onTreeChanged();
+                } catch (NullPointerException e) {}
+
                 if (w.getColor() == RedBlackNode.RED) { //case one start
 
                     if (!logOnce) {
@@ -532,7 +577,18 @@ public class RBTree<T extends Comparable<T>> {
 
                     w.setColor(RedBlackNode.BLACK);
                     x.getParent().setColor(RedBlackNode.RED);
+                    try {
+                        mListener.onTreeChanged();
+                    } catch (NullPointerException e) {}
                     leftRotate(x.getParent());
+                    try {
+                        mListener.onTreeChanged();
+                    } catch (NullPointerException e) {}
+
+                    try {
+                        mListener.onTreeChanged();
+                    } catch (NullPointerException e) {}
+
                     w = x.getParent().getRight(); //case one end
 
                 }
@@ -545,6 +601,9 @@ public class RBTree<T extends Comparable<T>> {
                     }
 
                     w.setColor(RedBlackNode.RED);
+                    try {
+                        mListener.onTreeChanged();
+                    } catch (NullPointerException e) {}
                     x = x.getParent(); //case two end
 
                 } else {
@@ -556,8 +615,17 @@ public class RBTree<T extends Comparable<T>> {
                         }
 
                         w.getLeft().setColor(RedBlackNode.BLACK);
+                        try {
+                            mListener.onTreeChanged();
+                        } catch (NullPointerException e) {}
                         w.setColor(RedBlackNode.RED);
+                        try {
+                            mListener.onTreeChanged();
+                        } catch (NullPointerException e) {}
                         rightRotate(w);
+                        try {
+                            mListener.onTreeChanged();
+                        } catch (NullPointerException e) {}
                         w = x.getParent().getRight(); //case 3 end
 
 //                        delCase = DELETEC3;
@@ -570,9 +638,22 @@ public class RBTree<T extends Comparable<T>> {
                     }
 
                     w.setColor(x.getParent().getColor());        //case four start
+                    try {
+                        mListener.onTreeChanged();
+                    } catch (NullPointerException e) {}
                     x.getParent().setColor(RedBlackNode.BLACK);
+                    try {
+                        mListener.onTreeChanged();
+                    } catch (NullPointerException e) {}
                     w.getRight().setColor(RedBlackNode.BLACK);
+                    try {
+                        mListener.onTreeChanged();
+                    } catch (NullPointerException e) {}
+
                     leftRotate(x.getParent());
+                    try {
+                        mListener.onTreeChanged();
+                    } catch (NullPointerException e) {}
 
                     x = root; //case four end
 
@@ -728,4 +809,8 @@ public class RBTree<T extends Comparable<T>> {
     public void setTreeChangedListener(TreeChangedListener mListener) {
         this.mListener = mListener;
     }
+
+    public TreeChangedListener getTreeChangedListener() { return mListener; }
+
+    public void removeTreeChangedListener() { mListener = null; }
 }

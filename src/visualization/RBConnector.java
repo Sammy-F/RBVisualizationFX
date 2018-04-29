@@ -44,20 +44,20 @@ public class RBConnector extends Line {
         //from the center of the bottom
         setStartX(parentInsets.getLeft() + parentNode.getThisCircle().getRadius());
         setStartY(parentInsets.getTop() + parentNode.getThisCircle().getRadius()*2);
-
-        setEndX(parentInsets.getLeft() + parentNode.getThisCircle().getRadius());
-        setEndY(parentInsets.getTop() + parentNode.getThisCircle().getRadius()*2);
+//
+//        setEndX(parentInsets.getLeft() + parentNode.getThisCircle().getRadius());
+//        setEndY(parentInsets.getTop() + parentNode.getThisCircle().getRadius()*2);
 
         try {
-            KeyValue xKey = new KeyValue(this.endXProperty(), childInsets.getLeft() + childNode.getThisCircle().getRadius());
-            KeyValue yKey = new KeyValue(this.endYProperty(), childInsets.getTop());
-
-            KeyFrame mKeyFrame = new KeyFrame(Duration.millis(600), xKey, yKey);
-
-            Timeline timeline = new Timeline();
-            timeline.setCycleCount(1);
-            timeline.getKeyFrames().add(mKeyFrame);
-            timeline.play();
+//            KeyValue xKey = new KeyValue(this.endXProperty(), childInsets.getLeft() + childNode.getThisCircle().getRadius());
+//            KeyValue yKey = new KeyValue(this.endYProperty(), childInsets.getTop());
+//
+//            KeyFrame mKeyFrame = new KeyFrame(Duration.millis(600), xKey, yKey);
+//
+//            Timeline timeline = new Timeline();
+//            timeline.setCycleCount(1);
+//            timeline.getKeyFrames().add(mKeyFrame);
+//            timeline.play();
 
             setEndX(childInsets.getLeft() + childNode.getThisCircle().getRadius());
             setEndY(childInsets.getTop());
