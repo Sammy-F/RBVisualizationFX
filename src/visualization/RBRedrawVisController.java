@@ -30,6 +30,9 @@ public class RBRedrawVisController implements Initializable {
     private List<RBNodeCircle> circleList;
     private List<RBConnector> connectorList;
 
+    private Deque<RBTree> backTreeStack;
+    private Deque<RBTree> forwardTreeStack;
+
     @FXML
     private TextField tfValue;
 
@@ -41,18 +44,6 @@ public class RBRedrawVisController implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
-//
-//    private RBTree<Double> backTree;
-//
-//    private RBTree<Double> backBackTree;
-//
-//    private RBTree<Double> forwardTree;
-//
-//    private RBTree<Double> forwardForwardTree;
-
-    private Deque<RBTree> backTreeStack;
-
-    private Deque<RBTree> forwardTreeStack;
 
     /**
      * Handles what to do when go is clicked; differs for insertions/deletions
@@ -60,13 +51,6 @@ public class RBRedrawVisController implements Initializable {
      */
     @FXML
     private void handleAction(ActionEvent event) {
-
-//        backBackTree = backTree;
-//        backTree = mTree;
-//
-//        forwardTree = new RBTree();         //overwrite any forward steps we were saving before
-//        forwardForwardTree = new RBTree();
-
 
         backTreeStack.push(mTree.copy());                    //add old tree to back steps in case we choose to step back
         forwardTreeStack = new ArrayDeque<RBTree>();    //empty any stored forward steps
@@ -102,6 +86,12 @@ public class RBRedrawVisController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleReset(ActionEvent event) {
+        clearTree();
+        initStuff();
+    }
+
     private void updateTree() {
         clearTree();
         redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
@@ -111,32 +101,16 @@ public class RBRedrawVisController implements Initializable {
     //insert node by inserting into rbt data structure then redraw
     private void insertNode(Double value) {
         if (0 <= value && value <= 999) {
-
-//            if (value % .1 > 0) {
-//                if (value % .1 < .05) {
-//                    value = value - (value % .1);       //round to nearest .1
-//                } else {
-//                    value = value - (value % .1) + .1;
-//                }
-//            }
-
             mTree.insert(value);
             updateTree();
+        } else {
+            mTree.setInsCase(RBTree.INSERTC0);
         }
     }
 
     //delete node by deleting from rbt data structure then redraw
     private void deleteNode(double value) {
         if (0 <= value && value <= 999) {
-
-//            if (value % .1 > 0) {
-//                if (value % .1 < .05) {
-//                    value = value - (value % .1);       //round to nearest .1
-//                } else {
-//                    value = value - (value % .1) + .1;
-//                }
-//            }
-
             mTree.delete(value);
             updateTree();
         }
@@ -209,6 +183,49 @@ public class RBRedrawVisController implements Initializable {
 
     }
 
+    private void updateEduPanel() {
+        //TODO: Use the current insCase and delCase to determine what to display in the educational panel thing
+
+        //note: I THINK I determined the cases correctly, but definitely check that if you want, could be bugs, but it
+        //was mostly straightforward
+
+        //TODO: ALSO, actually make the educational panel...
+
+        if (mTree.getInsCase() == RBTree.INSERTC0 && mTree.getDelCase() == RBTree.NOCASE) {
+            //value either a) already exists in tree, no duplicates allowed! or b) was below 0 or above 999, not allowed!
+        } else if (mTree.getInsCase() == RBTree.NOCASE && mTree.getDelCase() == RBTree.DELETEC0) {
+            //value not in tree, cannot be deleted
+
+
+        } else if (mTree.getInsCase() == RBTree.INSERTC1) {     //inserted node's aunt is red
+
+        } else if (mTree.getInsCase() == RBTree.INSERTC2) {     //inserted node is a right child and its aunt is black
+
+        } else if (mTree.getInsCase() == RBTree.INSERTC3) {     //inserted node is a left child and its aunt is black
+
+
+
+        } else if (mTree.getDelCase() == RBTree.DELETEC1) {     //deleted node's sibling is red
+
+        } else if (mTree.getDelCase() == RBTree.DELETEC2) {     //deleted node's sibling is black; sibling's children both black
+
+        } else if (mTree.getDelCase() == RBTree.DELETEC3) {     //deleted node's sibling is black; sibling's left child red, right black
+
+        } else if (mTree.getDelCase() == RBTree.DELETEC4) {     //deleted node's sibling is black; sibling's right child red, left black
+
+        }
+    }
+
+    private void initStuff() {
+        mTree = new RBTree();
+
+        backTreeStack = new ArrayDeque<RBTree>();
+        forwardTreeStack = new ArrayDeque<RBTree>();
+
+        circleList = new ArrayList<>();
+        connectorList = new ArrayList<>();
+    }
+
     @FXML
     private void insertClicked(ActionEvent event) {
         radioInsert.setSelected(true);
@@ -227,12 +244,6 @@ public class RBRedrawVisController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mTree = new RBTree();
-
-        backTreeStack = new ArrayDeque<RBTree>();
-        forwardTreeStack = new ArrayDeque<RBTree>();
-
-        circleList = new ArrayList<>();
-        connectorList = new ArrayList<>();
+        initStuff();
     }
 }

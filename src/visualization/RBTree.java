@@ -9,7 +9,25 @@ public class RBTree<T extends Comparable<T>> {
 
     //INSTANCE VARIABLES:
 
-    private ArrayDeque<TreeModification<T>> changes;    //allows for recreation of tree (feel free to do this another way if you find something better)
+    public final static int INSERTC1 = 1;   //inserted node's aunt is red
+    public final static int INSERTC2 = 2;   //inserted node is a right child and its aunt is black
+    public final static int INSERTC3 = 3;   //inserted node is a left child and its aunt is black
+
+    public final static int INSERTC0 = 0;   //the node we want to insert does not exist OR is outside the range [0,999]
+
+    public final static int DELETEC1 = 1;   //deleted node's sibling is red
+    public final static int DELETEC2 = 2;   //deleted node's sibling is black; sibling's children both black
+    public final static int DELETEC3 = 3;   //deleted node's sibling is black; sibling's left child red, right black
+    public final static int DELETEC4 = 4;   //deleted node's sibling is black; sibling's right child red, left black
+
+    public final static int DELETEC0 = 0;   //the node we want to delete does not exist
+
+    public final static int NOCASE = -1;    //we are not even trying to insert (for insCase) or to delete (for delCase)
+
+    private int insCase;
+    private int delCase;
+
+    private ArrayDeque<TreeModification<T>> changes;    //allows for recreating tree
 
     private RedBlackNode<T> nil = new RedBlackNode<T>();
     private RedBlackNode<T> root;
@@ -44,7 +62,6 @@ public class RBTree<T extends Comparable<T>> {
      * @return  RBTree of type T, a copy of this one
      */
     public RBTree<T> copy() {
-        //TODO: return an actual copy of this tree
 
         RBTree<T> copy = new RBTree<T>();
 
@@ -64,6 +81,9 @@ public class RBTree<T extends Comparable<T>> {
      */
     public void insert(T key) {
 
+        insCase = INSERTC0;
+        delCase = NOCASE;
+
         RedBlackNode<T> alreadyExists = findKeyNode(key);
 
         if (alreadyExists == nil) {
@@ -75,7 +95,8 @@ public class RBTree<T extends Comparable<T>> {
 
             insertNode(node);
 
-            System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
+            //DEBUG:
+            System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: comment out when no longer needed for debugging
 
         } else {
             System.out.println("Node already exists.");
@@ -87,17 +108,20 @@ public class RBTree<T extends Comparable<T>> {
      */
     public void delete(T key) {
 
+        insCase = NOCASE;
+        delCase = DELETEC0;
+
         TreeModification<T> change = new TreeModification<>(key, false);
         changes.addLast(change);                                        //keeping track of changes for copying
 
-//        RedBlackNode<T> toDelete = findLowest(key);
         RedBlackNode<T> toDelete = findKeyNode(key);
 
         if (toDelete != nil) {
             deleteNode(toDelete);
         }
 
-        System.out.println("DELETE: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: Remove or comment out when no longer needed for debugging
+        //DEBUG:
+        System.out.println("DELETE: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: comment out when no longer needed for debugging
     }
 
     //MYSTERIOUS MAGICAL PRIVATE BEHIND THE SCENES STUFF:
@@ -156,10 +180,6 @@ public class RBTree<T extends Comparable<T>> {
      */
     private void rightRotate(RedBlackNode<T> x) {
 
-        //TODO: IF ROTATIONS BUG ITS BECAUSE THIS ONE WAS LEFT AS AN EXERCISE, NOT THE OTHER ONE, THAT ONE IS JUST DANDY
-        //NOTE: I literally just swapped all the lefts to rights and vice versa, hopefully that works, I think it should
-        //....but who knows
-
         RedBlackNode<T> y = x.getLeft();  //set y
         x.setLeft(y.getRight());            //turn y's right subtree to x's left subtree
 
@@ -199,8 +219,8 @@ public class RBTree<T extends Comparable<T>> {
      * @param z     the node we insert
      */
     private void insertNode(RedBlackNode<T> z) {
-        RedBlackNode<T> y = nil;        //OH CRAP, SAME HERE, LETS HOPE (this is how pseudocode did it, soo....?)
-        RedBlackNode<T> x = root;   //TODO: OH GOD I HOPE THIS X=ROOT THING DOESN'T MESS UP...
+        RedBlackNode<T> y = nil;
+        RedBlackNode<T> x = root;
 
         while (x != nil) {
             y = x;
@@ -213,7 +233,7 @@ public class RBTree<T extends Comparable<T>> {
             } else {
                 x = x.getRight();
             }
-        } // the while loop closes after this
+        }
 
         z.setParent(y);
 
@@ -263,17 +283,23 @@ public class RBTree<T extends Comparable<T>> {
                     y.setColor(RedBlackNode.BLACK);
                     z.getParent().getParent().setColor(RedBlackNode.RED);
                     z = z.getParent().getParent();                       //case 1 (end)
+
+                    insCase = INSERTC1;
                 } else {
                     if (z == z.getParent().getRight()) {        //case 2 (start)
                         z = z.getParent(); // SWITCHED THIS TO z = z.getParent()
                         leftRotate(z);                     //case 2 (end)
+
+                        insCase = INSERTC2;
+                    } else {
+                        insCase = INSERTC3;
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);                 //case 3 (start)
                     z.getParent().getParent().setColor(RedBlackNode.RED);
                     rightRotate(z.getParent().getParent());                //case 3 (end)
                 }
 
-            } else {  //SHOULD HAVE ALL LEFTS/RIGHTS SWAPPED!!! //MAKE SURE THAT I SWAPPED THEM -- I think you did ^_^
+            } else {
 
                 RedBlackNode<T> y = z.getParent().getParent().getLeft();
 
@@ -282,10 +308,16 @@ public class RBTree<T extends Comparable<T>> {
                     y.setColor(RedBlackNode.BLACK);
                     z.getParent().getParent().setColor(RedBlackNode.RED);
                     z = z.getParent().getParent();                       //case 1 (end)
+
+                    insCase = INSERTC1;
                 } else {
                     if (z == z.getParent().getLeft()) {        //case 2 (start)
                         z = z.getParent();
                         rightRotate(z);                     //case 2 (end)
+
+                        insCase = INSERTC2;
+                    } else {
+                        insCase = INSERTC3;
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);                 //case 3 (start)
                     z.getParent().getParent().setColor(RedBlackNode.RED);
@@ -324,7 +356,7 @@ public class RBTree<T extends Comparable<T>> {
                 if (key.compareTo(n.getKey()) > 0) {        //could only be in n's right subtree
                     n = n.getRight();
                 } else {
-                    if (key.compareTo(n.getKey()) == 0) {   //could only be n or in n's right subtree //TODO: not necessarily, especially after rotations occur
+                    if (key.compareTo(n.getKey()) == 0) {   //could only be n or in n's right subtree
                         toDelete = n;
                         n = n.getRight();
                     }
@@ -336,7 +368,7 @@ public class RBTree<T extends Comparable<T>> {
             return toDelete;
         } else {
             System.out.println("No such node exists.");
-            return nil; //TODO: How should we handle this?      //TODO ANSWER: We check if the return is NIL, we already do this actually right after we call the function
+            return nil;
         }
     }
 
@@ -399,7 +431,7 @@ public class RBTree<T extends Comparable<T>> {
      * Deletes a given node.
      * @param z
      */
-    private void deleteNode(RedBlackNode<T> z) { //Finished converting the pseudocode
+    private void deleteNode(RedBlackNode<T> z) {
 
         RedBlackNode<T> y = z;
         RedBlackNode<T> x;
@@ -436,7 +468,7 @@ public class RBTree<T extends Comparable<T>> {
                 y.getRight().setParent(y);
             }
 
-            transplant(z, y); //NOTE: THIS WAS MISSING, MAY HAVE BEEN SOURCE OF BUGS
+            transplant(z, y);
 
             y.setLeft(z.getLeft());
             y.getLeft().setParent(y);
@@ -447,7 +479,6 @@ public class RBTree<T extends Comparable<T>> {
 
         System.out.println("here is y: " + y.toString());
 
-//        if (yOriginalColor == RedBlackNode.BLACK && x != null && x != nil) {
         if (yOriginalColor == RedBlackNode.BLACK) {
             System.out.println("we fix the tree!");
             afterDeleteFixTree(x);
@@ -472,7 +503,7 @@ public class RBTree<T extends Comparable<T>> {
      * issues if it is deleted.
      * @param x
      */
-    private void afterDeleteFixTree(RedBlackNode<T> x) { //TODO: I think this is where the issue is occurring but I'm not positive, I think it's not being called when it should be
+    private void afterDeleteFixTree(RedBlackNode<T> x) {
         System.out.println("Fixing");
 
         while (x != root && x.getColor() == RedBlackNode.BLACK) {
@@ -487,13 +518,16 @@ public class RBTree<T extends Comparable<T>> {
                     x.getParent().setColor(RedBlackNode.RED);
                     leftRotate(x.getParent());
                     w = x.getParent().getRight(); //case one end
+
+                    delCase = DELETEC1;
                 }
 
                 if (w.getLeft().getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.BLACK) { //case two start
                     w.setColor(RedBlackNode.RED);
                     x = x.getParent(); //case two end
 
-                //I COMMENTED THE STUFF BELOW OUT AND REDID RIGHT BELOW, I THINKK THIS IS HOW IT WORKS
+                    delCase = DELETEC2;
+
                 } else {
                     if (w.getRight().getColor() == RedBlackNode.BLACK) { //case 3 start
 
@@ -502,6 +536,9 @@ public class RBTree<T extends Comparable<T>> {
                         rightRotate(w);
                         w = x.getParent().getRight(); //case 3 end
 
+                        delCase = DELETEC3;
+                    } else {
+                        delCase = DELETEC4;
                     }
 
                     w.setColor(x.getParent().getColor());        //case four start
@@ -523,12 +560,16 @@ public class RBTree<T extends Comparable<T>> {
                     x.getParent().setColor(RedBlackNode.RED);
                     rightRotate(x.getParent());
                     w = x.getParent().getLeft();   //case one end
+
+                    delCase = DELETEC1;
                 }
 
                 if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) { //case two start
 
                     w.setColor(RedBlackNode.RED);
                     x = x.getParent(); //case two end
+
+                    delCase = DELETEC2;
 
                 } else {
 
@@ -538,6 +579,10 @@ public class RBTree<T extends Comparable<T>> {
                         w.setColor(RedBlackNode.RED);
                         leftRotate(w);
                         w = x.getParent().getLeft(); //case 3 end
+
+                        delCase = DELETEC3;
+                    } else {
+                        delCase = DELETEC4;
                     }
 
                     w.setColor(x.getParent().getColor());        //case four start
@@ -553,50 +598,6 @@ public class RBTree<T extends Comparable<T>> {
         x.setColor(RedBlackNode.BLACK);
 
     }
-
-
-//                } else if (w.getRight().getColor() == RedBlackNode.BLACK) { //case 3 start
-//                    w.getLeft().setColor(RedBlackNode.BLACK);
-//                    w.setColor(RedBlackNode.RED);
-//                    rightRotate(w);
-//                    w = x.getParent().getRight(); //case 3 end
-//                }
-//                if (w.getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.RED) { //case four start
-//                    w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
-//                    x.getParent().setColor(RedBlackNode.BLACK);
-//                    w.getRight().setColor(RedBlackNode.BLACK);
-//                    leftRotate(x.getParent());
-//                    x = root; //case four end
-
-
-
-
-
-//            } else { // NOTE: not sure that I did this right - it just said i should exchange left and right, so i did that
-//                RedBlackNode<T> w = x.getParent().getLeft();
-//                if (w.getColor() == RedBlackNode.RED) {
-//                    w.setColor(RedBlackNode.BLACK);
-//                    x.getParent().setColor(RedBlackNode.RED);
-//                    rightRotate(x.getParent()); // especially not sure if I was supposed to flip this to right or not
-//        NOTE!!!!!!!!!!!!! LINE MISSING RIGHT HERE (WAS ALSO MISSING IN THE IF CORRESPONDING TO THIS BIG ELSE)
-//                }
-//                if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) {
-//                    w.setColor(RedBlackNode.RED);
-//                    x = x.getParent();
-//                } else {
-//                    if (w.getLeft().getColor() == RedBlackNode.BLACK) {
-//                        w.getRight().setColor(RedBlackNode.BLACK);
-//                        w.setColor(RedBlackNode.RED);
-//                        leftRotate(w); //again, not sure if I was supposed to flip the type of rotation
-//                        w = x.getParent().getLeft();
-//                    }
-//                    w.setColor(x.getParent().getColor()); // not positive which level this code chunk is supposed to be in  //case four start
-//                    x.getParent().setColor(RedBlackNode.BLACK);
-//                    w.getLeft().setColor(RedBlackNode.BLACK);
-//                    rightRotate(x.getParent());
-//                    x = root; //case four end
-//                }
-
 
 
     //COOL, MORE PUBLIC STUFF:
@@ -636,6 +637,18 @@ public class RBTree<T extends Comparable<T>> {
      */
     public RedBlackNode<T> getNil() {
         return nil;
+    }
+
+    public int getInsCase() {
+        return insCase;
+    }
+
+    public void setInsCase(int insCase) {
+        this.insCase = insCase;
+    }
+
+    public int getDelCase() {
+        return delCase;
     }
 
     public String traverseToString(String rootStr, RedBlackNode root, int num) {
