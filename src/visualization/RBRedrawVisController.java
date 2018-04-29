@@ -1,5 +1,6 @@
 package visualization;
 
+import javafx.animation.PauseTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.*;
@@ -247,6 +249,15 @@ public class RBRedrawVisController implements Initializable {
      */
     private void initStuff() {
         mTree = new RBTree();
+
+        mTree.setTreeChangedListener(new RBTree.TreeChangedListener() {
+            @Override
+            public void onTreeChanged() {
+                PauseTransition pause = new PauseTransition(Duration.seconds(.5));
+                pause.setOnFinished(event -> redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0));
+                pause.play();
+            }
+        });
 
         backTreeStack = new ArrayDeque<RBTree>();
         forwardTreeStack = new ArrayDeque<RBTree>();

@@ -8,14 +8,14 @@ import java.util.ArrayList;
  */
 public class RBTree<T extends Comparable<T>> {
 
-//    private ArrayList<ModificationLog> mLogs;
-
     private ModificationLog mLog;
 
     private ArrayDeque<TreeModification<T>> changes;    //allows for recreating tree
 
     private RedBlackNode<T> nil = new RedBlackNode<T>();
     private RedBlackNode<T> root;
+
+    private TreeChangedListener mListener;
 
     //PUBLIC STUFF YOU CAN USE YAY:
 
@@ -50,6 +50,7 @@ public class RBTree<T extends Comparable<T>> {
     public RBTree<T> copy() {
 
         RBTree<T> copy = new RBTree<T>();
+        copy.setTreeChangedListener(mListener);
 
         for (TreeModification<T> change: changes) {
             if (change.isInsert()) {
@@ -87,6 +88,7 @@ public class RBTree<T extends Comparable<T>> {
             RedBlackNode<T> node = new RedBlackNode<>(key);
 
             insertNode(node);
+            mListener.onTreeChanged();
 
             //DEBUG:
             System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: comment out when no longer needed for debugging
@@ -716,4 +718,14 @@ public class RBTree<T extends Comparable<T>> {
     }
 
     public void setLog(ModificationLog newLog) { this.mLog = newLog; }
+
+    // IGNORE THIS FOR NOW, SAMMY IS JUST MESSING AROUND T_T
+
+    public interface TreeChangedListener {
+        public void onTreeChanged();
+    }
+
+    public void setTreeChangedListener(TreeChangedListener mListener) {
+        this.mListener = mListener;
+    }
 }
