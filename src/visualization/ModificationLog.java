@@ -21,7 +21,7 @@ public class ModificationLog {
 
     /**
      * I mostly added this so that we can implement some kind of animation  (i.e. highlighting text).
-     * For now, the new LogModifications basically just pop up, like the tree.
+     * For now, the new LogModifications basically just pops up, like the tree.
      * @return
      */
     public ArrayList<LogModification> getLogArray() {
@@ -93,9 +93,21 @@ public class ModificationLog {
             int changeNum = 0;
 
             for (LogModification tLogModification : modList) {
-                System.out.println(tLogModification.toString());
-                strLog.append(changeNum + ": " + tLogModification.toString() + "\n");
-                changeNum++;
+                if (tLogModification.getCaseVal() == LogModification.INSERTION ||
+                        tLogModification.getCaseVal() == LogModification.DELETION ||
+                        tLogModification.getCaseVal() == LogModification.NODEISNIL ||
+                        tLogModification.getCaseVal() == LogModification.NODEEXISTS ||
+                        tLogModification.getCaseVal() == LogModification.NOCASE ||
+                        tLogModification.getCaseVal() == LogModification.INVALIDINPUT) {
+
+                    System.out.println(tLogModification.toString());
+                    strLog.append(changeNum + ": " + tLogModification.toString() + "\n");
+                    changeNum++;
+
+                } else {
+                    System.out.println(tLogModification.toString());
+                    strLog.append("   " + tLogModification.toString() + "\n");
+                }
             }
 
             return strLog.toString();

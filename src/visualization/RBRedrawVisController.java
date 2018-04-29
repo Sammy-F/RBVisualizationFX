@@ -59,7 +59,10 @@ public class RBRedrawVisController implements Initializable {
     @FXML
     private void handleAction(ActionEvent event) {
 
-        backTreeStack.push(mTree.copy());                    //add old tree to back steps in case we choose to step back
+        RBTree copyTree = mTree.copy();
+        infoText.setText(mTree.getLog().toString());
+
+        backTreeStack.push(copyTree);                    //add old tree to back steps in case we choose to step back
         forwardTreeStack = new ArrayDeque<RBTree>();    //empty any stored forward steps
 
 
@@ -85,14 +88,15 @@ public class RBRedrawVisController implements Initializable {
     @FXML
     private void handleBack(ActionEvent event) {
         if (backTreeStack.peek() != null) {
-            forwardTreeStack.push(mTree.copy());
+            RBTree copyTree = mTree.copy();
+            forwardTreeStack.push(copyTree);
 
-            mTree.getLogChanges().push(mTree.getLog().removeChange()); //For the log, we handle the Modifications
+            RBTree poppedTree = backTreeStack.pop();
+            mTree = poppedTree;
+            updateTree();
+
             infoText.setText(mTree.getLog().getLogString());
             scrollPane.setVvalue(1.0);
-
-            mTree = backTreeStack.pop();
-            updateTree();
 
         } else {
             infoText.setText("There's nothing left in your history.");
@@ -102,22 +106,22 @@ public class RBRedrawVisController implements Initializable {
     @FXML
     private void handleForward(ActionEvent event) {
         if (forwardTreeStack.peek() != null) {
-            backTreeStack.push(mTree.copy());
+            RBTree copyTree = mTree.copy();
+            backTreeStack.push(copyTree);
+
+            RBTree poppedTree = forwardTreeStack.pop();
+            mTree = poppedTree;
+            updateTree();
 
             try {
-                LogModification oldMod = mTree.getLogChanges().pop();
-                mTree.getLog().addChange(oldMod);
                 infoText.setText(mTree.getLog().getLogString());
                 scrollPane.setVvalue(1.0);
             } catch (NoSuchElementException e) {
                 infoText.setText("Try adding or deleting a node to see what happens!");
             }
-
-            mTree = forwardTreeStack.pop();
-            updateTree();
         }
         else {
-            infoText.setText("This is the most recent tree.");
+            infoText.setText(mTree.getLog().getLogString() + "\nThis is the most recent tree.");
         }
     }
 
@@ -141,13 +145,8 @@ public class RBRedrawVisController implements Initializable {
             updateTree();
             infoText.setText(mTree.getLog().getLogString());
         } else {
-//            mTree.setInsCase(RBTree.INSERTC0);
             mTree.getLog().addChange(LogModification.NODEISNIL, value);
-            infoText = new Label(mTree.getLog().getLogString());
-            anchorPane.getChildren().remove(infoText);
-            scrollPane.setContent(infoText);
-            anchorPane.getChildren().add(infoText);
-//            infoText.setText(ModificationLog.getLogString());
+            infoText.setText(mTree.getLog().getLogString());
         }
     }
 

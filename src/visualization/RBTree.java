@@ -8,6 +8,8 @@ import java.util.ArrayList;
  */
 public class RBTree<T extends Comparable<T>> {
 
+//    private ArrayList<ModificationLog> mLogs;
+
     private ModificationLog mLog;
 
     private ArrayDeque<TreeModification<T>> changes;    //allows for recreating tree
@@ -41,6 +43,7 @@ public class RBTree<T extends Comparable<T>> {
         cases = new ArrayList<>();
 
         mLog = new ModificationLog();
+//        mLogs = new ArrayList<>();
         logChanges = new ArrayDeque<>();
     }
 
@@ -62,6 +65,14 @@ public class RBTree<T extends Comparable<T>> {
                 copy.delete(change.getKey());
             }
         }
+
+        ModificationLog newLog = new ModificationLog();
+        for (LogModification mod : mLog.getLogArray()) {
+            newLog.addChange(mod);
+        }
+
+//        mLogs.add(newLog);
+        copy.setLog(newLog);
 
         return copy;
     }
@@ -88,8 +99,7 @@ public class RBTree<T extends Comparable<T>> {
             System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: comment out when no longer needed for debugging
 
         } else {
-            mLog.addChange(LogModification.NODEEXISTS, (Double) key);
-            System.out.println("Node already exists.");
+            mLog.addChange(LogModification.NODEEXISTS, -1);
         }
     }
 
@@ -106,7 +116,11 @@ public class RBTree<T extends Comparable<T>> {
         if (toDelete != nil) {
             deleteNode(toDelete);
         } else {
-            mLog.addChange(LogModification.NODEISNIL, (Double) key);
+            ModificationLog newLog = new ModificationLog();
+            for (LogModification mod : mLog.getLogArray()) {
+                newLog.addChange(mod);
+            }
+            mLog.addChange(LogModification.NODEISNIL, -1);
         }
 
         //DEBUG:
@@ -749,4 +763,6 @@ public class RBTree<T extends Comparable<T>> {
     public ArrayDeque<LogModification> getLogChanges() {
         return logChanges;
     }
+
+    public void setLog(ModificationLog newLog) { this.mLog = newLog; }
 }

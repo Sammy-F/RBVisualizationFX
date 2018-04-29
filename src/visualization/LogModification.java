@@ -8,20 +8,15 @@ public class LogModification {
     public final static int NODEEXISTS = 12;
     public final static int INSERTION = 9;
     public final static int DELETION = 10;
-
     public final static int INSERTC1 = 1;   //inserted node's aunt is red
     public final static int INSERTC2 = 2;   //inserted node is a right child and its aunt is black
     public final static int INSERTC3 = 3;   //inserted node is a left child and its aunt is black
-
     public final static int DELETEC1 = 4;   //deleted node's sibling is red
     public final static int DELETEC2 = 5;   //deleted node's sibling is black; sibling's children both black
     public final static int DELETEC3 = 6;   //deleted node's sibling is black; sibling's left child red, right black
     public final static int DELETEC4 = 7;   //deleted node's sibling is black; sibling's right child red, left black
-
     public final static int INSERTROOT = 8; //we generate the root
-
     public final static int NOCASE = -1;    //we are not even trying to insert (for insCase) or to delete (for delCase)
-
     public final static int INVALIDINPUT = 11;
 
     //Instance variables
@@ -85,5 +80,7 @@ public class LogModification {
 
         return mStr.toString();
     }
+
+    public int getCaseVal() { return caseVal; }
 
 }
