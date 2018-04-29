@@ -114,8 +114,6 @@ public class ModificationLog {
             for (LogModification tLogModification : modList) {
                 if (tLogModification.getCaseVal() == LogModification.INSERTION ||
                         tLogModification.getCaseVal() == LogModification.DELETION ||
-                        tLogModification.getCaseVal() == LogModification.NODEISNIL ||
-                        tLogModification.getCaseVal() == LogModification.NODEEXISTS ||
                         tLogModification.getCaseVal() == LogModification.NOCASE ||
                         tLogModification.getCaseVal() == LogModification.INVALIDINPUT) {
 
