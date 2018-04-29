@@ -20,7 +20,6 @@ import java.util.*;
 public class RBRedrawVisController implements Initializable {
 
     private final int DEFAULT_RADIUS = 30;
-    private final int HEIGHT_SCALAR = 150;
     private final double INIT_INSERTIONX = 470;
     private final double INIT_XSPACING = INIT_INSERTIONX;
 
@@ -192,27 +191,27 @@ public class RBRedrawVisController implements Initializable {
         if (thisRoot != mTree.getNil()) {
             if (thisRoot.getParent().getRight() == thisRoot) {
                 thisInsertionX = xVal + xSpacing;
-                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 3.5*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
+                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 4.5*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
             } else if (thisRoot.getParent().getLeft() == thisRoot) {
                 thisInsertionX = xVal - xSpacing;
-                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 3.5*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
+                thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 4.5*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
             } else {
                 thisInsertionX = xVal;
                 thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
             }
-            anchorPane.getChildren().add(thisCircle); //first, add the node in              //TODO: CURRENTLY GET ERROR HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            anchorPane.getChildren().add(thisCircle); //first, add the node in
             circleList.add(thisCircle);
         } else {
             thisCircle = new RBNodeCircle<>();
             thisInsertionX = 0.0;
         }
 
-        if (thisRoot.getRight() != mTree.getNil() && thisRoot.getLeft() != mTree.getNil()) { //TODO: Add connectors
-            RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));   //TODO: AND ERROR HERE!!!!!!!!!!!!!!!!
+        if (thisRoot.getRight() != mTree.getNil() && thisRoot.getLeft() != mTree.getNil()) {
+            RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));
             connectorList.add(mLConnector);
             anchorPane.getChildren().add(mLConnector);
 
-            RBConnector mRConnector = new RBConnector(thisCircle, redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1));  //TODO: AND ERROR HERE!!!!!!!!!!!!!!!!
+            RBConnector mRConnector = new RBConnector(thisCircle, redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1));
             connectorList.add(mRConnector);
             anchorPane.getChildren().add(mRConnector);
         } else if (thisRoot.getRight() != mTree.getNil()) {
