@@ -105,9 +105,9 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
         thisCircle.setStrokeWidth(initRadius/10);
 
         if (color == RedBlackNode.BLACK) {
-            thisCircle.setFill(Color.DARKSLATEGRAY);
+            thisCircle.setFill(Color.BLACK);
         } else {
-            thisCircle.setFill(Color.ORANGERED);
+            thisCircle.setFill(Color.RED);
         }
 
 //        thisCircle.setFill(Color.TRANSPARENT);
