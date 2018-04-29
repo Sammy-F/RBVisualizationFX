@@ -31,8 +31,8 @@ public class RBRedrawVisController implements Initializable {
     private List<RBNodeCircle> circleList;
     private List<RBConnector> connectorList;
 
-    private Deque<RBTree> backTreeStack;
-    private Deque<RBTree> forwardTreeStack;
+    private Deque<RBTree> backTreeStack; //stores old versions of the current tree
+    private Deque<RBTree> forwardTreeStack; //stores more recent versions of the current tree
 
     Label infoText;
 
@@ -84,6 +84,10 @@ public class RBRedrawVisController implements Initializable {
     }
 
 
+    /**
+     * Allow the user to view old versions of the current tree.
+     * @param event
+     */
     @FXML
     private void handleBack(ActionEvent event) {
         if (backTreeStack.peek() != null) {
@@ -102,6 +106,11 @@ public class RBRedrawVisController implements Initializable {
         }
     }
 
+    /**
+     * Allow the user to view more recent trees than the
+     * one that is currently displayed.
+     * @param event
+     */
     @FXML
     private void handleForward(ActionEvent event) {
         if (forwardTreeStack.peek() != null) {
@@ -131,6 +140,10 @@ public class RBRedrawVisController implements Initializable {
         initStuff();
     }
 
+    /**
+     * Clear the tree currently drawn and draw a new one
+     * based off of mTree.
+     */
     private void updateTree() {
         clearTree();
         redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
@@ -188,7 +201,8 @@ public class RBRedrawVisController implements Initializable {
     private RBNodeCircle redraw(RedBlackNode thisRoot, double xSpacing, double xVal, int level) {
         RBNodeCircle<Double> thisCircle;
         Double thisInsertionX;
-        if (thisRoot != mTree.getNil()) {
+
+        if (thisRoot != mTree.getNil()) {       //check if the node is nil or not
             if (thisRoot.getParent().getRight() == thisRoot) {
                 thisInsertionX = xVal + xSpacing;
                 thisCircle = new RBNodeCircle(DEFAULT_RADIUS, thisInsertionX, 4.5*level*DEFAULT_RADIUS + DEFAULT_RADIUS, thisRoot.getKey(), thisRoot.getColor());
@@ -201,12 +215,12 @@ public class RBRedrawVisController implements Initializable {
             }
             anchorPane.getChildren().add(thisCircle); //first, add the node in
             circleList.add(thisCircle);
-        } else {
+        } else { //the node is nil
             thisCircle = new RBNodeCircle<>();
             thisInsertionX = 0.0;
         }
 
-        if (thisRoot.getRight() != mTree.getNil() && thisRoot.getLeft() != mTree.getNil()) {
+        if (thisRoot.getRight() != mTree.getNil() && thisRoot.getLeft() != mTree.getNil()) {    //The node has two children
             RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));
             connectorList.add(mLConnector);
             anchorPane.getChildren().add(mLConnector);
@@ -214,11 +228,11 @@ public class RBRedrawVisController implements Initializable {
             RBConnector mRConnector = new RBConnector(thisCircle, redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1));
             connectorList.add(mRConnector);
             anchorPane.getChildren().add(mRConnector);
-        } else if (thisRoot.getRight() != mTree.getNil()) {
+        } else if (thisRoot.getRight() != mTree.getNil()) { //The node has a right child
             RBConnector mRConnector = new RBConnector(thisCircle, redraw(thisRoot.getRight(), xSpacing/2, thisInsertionX, level + 1));
             connectorList.add(mRConnector);
             anchorPane.getChildren().add(mRConnector);
-        } else if (thisRoot.getLeft() != mTree.getNil()) {
+        } else if (thisRoot.getLeft() != mTree.getNil()) {  //The node has a left child
             RBConnector mLConnector = new RBConnector(thisCircle, redraw(thisRoot.getLeft(), xSpacing/2, thisInsertionX, level + 1));
             connectorList.add(mLConnector);
             anchorPane.getChildren().add(mLConnector);
@@ -228,6 +242,9 @@ public class RBRedrawVisController implements Initializable {
 
     }
 
+    /**
+     * Initialize instance variables handled by the Controller
+     */
     private void initStuff() {
         mTree = new RBTree();
 
@@ -244,6 +261,10 @@ public class RBRedrawVisController implements Initializable {
         scrollPane.setVvalue(1.0);
     }
 
+    /**
+     * Handle logic for when the insert radio button is clicked.
+     * @param event
+     */
     @FXML
     private void insertClicked(ActionEvent event) {
         radioInsert.setSelected(true);
@@ -252,6 +273,10 @@ public class RBRedrawVisController implements Initializable {
         removeClicked = false;
     }
 
+    /**
+     * Handle logic for when the remove radio button is clicked.
+     * @param event
+     */
     @FXML
     private void removeClicked(ActionEvent event) {
         radioRemove.setSelected(true);
@@ -260,6 +285,11 @@ public class RBRedrawVisController implements Initializable {
         insertClicked = false;
     }
 
+    /**
+     * Initialize the Controller and its variables.
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initStuff();

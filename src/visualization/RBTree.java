@@ -13,13 +13,9 @@ public class RBTree<T extends Comparable<T>> {
     private ModificationLog mLog;
 
     private ArrayDeque<TreeModification<T>> changes;    //allows for recreating tree
-    private ArrayList<Integer> cases;
 
     private RedBlackNode<T> nil = new RedBlackNode<T>();
     private RedBlackNode<T> root;
-
-    private ArrayDeque<LogModification> logChanges;
-
 
     //PUBLIC STUFF YOU CAN USE YAY:
 
@@ -40,11 +36,8 @@ public class RBTree<T extends Comparable<T>> {
         root.setParent(nil);
 
         changes = new ArrayDeque<>();
-        cases = new ArrayList<>();
 
         mLog = new ModificationLog();
-//        mLogs = new ArrayList<>();
-        logChanges = new ArrayDeque<>();
     }
 
     /**
@@ -359,48 +352,6 @@ public class RBTree<T extends Comparable<T>> {
         }
 
         root.setColor(RedBlackNode.BLACK);
-    }
-
-    /**
-     * Method for finding the lowest instance of a node in the tree. This
-     * is a useful helper method for prepping for deletion; you need an actual
-     * node to delete, and lower nodes are easier and cheaper to delete.
-     *
-     * (Note: this code is 100% original not from book at all)
-     *
-     * IMPORTANT: CHECK THE RETURN IS NOT EQUAL TO NIL!!!!!!!!!!!!!!
-     *
-     * Time Complexity: O(log n)
-     *
-     * @param key           the key we want to find the node of in the tree
-     * @return              the lowest node instance of this key
-     */
-    private RedBlackNode<T> findLowest(T key) {
-        RedBlackNode<T> toDelete = nil;
-
-        RedBlackNode<T> n = root;
-
-        while (n != nil) {      //we stop when we hit a NIL leaf
-            if (key.compareTo(n.getKey()) < 0) {        //could only be in n's left subtree
-                n = n.getLeft();
-            } else {
-                if (key.compareTo(n.getKey()) > 0) {        //could only be in n's right subtree
-                    n = n.getRight();
-                } else {
-                    if (key.compareTo(n.getKey()) == 0) {   //could only be n or in n's right subtree
-                        toDelete = n;
-                        n = n.getRight();
-                    }
-                }
-            }
-        }
-
-        if (toDelete != nil) {
-            return toDelete;
-        } else {
-            System.out.println("No such node exists.");
-            return nil;
-        }
     }
 
     /**
@@ -762,10 +713,6 @@ public class RBTree<T extends Comparable<T>> {
 
     public ModificationLog getLog() {
         return mLog;
-    }
-
-    public ArrayDeque<LogModification> getLogChanges() {
-        return logChanges;
     }
 
     public void setLog(ModificationLog newLog) { this.mLog = newLog; }
