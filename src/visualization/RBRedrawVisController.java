@@ -94,6 +94,8 @@ public class RBRedrawVisController implements Initializable {
             mTree = backTreeStack.pop();
             updateTree();
 
+        } else {
+            infoText.setText("There's nothing left in your history.");
         }
     }
 
@@ -102,18 +104,26 @@ public class RBRedrawVisController implements Initializable {
         if (forwardTreeStack.peek() != null) {
             backTreeStack.push(mTree.copy());
 
-            LogModification oldMod = mTree.getLogChanges().pop();
-            mTree.getLog().addChange(oldMod);
-            infoText.setText(mTree.getLog().getLogString());
-            scrollPane.setVvalue(1.0);
+            try {
+                LogModification oldMod = mTree.getLogChanges().pop();
+                mTree.getLog().addChange(oldMod);
+                infoText.setText(mTree.getLog().getLogString());
+                scrollPane.setVvalue(1.0);
+            } catch (NoSuchElementException e) {
+                infoText.setText("Try adding or deleting a node to see what happens!");
+            }
 
             mTree = forwardTreeStack.pop();
             updateTree();
+        }
+        else {
+            infoText.setText("This is the most recent tree.");
         }
     }
 
     @FXML
     private void handleReset(ActionEvent event) {
+        mTree.getLog().clearLog();
         clearTree();
         initStuff();
     }
@@ -218,39 +228,6 @@ public class RBRedrawVisController implements Initializable {
 
         return thisCircle;
 
-    }
-
-    private void updateEduPanel() {
-        //TODO: Use the current insCase and delCase to determine what to display in the educational panel thing
-
-        //note: I THINK I determined the cases correctly, but definitely check that if you want, could be bugs, but it
-        //was mostly straightforward
-
-        //TODO: ALSO, actually make the educational panel...
-
-//        if (mTree.getInsCase() == RBTree.INSERTC0 && mTree.getDelCase() == RBTree.NOCASE) {
-//            //value either a) already exists in tree, no duplicates allowed! or b) was below 0 or above 999, not allowed!
-//        } else if (mTree.getInsCase() == RBTree.NOCASE && mTree.getDelCase() == RBTree.DELETEC0) {
-//            //value not in tree, cannot be deleted
-//
-//
-//        } else if (mTree.getInsCase() == RBTree.INSERTC1) {     //inserted node's aunt is red
-//
-//        } else if (mTree.getInsCase() == RBTree.INSERTC2) {     //inserted node is a right child and its aunt is black
-//
-//        } else if (mTree.getInsCase() == RBTree.INSERTC3) {     //inserted node is a left child and its aunt is black
-//
-//
-//
-//        } else if (mTree.getDelCase() == RBTree.DELETEC1) {     //deleted node's sibling is red
-//
-//        } else if (mTree.getDelCase() == RBTree.DELETEC2) {     //deleted node's sibling is black; sibling's children both black
-//
-//        } else if (mTree.getDelCase() == RBTree.DELETEC3) {     //deleted node's sibling is black; sibling's left child red, right black
-//
-//        } else if (mTree.getDelCase() == RBTree.DELETEC4) {     //deleted node's sibling is black; sibling's right child red, left black
-//
-//        }
     }
 
     private void initStuff() {
