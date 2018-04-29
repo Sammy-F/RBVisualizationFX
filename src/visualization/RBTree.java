@@ -404,7 +404,11 @@ public class RBTree<T extends Comparable<T>> {
     private void transplant(RedBlackNode<T> u, RedBlackNode<T> v) {
 
         System.out.println("Transplanting");
-        mLog.addChange(LogModification.TRANSPLANT, (Double) u.getKey(), (Double) v.getKey());
+        try {
+            mLog.addChange(LogModification.TRANSPLANT, (Double) u.getKey(), (Double) v.getKey());
+        } catch (NullPointerException e) {
+            mLog.addChange(LogModification.MAKEROOT, -1);
+        }
 
         if (u.getParent() == nil) {
             root = v;
