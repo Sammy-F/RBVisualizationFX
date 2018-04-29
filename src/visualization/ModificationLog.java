@@ -2,18 +2,29 @@ package visualization;
 
 import java.util.ArrayList;
 
+/**
+ * This class stores our list of LogModifications and handles
+ * formatting them into a String to display in our ScrollPane
+ */
 public class ModificationLog {
 
-    private ArrayList<Modification> modList;
+    //INSTANCE VARIABLES
+
+    private ArrayList<LogModification> modList;
     private static StringBuilder strLog;
 
     public ModificationLog() {
         modList = new ArrayList<>();
     }
 
-    //Userful public static methods
+    //PUBLIC METHODS
 
-    public ArrayList<Modification> getLogArray() {
+    /**
+     * I mostly added this so that we can implement some kind of animation  (i.e. highlighting text).
+     * For now, the new LogModifications basically just pop up, like the tree.
+     * @return
+     */
+    public ArrayList<LogModification> getLogArray() {
         if (modList == null) {
             modList = new ArrayList<>();
         }
@@ -21,7 +32,11 @@ public class ModificationLog {
         return modList;
     }
 
-    public void addChange(Modification mod) {
+    /**
+     * Add a LogModification to the modList Array
+     * @param mod
+     */
+    public void addChange(LogModification mod) {
         if (modList == null) {
             modList = new ArrayList<>();
         }
@@ -29,18 +44,27 @@ public class ModificationLog {
         modList.add(mod);
     }
 
+    /**
+     * Add a change from a case value and node value
+     * @param caseVal
+     * @param nodeVal
+     */
     public void addChange(int caseVal, double nodeVal) {
         if (modList == null) {
             System.out.println("Initializing mod log");
             modList = new ArrayList<>();
-            modList.add(new Modification(caseVal, nodeVal));
+            modList.add(new LogModification(caseVal, nodeVal));
         } else {
             System.out.println("Adding mod to log");
-            modList.add(new Modification(caseVal, nodeVal));
+            modList.add(new LogModification(caseVal, nodeVal));
         }
     }
 
-    public Modification removeChange() {
+    /**
+     * Remove and return the lest LogModification in modList
+     * @return LogModification oldMod
+     */
+    public LogModification removeChange() {
         if (modList == null) {
             modList = new ArrayList<>();
             return null;
@@ -68,9 +92,9 @@ public class ModificationLog {
             }
             int changeNum = 0;
 
-            for (Modification tModification : modList) {
-                System.out.println(tModification.toString());
-                strLog.append(changeNum + ": " + tModification.toString() + "\n");
+            for (LogModification tLogModification : modList) {
+                System.out.println(tLogModification.toString());
+                strLog.append(changeNum + ": " + tLogModification.toString() + "\n");
                 changeNum++;
             }
 

@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.*;
 
@@ -74,7 +73,7 @@ public class RBRedrawVisController implements Initializable {
 
             }
         } catch (NumberFormatException e) {
-            mTree.getLog().addChange(Modification.INVALIDINPUT, -1);
+            mTree.getLog().addChange(LogModification.INVALIDINPUT, -1);
             infoText.setText(mTree.getLog().toString());
         }
 
@@ -103,7 +102,7 @@ public class RBRedrawVisController implements Initializable {
         if (forwardTreeStack.peek() != null) {
             backTreeStack.push(mTree.copy());
 
-            Modification oldMod = mTree.getLogChanges().pop();
+            LogModification oldMod = mTree.getLogChanges().pop();
             mTree.getLog().addChange(oldMod);
             infoText.setText(mTree.getLog().getLogString());
             scrollPane.setVvalue(1.0);
@@ -133,7 +132,7 @@ public class RBRedrawVisController implements Initializable {
             infoText.setText(mTree.getLog().getLogString());
         } else {
 //            mTree.setInsCase(RBTree.INSERTC0);
-            mTree.getLog().addChange(Modification.NODEISNIL, value);
+            mTree.getLog().addChange(LogModification.NODEISNIL, value);
             infoText = new Label(mTree.getLog().getLogString());
             anchorPane.getChildren().remove(infoText);
             scrollPane.setContent(infoText);
@@ -149,7 +148,7 @@ public class RBRedrawVisController implements Initializable {
             updateTree();
             infoText.setText(mTree.getLog().getLogString());
         } else {
-            mTree.getLog().addChange(Modification.NODEISNIL, value);
+            mTree.getLog().addChange(LogModification.NODEISNIL, value);
             infoText.setText(mTree.getLog().getLogString());
         }
     }

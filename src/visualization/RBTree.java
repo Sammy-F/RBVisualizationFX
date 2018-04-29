@@ -8,32 +8,7 @@ import java.util.ArrayList;
  */
 public class RBTree<T extends Comparable<T>> {
 
-    //INSTANCE VARIABLES:
-
-//    public final static int INSERTC1 = 1;   //inserted node's aunt is red
-//    public final static int INSERTC2 = 2;   //inserted node is a right child and its aunt is black
-//    public final static int INSERTC3 = 3;   //inserted node is a left child and its aunt is black
-//
-//    public final static int INSERTC0 = 0;   //the node we want to insert does not exist OR is outside the range [0,999]
-//
-////    public final static int DELETEC1 = 1;   //deleted node's sibling is red
-////    public final static int DELETEC2 = 2;   //deleted node's sibling is black; sibling's children both black
-////    public final static int DELETEC3 = 3;   //deleted node's sibling is black; sibling's left child red, right black
-////    public final static int DELETEC4 = 4;   //deleted node's sibling is black; sibling's right child red, left black
-//
-//    public final static int DELETEC1 = 4;   //deleted node's sibling is red
-//    public final static int DELETEC2 = 5;   //deleted node's sibling is black; sibling's children both black
-//    public final static int DELETEC3 = 6;   //deleted node's sibling is black; sibling's left child red, right black
-//    public final static int DELETEC4 = 7;   //deleted node's sibling is black; sibling's right child red, left black
-//
-//    public final static int DELETEC0 = 0;   //the node we want to delete does not exist
-//
-//    public final static int NOCASE = -1;    //we are not even trying to insert (for insCase) or to delete (for delCase)
-
     private ModificationLog mLog;
-
-    private int insCase;
-    private int delCase;
 
     private ArrayDeque<TreeModification<T>> changes;    //allows for recreating tree
     private ArrayList<Integer> cases;
@@ -41,7 +16,7 @@ public class RBTree<T extends Comparable<T>> {
     private RedBlackNode<T> nil = new RedBlackNode<T>();
     private RedBlackNode<T> root;
 
-    private ArrayDeque<Modification> logChanges;
+    private ArrayDeque<LogModification> logChanges;
 
 
     //PUBLIC STUFF YOU CAN USE YAY:
@@ -96,10 +71,7 @@ public class RBTree<T extends Comparable<T>> {
      */
     public void insert(T key) {
 
-//        insCase = INSERTC0;
-//        delCase = NOCASE;
-
-        mLog.addChange(Modification.INSERTION, (Double) key);
+        mLog.addChange(LogModification.INSERTION, (Double) key);
 
         RedBlackNode<T> alreadyExists = findKeyNode(key);
 
@@ -116,7 +88,7 @@ public class RBTree<T extends Comparable<T>> {
             System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: comment out when no longer needed for debugging
 
         } else {
-            mLog.addChange(Modification.NODEEXISTS, (Double) key);
+            mLog.addChange(LogModification.NODEEXISTS, (Double) key);
             System.out.println("Node already exists.");
         }
     }
@@ -126,9 +98,6 @@ public class RBTree<T extends Comparable<T>> {
      */
     public void delete(T key) {
 
-//        insCase = NOCASE;
-//        delCase = DELETEC0;
-
         TreeModification<T> change = new TreeModification<>(key, false);
         changes.addLast(change);                                        //keeping track of changes for copying
 
@@ -137,7 +106,7 @@ public class RBTree<T extends Comparable<T>> {
         if (toDelete != nil) {
             deleteNode(toDelete);
         } else {
-            mLog.addChange(Modification.NODEISNIL, (Double) key);
+            mLog.addChange(LogModification.NODEISNIL, (Double) key);
         }
 
         //DEBUG:
@@ -310,7 +279,7 @@ public class RBTree<T extends Comparable<T>> {
                 if (y.getColor() == RedBlackNode.RED) {                  //case 1 (start)
 
                     if (!logOnce) {
-                        mLog.addChange(Modification.INSERTC1, (Double) z.getKey());
+                        mLog.addChange(LogModification.INSERTC1, (Double) z.getKey());
                         logOnce = true;
                     }
 
@@ -319,24 +288,21 @@ public class RBTree<T extends Comparable<T>> {
                     z.getParent().getParent().setColor(RedBlackNode.RED);
                     z = z.getParent().getParent();                       //case 1 (end)
 
-//                    insCase = INSERTC1;
                 } else {
                     if (z == z.getParent().getRight()) {        //case 2 (start)
                         if (!logOnce) {
-                            mLog.addChange(Modification.INSERTC2, (Double) zVal);
+                            mLog.addChange(LogModification.INSERTC2, (Double) zVal);
                             logOnce = true;
                         }
                         logOnce = true;
                         z = z.getParent(); // SWITCHED THIS TO z = z.getParent()
                         leftRotate(z);                     //case 2 (end)
 
-//                        insCase = INSERTC2;
                     } else {
                         if (!logOnce) {
-                            mLog.addChange(Modification.INSERTC3, (Double) zVal);
+                            mLog.addChange(LogModification.INSERTC3, (Double) zVal);
                             logOnce = true;
                         }
-//                        insCase = INSERTC3;
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);                 //case 3 (start)
                     z.getParent().getParent().setColor(RedBlackNode.RED);
@@ -349,7 +315,7 @@ public class RBTree<T extends Comparable<T>> {
 
                 if (y.getColor() == RedBlackNode.RED) {                  //case 1 (start)
                     if (!logOnce) {
-                        mLog.addChange(Modification.INSERTC1, (Double) zVal);
+                        mLog.addChange(LogModification.INSERTC1, (Double) zVal);
                         logOnce = true;
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);
@@ -357,15 +323,14 @@ public class RBTree<T extends Comparable<T>> {
                     z.getParent().getParent().setColor(RedBlackNode.RED);
                     z = z.getParent().getParent();                       //case 1 (end)
 
-//                    insCase = INSERTC1;
                 } else {
                     if (z == z.getParent().getLeft()) {        //case 2 (start)
-                        mLog.addChange(Modification.INSERTC2, zVal);
+                        mLog.addChange(LogModification.INSERTC2, zVal);
                         z = z.getParent();
                         rightRotate(z);                     //case 2 (end)
 
                     } else {
-                        mLog.addChange(Modification.INSERTC3, zVal);
+                        mLog.addChange(LogModification.INSERTC3, zVal);
                     }
                     z.getParent().setColor(RedBlackNode.BLACK);                 //case 3 (start)
                     z.getParent().getParent().setColor(RedBlackNode.RED);
@@ -492,7 +457,7 @@ public class RBTree<T extends Comparable<T>> {
     private void deleteNode(RedBlackNode<T> z) {
 
         if (z != nil && z != null) {
-            mLog.addChange(Modification.DELETION, (Double) z.getKey());
+            mLog.addChange(LogModification.DELETION, (Double) z.getKey());
         }
 
         RedBlackNode<T> y = z;
@@ -587,7 +552,7 @@ public class RBTree<T extends Comparable<T>> {
                 if (w.getColor() == RedBlackNode.RED) { //case one start
 
                     if (!logOnce) {
-                        mLog.addChange(Modification.DELETEC1, xVal);
+                        mLog.addChange(LogModification.DELETEC1, xVal);
                         logOnce = true;
                     }
 
@@ -602,7 +567,7 @@ public class RBTree<T extends Comparable<T>> {
                 if (w.getLeft().getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.BLACK) { //case two start
 
                     if (!logOnce) {
-                        mLog.addChange(Modification.DELETEC2, xVal);
+                        mLog.addChange(LogModification.DELETEC2, xVal);
                         logOnce = true;
                     }
 
@@ -615,7 +580,7 @@ public class RBTree<T extends Comparable<T>> {
                     if (w.getRight().getColor() == RedBlackNode.BLACK) { //case 3 start
 
                         if (!logOnce) {
-                            mLog.addChange(Modification.DELETEC3, xVal);
+                            mLog.addChange(LogModification.DELETEC3, xVal);
                             logOnce = true;
                         }
 
@@ -627,7 +592,7 @@ public class RBTree<T extends Comparable<T>> {
 //                        delCase = DELETEC3;
                     } else {
                         if (!logOnce) {
-                            mLog.addChange(Modification.DELETEC4, xVal);
+                            mLog.addChange(LogModification.DELETEC4, xVal);
                             logOnce = true;
                         }
 //                        delCase = DELETEC4;
@@ -649,7 +614,7 @@ public class RBTree<T extends Comparable<T>> {
                 if (w.getColor() == RedBlackNode.RED) { //case one start
 
                     if (!logOnce) {
-                        mLog.addChange(Modification.DELETEC1, xVal);
+                        mLog.addChange(LogModification.DELETEC1, xVal);
                         logOnce = true;
                     }
 
@@ -664,7 +629,7 @@ public class RBTree<T extends Comparable<T>> {
                 if (w.getRight().getColor() == RedBlackNode.BLACK && w.getLeft().getColor() == RedBlackNode.BLACK) { //case two start
 
                     if (!logOnce) {
-                        mLog.addChange(Modification.DELETEC2, xVal);
+                        mLog.addChange(LogModification.DELETEC2, xVal);
                         logOnce = true;
                     }
 
@@ -678,7 +643,7 @@ public class RBTree<T extends Comparable<T>> {
                     if (w.getLeft().getColor() == RedBlackNode.BLACK) { //case 3 start
 
                         if (!logOnce) {
-                            mLog.addChange(Modification.DELETEC3, xVal);
+                            mLog.addChange(LogModification.DELETEC3, xVal);
                             logOnce = true;
                         }
 
@@ -690,7 +655,7 @@ public class RBTree<T extends Comparable<T>> {
 //                        delCase = DELETEC3;
                     } else {
                         if (!logOnce) {
-                            mLog.addChange(Modification.DELETEC4, xVal);
+                            mLog.addChange(LogModification.DELETEC4, xVal);
                             logOnce = true;
                         }
 //                        delCase = DELETEC4;
@@ -750,18 +715,6 @@ public class RBTree<T extends Comparable<T>> {
         return nil;
     }
 
-    public int getInsCase() {
-        return insCase;
-    }
-
-    public void setInsCase(int insCase) {
-        this.insCase = insCase;
-    }
-
-    public int getDelCase() {
-        return delCase;
-    }
-
     public String traverseToString(String rootStr, RedBlackNode root, int num) {
         if (root != nil) {
 //            num = num + 1;
@@ -793,7 +746,7 @@ public class RBTree<T extends Comparable<T>> {
         return mLog;
     }
 
-    public ArrayDeque<Modification> getLogChanges() {
+    public ArrayDeque<LogModification> getLogChanges() {
         return logChanges;
     }
 }

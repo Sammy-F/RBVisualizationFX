@@ -1,6 +1,8 @@
 package visualization;
 
-public class Modification {
+public class LogModification {
+
+    //CASES
 
     public final static int NODEISNIL = 0;   //the node we want to insert does not exist OR is outside the range [0,999]
     public final static int NODEEXISTS = 12;
@@ -22,10 +24,12 @@ public class Modification {
 
     public final static int INVALIDINPUT = 11;
 
+    //Instance variables
+
     private int caseVal;
     private double nodeVal;
 
-    public Modification(int caseVal, double nodeVal) {
+    public LogModification(int caseVal, double nodeVal) {
         this.caseVal = caseVal;
         this.nodeVal = nodeVal;
     }
