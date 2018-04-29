@@ -33,6 +33,25 @@ public class ModificationLog {
     }
 
     /**
+     * Used for modifications that take 2 node values
+     * @param caseVal
+     * @param uVal
+     * @param vVal
+     */
+    public void addChange(int caseVal, double uVal, double vVal) {
+
+        if (modList == null) {
+            System.out.println("Initializing mod log");
+            modList = new ArrayList<>();
+            modList.add(new LogModification(caseVal, uVal, vVal));
+        } else {
+            System.out.println("Adding mod to log");
+            modList.add(new LogModification(caseVal, uVal, vVal));
+        }
+
+    }
+
+    /**
      * Add a LogModification to the modList Array
      * @param mod
      */

@@ -19,14 +19,33 @@ public class LogModification {
     public final static int NOCASE = -1;    //we are not even trying to insert (for insCase) or to delete (for delCase)
     public final static int INVALIDINPUT = 11;
 
+    public final static int TRANSPLANT = 13;
+    public final static int MAKEROOT = 14;
+
+    public final static int RIGHTROTATE = 15;
+    public final static int LEFTROTATE = 16;
+
     //Instance variables
 
     private int caseVal;
     private double nodeVal;
 
+    private double vNodeVal;
+    private double uNodeVal;
+
+    public LogModification(int caseVal, double uNodeVal, double vNodeVal) {
+        this.caseVal = caseVal;
+        this.uNodeVal = uNodeVal;
+        this.vNodeVal = vNodeVal;
+        nodeVal = -1;
+    }
+
     public LogModification(int caseVal, double nodeVal) {
         this.caseVal = caseVal;
         this.nodeVal = nodeVal;
+
+        uNodeVal = -1;
+        vNodeVal = -1;
     }
 
     public String toString() {
@@ -75,6 +94,18 @@ public class LogModification {
                 break;
             case NODEEXISTS:
                 mStr.append("Node already exists.");
+                break;
+            case TRANSPLANT:
+                mStr.append("Transplanting " + uNodeVal + " and " + vNodeVal + ".");
+                break;
+            case MAKEROOT:
+                mStr.append("Make" + nodeVal + " the root");
+                break;
+            case LEFTROTATE:
+                mStr.append("Perform left rotation");
+                break;
+            case RIGHTROTATE:
+                mStr.append("Perform right rotation");
 
         }
 

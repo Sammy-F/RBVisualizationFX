@@ -38,7 +38,7 @@ public class JavaFXTestClass extends Application {
 
         scene.setFill(Color.BEIGE);
 
-        primaryStage.setTitle("A Screen");
+        primaryStage.setTitle("Red-Black Tree Visualization");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

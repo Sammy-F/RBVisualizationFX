@@ -144,6 +144,8 @@ public class RBTree<T extends Comparable<T>> {
      */
     private void leftRotate(RedBlackNode<T> x) {
 
+        mLog.addChange(LogModification.LEFTROTATE, -1);
+
         RedBlackNode<T> y = x.getRight();  //set y
         x.setRight(y.getLeft());            //turn y's left subtree to x's right subtree
 
@@ -182,6 +184,8 @@ public class RBTree<T extends Comparable<T>> {
      * @param x         the current root of the subtree we want to rotate right
      */
     private void rightRotate(RedBlackNode<T> x) {
+
+        mLog.addChange(LogModification.RIGHTROTATE, -1);
 
         RedBlackNode<T> y = x.getLeft();  //set y
         x.setLeft(y.getRight());            //turn y's right subtree to x's left subtree
@@ -448,6 +452,9 @@ public class RBTree<T extends Comparable<T>> {
      */
     private void transplant(RedBlackNode<T> u, RedBlackNode<T> v) {
 
+        System.out.println("Transplanting");
+        mLog.addChange(LogModification.TRANSPLANT, (Double) u.getKey(), (Double) v.getKey());
+
         if (u.getParent() == nil) {
             root = v;
         } else if (u == u.getParent().getLeft()) {
@@ -575,7 +582,6 @@ public class RBTree<T extends Comparable<T>> {
                     leftRotate(x.getParent());
                     w = x.getParent().getRight(); //case one end
 
-//                    delCase = DELETEC1;
                 }
 
                 if (w.getLeft().getColor() == RedBlackNode.BLACK && w.getRight().getColor() == RedBlackNode.BLACK) { //case two start
@@ -587,8 +593,6 @@ public class RBTree<T extends Comparable<T>> {
 
                     w.setColor(RedBlackNode.RED);
                     x = x.getParent(); //case two end
-
-//                    delCase = DELETEC2;
 
                 } else {
                     if (w.getRight().getColor() == RedBlackNode.BLACK) { //case 3 start
