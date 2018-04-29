@@ -3,12 +3,15 @@ package visualization;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.*;
 
@@ -33,6 +36,8 @@ public class RBRedrawVisController implements Initializable {
     private Deque<RBTree> backTreeStack;
     private Deque<RBTree> forwardTreeStack;
 
+    Label infoText;
+
     @FXML
     private TextField tfValue;
 
@@ -45,6 +50,9 @@ public class RBRedrawVisController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
+    @FXML
+    private ScrollPane scrollPane;
+
     /**
      * Handles what to do when go is clicked; differs for insertions/deletions
      * @param event
@@ -56,14 +64,21 @@ public class RBRedrawVisController implements Initializable {
         forwardTreeStack = new ArrayDeque<RBTree>();    //empty any stored forward steps
 
 
-        Double value = Double.parseDouble(tfValue.getText()); //the value entered by user is set for the insert/delete
+        try {
+            Double value = Double.parseDouble(tfValue.getText()); //the value entered by user is set for the insert/delete
 
-        if (insertClicked) {
-            insertNode(value);
-        } else {
-            deleteNode(value);
+            if (insertClicked) {
+                insertNode(value);
+            } else {
+                deleteNode(value);
 
+            }
+        } catch (NumberFormatException e) {
+            mTree.getLog().addChange(Modification.INVALIDINPUT, -1);
+            infoText.setText(mTree.getLog().toString());
         }
+
+        scrollPane.setVvalue(1.0);
 
     }
 
@@ -72,8 +87,14 @@ public class RBRedrawVisController implements Initializable {
     private void handleBack(ActionEvent event) {
         if (backTreeStack.peek() != null) {
             forwardTreeStack.push(mTree.copy());
+
+            mTree.getLogChanges().push(mTree.getLog().removeChange()); //For the log, we handle the Modifications
+            infoText.setText(mTree.getLog().getLogString());
+            scrollPane.setVvalue(1.0);
+
             mTree = backTreeStack.pop();
             updateTree();
+
         }
     }
 
@@ -81,6 +102,12 @@ public class RBRedrawVisController implements Initializable {
     private void handleForward(ActionEvent event) {
         if (forwardTreeStack.peek() != null) {
             backTreeStack.push(mTree.copy());
+
+            Modification oldMod = mTree.getLogChanges().pop();
+            mTree.getLog().addChange(oldMod);
+            infoText.setText(mTree.getLog().getLogString());
+            scrollPane.setVvalue(1.0);
+
             mTree = forwardTreeStack.pop();
             updateTree();
         }
@@ -103,8 +130,15 @@ public class RBRedrawVisController implements Initializable {
         if (0 <= value && value <= 999) {
             mTree.insert(value);
             updateTree();
+            infoText.setText(mTree.getLog().getLogString());
         } else {
-            mTree.setInsCase(RBTree.INSERTC0);
+//            mTree.setInsCase(RBTree.INSERTC0);
+            mTree.getLog().addChange(Modification.NODEISNIL, value);
+            infoText = new Label(mTree.getLog().getLogString());
+            anchorPane.getChildren().remove(infoText);
+            scrollPane.setContent(infoText);
+            anchorPane.getChildren().add(infoText);
+//            infoText.setText(ModificationLog.getLogString());
         }
     }
 
@@ -113,6 +147,10 @@ public class RBRedrawVisController implements Initializable {
         if (0 <= value && value <= 999) {
             mTree.delete(value);
             updateTree();
+            infoText.setText(mTree.getLog().getLogString());
+        } else {
+            mTree.getLog().addChange(Modification.NODEISNIL, value);
+            infoText.setText(mTree.getLog().getLogString());
         }
     }
 
@@ -191,29 +229,29 @@ public class RBRedrawVisController implements Initializable {
 
         //TODO: ALSO, actually make the educational panel...
 
-        if (mTree.getInsCase() == RBTree.INSERTC0 && mTree.getDelCase() == RBTree.NOCASE) {
-            //value either a) already exists in tree, no duplicates allowed! or b) was below 0 or above 999, not allowed!
-        } else if (mTree.getInsCase() == RBTree.NOCASE && mTree.getDelCase() == RBTree.DELETEC0) {
-            //value not in tree, cannot be deleted
-
-
-        } else if (mTree.getInsCase() == RBTree.INSERTC1) {     //inserted node's aunt is red
-
-        } else if (mTree.getInsCase() == RBTree.INSERTC2) {     //inserted node is a right child and its aunt is black
-
-        } else if (mTree.getInsCase() == RBTree.INSERTC3) {     //inserted node is a left child and its aunt is black
-
-
-
-        } else if (mTree.getDelCase() == RBTree.DELETEC1) {     //deleted node's sibling is red
-
-        } else if (mTree.getDelCase() == RBTree.DELETEC2) {     //deleted node's sibling is black; sibling's children both black
-
-        } else if (mTree.getDelCase() == RBTree.DELETEC3) {     //deleted node's sibling is black; sibling's left child red, right black
-
-        } else if (mTree.getDelCase() == RBTree.DELETEC4) {     //deleted node's sibling is black; sibling's right child red, left black
-
-        }
+//        if (mTree.getInsCase() == RBTree.INSERTC0 && mTree.getDelCase() == RBTree.NOCASE) {
+//            //value either a) already exists in tree, no duplicates allowed! or b) was below 0 or above 999, not allowed!
+//        } else if (mTree.getInsCase() == RBTree.NOCASE && mTree.getDelCase() == RBTree.DELETEC0) {
+//            //value not in tree, cannot be deleted
+//
+//
+//        } else if (mTree.getInsCase() == RBTree.INSERTC1) {     //inserted node's aunt is red
+//
+//        } else if (mTree.getInsCase() == RBTree.INSERTC2) {     //inserted node is a right child and its aunt is black
+//
+//        } else if (mTree.getInsCase() == RBTree.INSERTC3) {     //inserted node is a left child and its aunt is black
+//
+//
+//
+//        } else if (mTree.getDelCase() == RBTree.DELETEC1) {     //deleted node's sibling is red
+//
+//        } else if (mTree.getDelCase() == RBTree.DELETEC2) {     //deleted node's sibling is black; sibling's children both black
+//
+//        } else if (mTree.getDelCase() == RBTree.DELETEC3) {     //deleted node's sibling is black; sibling's left child red, right black
+//
+//        } else if (mTree.getDelCase() == RBTree.DELETEC4) {     //deleted node's sibling is black; sibling's right child red, left black
+//
+//        }
     }
 
     private void initStuff() {
@@ -224,6 +262,12 @@ public class RBRedrawVisController implements Initializable {
 
         circleList = new ArrayList<>();
         connectorList = new ArrayList<>();
+
+        infoText = new Label();
+        infoText.setText("");
+        infoText.setWrapText(true);
+        scrollPane.setContent(infoText);
+        scrollPane.setVvalue(1.0);
     }
 
     @FXML
