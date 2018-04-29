@@ -38,6 +38,8 @@ public class RBRedrawVisController implements Initializable {
 
     private RBTree.TreeChangedListener treeListener;
 
+    private boolean doneAnimate = false;
+
     Label infoText;
 
     @FXML
