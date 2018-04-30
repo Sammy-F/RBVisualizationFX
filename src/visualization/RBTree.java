@@ -411,7 +411,7 @@ public class RBTree<T extends Comparable<T>> {
         try {
             mLog.addChange(CaseMod.TRANSPLANT, (Double) u.getKey(), (Double) v.getKey());
         } catch (NullPointerException e) {
-            mLog.addChange(CaseMod.MAKEROOT, -1);
+            mLog.addChange(CaseMod.MAKEROOT, (Double) v.getKey());
         }
 
         if (u.getParent() == nil) {
