@@ -3,7 +3,9 @@ package visualization;
 import java.util.ArrayList;
 
 /**
- * This class stores our list of LogModifications and handles
+ * Authors: Samantha Fritsche and Katya Gurgel
+ *
+ * This class stores our list of CaseMods and handles
  * formatting them into a String to display in our ScrollPane
  */
 public class CaseModLog {
@@ -20,8 +22,7 @@ public class CaseModLog {
     //PUBLIC METHODS
 
     /**
-     * I mostly added this so that we can implement some kind of animation  (i.e. highlighting text).
-     * For now, the new LogModifications basically just pops up, like the tree.
+     * Return the ArrayList of CaseMods
      * @return
      */
     public ArrayList<CaseMod> getLogArray() {
@@ -33,7 +34,7 @@ public class CaseModLog {
     }
 
     /**
-     * Used for modifications that take 2 node values
+     * Add a CaseMod that requires two values (i.e transplant)
      * @param caseVal
      * @param uVal
      * @param vVal
@@ -41,18 +42,16 @@ public class CaseModLog {
     public void addChange(int caseVal, double uVal, double vVal) {
 
         if (modList == null) {
-            System.out.println("Initializing mod log");
             modList = new ArrayList<>();
             modList.add(new CaseMod(caseVal, uVal, vVal));
         } else {
-            System.out.println("Adding mod to log");
             modList.add(new CaseMod(caseVal, uVal, vVal));
         }
 
     }
 
     /**
-     * Add a CaseMod to the modList Array
+     * Add an existing CaseMod to the modList Array
      * @param mod
      */
     public void addChange(CaseMod mod) {
@@ -70,38 +69,23 @@ public class CaseModLog {
      */
     public void addChange(int caseVal, double nodeVal) {
         if (modList == null) {
-            System.out.println("Initializing mod log");
+//            System.out.println("Initializing mod log");
             modList = new ArrayList<>();
             modList.add(new CaseMod(caseVal, nodeVal));
         } else {
-            System.out.println("Adding mod to log");
+//            System.out.println("Adding mod to log");
             modList.add(new CaseMod(caseVal, nodeVal));
         }
     }
 
     /**
-     * Remove and return the lest CaseMod in modList
-     * @return CaseMod oldMod
-     */
-    public CaseMod removeChange() {
-        if (modList == null) {
-            modList = new ArrayList<>();
-            return null;
-        } else if (modList.size() > 0) {
-            return modList.remove(modList.size()-1);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Converts the CaseModLog into a String that can be read into a
-     * graphical representation.
+     * Converts the CaseModLog into a String representation that can be read into a
+     * graphical representation (i.e. a Label).
      * @return
      */
     public String getLogString() {
 
-        System.out.println(modList.toString());
+//        System.out.println(modList.toString());
 
         if (modList != null && modList.size() > 0) {
             if (strLog == null) {
@@ -117,12 +101,12 @@ public class CaseModLog {
                         tCaseMod.getCaseVal() == CaseMod.NOCASE ||
                         tCaseMod.getCaseVal() == CaseMod.INVALIDINPUT) {
 
-                    System.out.println(tCaseMod.toString());
+//                    System.out.println(tCaseMod.toString());
                     strLog.append(changeNum + ": " + tCaseMod.toString() + "\n");
                     changeNum++;
 
                 } else {
-                    System.out.println(tCaseMod.toString());
+//                    System.out.println(tCaseMod.toString());
                     strLog.append("   " + tCaseMod.toString() + "\n");
                 }
             }

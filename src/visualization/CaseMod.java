@@ -2,6 +2,9 @@ package visualization;
 
 /**
  * Authors: Samantha Fritsche and Katya Gurgel
+ *
+ * Class that represents a modification made to the theRBTree. Instantiated using a case int
+ * and 1 or 2 nodes.
  */
 public class CaseMod {
 
@@ -36,6 +39,12 @@ public class CaseMod {
     private double vNodeVal;
     private double uNodeVal;
 
+    /**
+     * Construct a CaseMod that describes a single node.
+     * @param caseVal
+     * @param uNodeVal
+     * @param vNodeVal
+     */
     public CaseMod(int caseVal, double uNodeVal, double vNodeVal) {
         this.caseVal = caseVal;
         this.uNodeVal = uNodeVal;
@@ -43,6 +52,11 @@ public class CaseMod {
         nodeVal = -1;
     }
 
+    /**
+     * Construct a CaseMod that describes two nodes.
+     * @param caseVal
+     * @param nodeVal
+     */
     public CaseMod(int caseVal, double nodeVal) {
         this.caseVal = caseVal;
         this.nodeVal = nodeVal;
@@ -51,6 +65,11 @@ public class CaseMod {
         vNodeVal = -1;
     }
 
+    /**
+     * Return a String representation of the CaseMod based on the caseVal
+     * and nodeVal(s), if applicable.
+     * @return
+     */
     public String toString() {
 
         StringBuilder mStr = new StringBuilder();
