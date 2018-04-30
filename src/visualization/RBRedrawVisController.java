@@ -77,8 +77,8 @@ public class RBRedrawVisController implements Initializable {
 
             }
         } catch (NumberFormatException e) {
-            mTree.getLog().addChange(CaseMod.INVALIDINPUT, -1);
-            infoText.setText(mTree.getLog().getLogString());
+//            mTree.getLog().addChange(CaseMod.INVALIDINPUT, -1);
+            infoText.setText("Invalid input. Please insert an numeric value between 0 and 999.");
         }
 
         scrollPane.setVvalue(1.0);
