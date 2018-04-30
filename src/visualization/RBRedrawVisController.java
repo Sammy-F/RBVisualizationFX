@@ -16,6 +16,8 @@ import java.util.*;
 
 /**
  * Creates RB Tree Visualization by redrawing tree each time.
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
  */
 public class RBRedrawVisController implements Initializable {
 

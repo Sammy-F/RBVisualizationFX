@@ -17,6 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * A class for handling the logic of our BST visualization program.
+ *
+ * NOTE: THIS CLASS IS VERY BUGGY AND WE ONLY MADE THIS AS AN EXPERIMENT BEFORE JUMPING INTO OUR RBT CODE.
+ *
+ * We could have theoretically deleted this, since it was buggy after all, but it was a significant amount of
+ * work to create, and it was our first step, so we kept it.
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
+ */
 public class BSTVisController implements Initializable {
 
     private final int DEFAULT_RADIUS = 30;
@@ -93,64 +103,6 @@ public class BSTVisController implements Initializable {
     }
 
 
-//    /**
-//     * Modifies mRoot, which initially should be the first occurrence of the
-//     * node, found using findFirstNode, to recursively find the deepest occurrence of the value,
-//     * if there is a duplicate
-//     * @param value
-//     * @param mRoot
-//     */
-//    private void findDeepestNode(Double value, Node mRoot) {
-//
-//        System.out.println("modified");
-//
-//        if (mRoot.getValue() == value) {
-//            if (mRoot.getLevel() > tobeDeleted.getLevel()) {
-//                tobeDeleted = mRoot;
-//            }
-//        }
-//        if (mRoot.hasLeftChild() && mRoot.hasRightChild()) {
-//            findDeepestNode(value, mRoot.getLeftChild());
-//            findDeepestNode(value, mRoot.getRightChild());
-//        } else if (mRoot.hasLeftChild()) {
-//            findDeepestNode(value, mRoot.getLeftChild());
-//        } else if (mRoot.hasRightChild()) {
-//            findDeepestNode(value, mRoot.getRightChild());
-//        }
-//    }
-//
-//    /**
-//     * Find the first node with the given value
-//     * @param value
-//     */
-//    private Node findFirstNode(Double value, Node root) {
-//
-//        // This causes us to return as soon as we find a valid Node
-//        if (root.getValue() == value) {
-//            return root;
-//        } else if (root.hasLeftChild() && root.hasRightChild()) {
-//            if (findFirstNode(value, root.getLeftChild()) != null) {
-//                return findFirstNode(value, root.getLeftChild());
-//            } else if (findFirstNode(value, root.getRightChild()) != null) {
-//                return findFirstNode(value, root.getRightChild());
-//            } else {
-//                return null;
-//            }
-//        } else if (root.hasLeftChild()) {
-//            if (findFirstNode(value, root.getLeftChild()) != null) {
-//                return findFirstNode(value, root.getLeftChild());
-//            }
-//        } else if (root.hasRightChild()) {
-//            if (findFirstNode(value, root.getRightChild()) != null) {
-//                return findFirstNode(value, root.getRightChild());
-//            }
-//        } else {
-//            return null;
-//        }
-//
-//        return null;
-//    }
-
     //I think the function below finds the same thing as the two above combined, and also without recursion, which
     //may be less efficient (though do we really care about efficiency? not a lot...) and takes less space
     /**
@@ -201,7 +153,7 @@ public class BSTVisController implements Initializable {
      * @param nodeToDelete
      */
     private void deleteNode(VisNode nodeToDelete) {
-        //TODO: I think there is stuff just buggy in general, even when there is a single child, because I can get
+        //I think there is stuff just buggy in general, even when there is a single child, because I can get
         //weirddd things to happen with a tree containing only parents of single children
 
         if (!nodeToDelete.hasRightChild() && !nodeToDelete.hasLeftChild()) { //Check if the node has no children
@@ -216,8 +168,7 @@ public class BSTVisController implements Initializable {
 
             deleteNodeWithRightChild(nodeToDelete);
 
-        } else { //Case where the node has two children (shit!)
-            //TODO: Deletion with two nodes.
+        } else { //Case where the node has two children
             System.out.println("I have two children and don't currently do anything.");
             deleteNodeWithTwoChildren();
         }
@@ -311,20 +262,6 @@ public class BSTVisController implements Initializable {
 
         } else { //the node must be the root
 
-//            root = nodeToDelete.getLeftChild(); //TODO: Add handling for root case in node logic
-//            anchorPane.getChildren().remove(nodeToDelete.getCircle());
-//            anchorPane.getChildren().remove(nodeToDelete.getLCToChild());
-//            nodeToDelete.getLeftChild().setCToParent(null);
-//            nodeToDelete.getLeftChild().setIsLeftChild(false);
-//            nodeToDelete.getLeftChild().notifyConnectorsUpdated();
-
-//            anchorPane.getChildren().remove(nodeToDelete.getCircle());
-//            anchorPane.getChildren().remove(nodeToDelete.getLCToChild());
-//            root = lc;
-//            root.setCToParent(null);
-//            root.setIsLeftChild(false);
-//            root.notifyConnectorsUpdated();
-
             anchorPane.getChildren().remove(nodeToDelete.getCircle());
             anchorPane.getChildren().remove(nodeToDelete.getLCToChild());
 
@@ -346,7 +283,7 @@ public class BSTVisController implements Initializable {
             root.getCircle().setInsertionX(ix);
             root.getCircle().setInsertionX(xs);
 
-            root.notifyConnectorsUpdated();  //TODO: CHECK if notifyConnectorsUpdated method MAYBE has bugs? I didn't get to that yet...
+            root.notifyConnectorsUpdated();
         }
 
         reduceTreeLevelsByOne(lc);
@@ -419,23 +356,6 @@ public class BSTVisController implements Initializable {
 
         } else { //the node must be the root
 
-            //from the left child method, for reference:
-//            root = nodeToDelete.getLeftChild(); //TODO: Add handling for root case in node logic
-//            anchorPane.getChildren().remove(nodeToDelete.getCircle());
-//            anchorPane.getChildren().remove(nodeToDelete.getLCToChild());
-//            nodeToDelete.getLeftChild().setCToParent(null);
-//            nodeToDelete.getLeftChild().setIsLeftChild(false);
-//            nodeToDelete.getLeftChild().notifyConnectorsUpdated();
-
-            //from right child method below
-//            root = nodeToDelete.getRightChild(); //TODO: Add handling for root case in node logic
-//            anchorPane.getChildren().remove(nodeToDelete.getCircle());
-//            anchorPane.getChildren().remove(nodeToDelete.getRCToChild());
-//            nodeToDelete.getRightChild().setCToParent(null);
-//            nodeToDelete.getRightChild().setIsRightChild(false);
-//            nodeToDelete.getRightChild().notifyConnectorsUpdated();
-
-             //TODO: Add handling for root case in node logic
             anchorPane.getChildren().remove(nodeToDelete.getCircle());
             anchorPane.getChildren().remove(nodeToDelete.getRCToChild());
 
@@ -459,83 +379,12 @@ public class BSTVisController implements Initializable {
 
             root.notifyConnectorsUpdated();
 
-            //TODO: CHECK, DOES THIS LOOK GOOD TO YOU? NOTE THAT I COPIED THIS OVER TO THE HAS LEFT CHILD METHOD ABOVE
-
-            //I finally got it to maybe not bug out every time you remove a root!!!
-
-//            rc.setCToParent(null);
-//            rc.setIsRightChild(false);
-//            rc.notifyConnectorsUpdated();
         }
 
         reduceTreeLevelsByOne(rc);
 
     }
 
-    //WHY DID I COMMENT: sorry I got genuinely confused by the differences between the function below and the one above,
-    //and I had fixed a few things in the left child method, I made a new function by copying that one and refactoring
-//    /**
-//     * Method for handling deletion of a node with a right child only
-//     * @param nodeToDelete
-//     */
-//    private void deleteNodeWithRightChild(Node nodeToDelete) {
-//
-////        System.out.println("The node is a right child: " + nodeToDelete.isRightChild());
-////        System.out.println("The node is a left child: " + nodeToDelete.isLeftChild());
-////        System.out.println("The node has a right child: " + nodeToDelete.hasRightChild());
-////        System.out.println("The node has a left child: " + nodeToDelete.hasLeftChild());
-//
-//        Node rc = nodeToDelete.getRightChild(); //we know it has a left child, this var makes code more concise
-//
-//        anchorPane.getChildren().remove(nodeToDelete.getCircle());
-//
-////        System.out.println("I have a right child.");
-//
-//        if (nodeToDelete.isLeftChild() || nodeToDelete.isRightChild()) {
-//
-//            Node p = nodeToDelete.getParent(); //we know it has a parent
-//
-//            //remove the node's parent connector from the scene
-////            anchorPane.getChildren().remove(rc.getCToParent()); //original, but I think this is buggy/at least not parallel to the deleteNodeWithLeftChild method
-//            anchorPane.getChildren().remove(nodeToDelete.getCToParent()); //got confused, commented whole thing, easier to copy other function
-//
-//            if (nodeToDelete.isLeftChild()) {
-//                anchorPane.getChildren().remove(nodeToDelete.getParent().getLCToChild());
-//                Connector connector = new Connector(nodeToDelete.getParent().getCircle(), nodeToDelete.getRightChild().getCircle());
-//
-//                nodeToDelete.getRightChild().setCToParent(connector);
-//                nodeToDelete.getParent().setLCToChild(connector);
-//                nodeToDelete.getRightChild().notifyConnectorsUpdated();
-//                nodeToDelete.getRightChild().setIsLeftChild(true);
-//                nodeToDelete.getRightChild().setIsRightChild(false);
-//                nodeToDelete.getParent().setLeftChild(nodeToDelete.getRightChild());
-//                nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), true);
-//                anchorPane.getChildren().add(connector);
-//
-//            } else if (nodeToDelete.isRightChild()) {
-//
-//                anchorPane.getChildren().remove(nodeToDelete.getParent().getRCToChild());
-//                Connector connector = new Connector(nodeToDelete.getParent().getCircle(), nodeToDelete.getRightChild().getCircle());
-//                nodeToDelete.getRightChild().setCToParent(connector);
-//                nodeToDelete.getParent().setRCToChild(connector);
-//                nodeToDelete.getRightChild().notifyConnectorsUpdated();
-//                nodeToDelete.getParent().setRightChild(nodeToDelete.getRightChild());
-//                nodeToDelete.getRightChild().setParent(nodeToDelete.getParent(), false);
-//                anchorPane.getChildren().add(connector);
-//            }
-//
-//        } else {
-//            root = nodeToDelete.getRightChild(); //TODO: Add handling for root case in node logic
-//            anchorPane.getChildren().remove(nodeToDelete.getCircle());
-//            anchorPane.getChildren().remove(nodeToDelete.getRCToChild());
-//            nodeToDelete.getRightChild().setCToParent(null);
-//            nodeToDelete.getRightChild().setIsRightChild(false);
-//            nodeToDelete.getRightChild().notifyConnectorsUpdated();
-//        }
-//
-//        reduceTreeLevelsByOne(nodeToDelete.getRightChild());
-//
-//    }
 
     /**
      * Remove a node with two children
@@ -548,7 +397,6 @@ public class BSTVisController implements Initializable {
 
         // The substitute node can't have a left child, so it can only have a right child or no children
         if (sub.hasRightChild()) {
-            //TODO: BETTER SOLUTION
 
             tobeDeleted.setValue(sub.getValue()); //instead of deleting, just replace value
             tobeDeleted.getCircle().getThisText().setText(Double.toString(tobeDeleted.getValue()));
@@ -590,7 +438,6 @@ public class BSTVisController implements Initializable {
                 sub.getParent().setLeftChild(null);
             } else {                                    //sub is the min of the right subtree, so if it is a right child, it is the only node in the subtree
                 sub.getParent().setRCToChild(null);
-//                sub.setHasRightChild(false);         //BUG????????????????????????????????????
                 sub.getParent().setHasRightChild(false);
                 sub.getParent().setRightChild(null);
             }
@@ -654,12 +501,8 @@ public class BSTVisController implements Initializable {
         if (!toReduce.hasLeftChild() && !toReduce.hasRightChild()) {
         }
         else if (toReduce.hasLeftChild() && !toReduce.hasRightChild()) {
-//            root.getLeftChild().setCToParent(root.getCToParent());
-//            root.getCToParent().setChildNode(root.getLeftChild().getCircle());
             reduceTreeLevelsByOne(toReduce.getLeftChild());
         } else if (toReduce.hasRightChild() && !toReduce.hasLeftChild()) {
-//            root.getRightChild().setCToParent(root.getCToParent());
-//            root.getCToParent().setChildNode(root.getRightChild().getCircle());
             reduceTreeLevelsByOne(toReduce.getRightChild());
         } else {
             reduceTreeLevelsByOne(toReduce.getLeftChild());
@@ -674,7 +517,7 @@ public class BSTVisController implements Initializable {
     private void insertNode(Double value) {
 
         VisNode newNode;
-        double insertionX = INIT_INSERTIONX; //ideally this would be the center of the screen
+        double insertionX = INIT_INSERTIONX;
         double xSpacing = INIT_XSPACING;
 
         boolean left = false;
@@ -698,7 +541,6 @@ public class BSTVisController implements Initializable {
                 System.out.println("Insertion value = " + value);
                 System.out.println("Check value = " + n.getValue());
                 if (value < n.getValue()) {
-//                        insertionX -= xSpacing/(n.getLevel()+1);  //need a way so kids don't overlap in very full tree
                     insertionX -= xSpacing;
                     xSpacing /= 2;
                     if (n.hasLeftChild()) {
@@ -709,7 +551,6 @@ public class BSTVisController implements Initializable {
                         left = true;
                     }
                 } else {
-//                        insertionX += xSpacing/Math.pow((n.getLevel()+1),2);
                     insertionX += xSpacing;
                     xSpacing /= 2;
                     if (n.hasRightChild()) {
@@ -736,7 +577,6 @@ public class BSTVisController implements Initializable {
             }
         }
 
-        //TODO: Correct logic and remove this testing blurb.
         System.out.println("The root is a right child: " + root.isRightChild());
         System.out.println("The root is a left child: " + root.isLeftChild());
         System.out.println("The root has a right child: " + root.hasRightChild());
@@ -755,26 +595,9 @@ public class BSTVisController implements Initializable {
         NodeCircle newNodeCircle = new NodeCircle(DEFAULT_RADIUS, newNode, insertionX, xSpacing);
         newNode.setCircle(newNodeCircle);
 
-//            newNodeCircle.setAlignment(Pos.CENTER);
-//            newNodeCircle.setPadding(new Insets(randomInt, 20, 20, insertionX));
-//            newNodeCircle.setPadding(new Insets(newNodeCircle.getThisNode().getLevel()*20, 20, 20, insertionX));
-
-//        newNodeCircle.setPadding(new Insets(newNode.getLevel()*40+20, 20, 20, insertionX)); //added this to the NodeCircle initialization instead
-
-//            insertionX += 60;
-
         anchorPane.getChildren().add(newNodeCircle);
 
-//            nodeList.add(newNodeCircle);
-//
-//            for (int i = 0; i < nodeList.size(); i++) {
-//                if (i%2 == 0 && (i != nodeList.size()-1)) {
-//                    Connector newConnector = new Connector(nodeList.get(i), nodeList.get(i+1));
-//                    anchorPane.getChildren().add(newConnector);
-//                    connectorList.add(newConnector);
-//                }
-//            }
-        //new way of adding connectors:
+        //adding connectors:
         if (newNode.isLeftChild()) {
             Connector newConnector = new Connector(newNode.getParent().getCircle(), newNode.getCircle());
             newNode.getParent().setLCToChild(newConnector);
@@ -791,6 +614,11 @@ public class BSTVisController implements Initializable {
 
     }
 
+    /**
+     * Sets some instance variables when insert is clicked
+     *
+     * @param event
+     */
     @FXML
     private void insertClicked(ActionEvent event) {
         radioInsert.setSelected(true);
@@ -799,6 +627,11 @@ public class BSTVisController implements Initializable {
         removeClicked = false;
     }
 
+    /**
+     * Sets some instance variables when remove is clicked
+     *
+     * @param event
+     */
     @FXML
     private void removeClicked(ActionEvent event) {
         radioRemove.setSelected(true);
@@ -807,6 +640,11 @@ public class BSTVisController implements Initializable {
         insertClicked = false;
     }
 
+    /**
+     * Intializes the visualization controller
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //        nodeList = new ArrayList<>();

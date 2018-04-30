@@ -12,6 +12,8 @@ import java.text.NumberFormat;
 
 /**
  * Handles the graphical parts of a node
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
  */
 public class RBNodeCircle<T extends Comparable> extends StackPane {
 
@@ -29,6 +31,9 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
 
     NumberFormat formatter;
 
+    /**
+     * Constructor that does not set anything
+     */
     public RBNodeCircle() {}
 
     /**
@@ -42,13 +47,7 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
         this.insertionX = insertionX;
         this.insertionY = insertionY;
 
-//        if ((double)value % .1 > 0) {
         formatter = new DecimalFormat("#0.0");
-//        } else {
-//            formatter = new DecimalFormat("#0");
-//        }
-
-
 
 //        this.value = value.toString();
         this.value = formatter.format(value);
@@ -56,11 +55,11 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
         this.color = color;
         radius = initRadius;
 
-        if (color == RedBlackNode.BLACK) {
+//        if (color == RedBlackNode.BLACK) {
 //            System.out.println("Node is black");
-        } else {
+//        } else {
 //            System.out.println("Node is red");
-        }
+//        }
 
         initCircle(initRadius);
         initText(initRadius);
@@ -110,9 +109,11 @@ public class RBNodeCircle<T extends Comparable> extends StackPane {
             thisCircle.setFill(Color.RED);
         }
 
-//        thisCircle.setFill(Color.TRANSPARENT);
-
     }
+
+    /*
+    Public Getters:
+     */
 
     public String getValue() { return value; }
 

@@ -8,6 +8,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Red-Black Tree Visualization Application class
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
+ */
 public class RBJavaFXApplication extends Application {
 
     private final int WINDOW_WIDTH = 1000;
@@ -17,20 +22,19 @@ public class RBJavaFXApplication extends Application {
 
     private Parent root;
 
+    /**
+     * Code for application.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /**
-         * Code for application.
-         */
         root = FXMLLoader.load(getClass().getResource("visualization_region2.fxml"));
 
-//        childList = content.getChildren();
 
         Scene scene = new Scene(root);
 
         scene.setFill(Color.BEIGE);
 
-        primaryStage.setTitle("A Screen");
+        primaryStage.setTitle("Red-Black Tree Visualization");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

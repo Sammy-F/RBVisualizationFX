@@ -14,7 +14,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
- * class that runs shit. yay.
+ * Binary Search Tree Visualization class
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
  */
 public class JavaFXTestClass extends Application {
 
@@ -32,13 +34,11 @@ public class JavaFXTestClass extends Application {
          */
         root = FXMLLoader.load(getClass().getResource("visualization_region.fxml"));
 
-//        childList = content.getChildren();
-
         Scene scene = new Scene(root);
 
         scene.setFill(Color.BEIGE);
 
-        primaryStage.setTitle("Red-Black Tree Visualization");
+        primaryStage.setTitle("Binary Search Tree Visualization");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

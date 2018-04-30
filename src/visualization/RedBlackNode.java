@@ -1,25 +1,32 @@
 package visualization;
 
 /**
- * Created by katya on 4/24/2018.
+ * Class for type T Red-Black Tree Nodes
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
  */
 public class RedBlackNode<T extends Comparable<T>> {
 
     public static final int BLACK = 0;          //representation of the two colors
     public static final int RED = 1;
 
-    private int color;
+    private int color;  //node color
 
-    private T key;
+    private T key;  //key value
 
-    private RedBlackNode<T> left;
+    private RedBlackNode<T> left;   //left child node
 
-    private RedBlackNode<T> right;
+    private RedBlackNode<T> right;  //right child node
 
-    private RedBlackNode<T> parent;
+    private RedBlackNode<T> parent; //parent node
 
     private NodeCircle circle; //graphical component!
 
+    /**
+     * Public constructor for RedBlackNode that does not take a key and sets every parent/child to null
+     *
+     * (Used to create NIL)
+     */
     public RedBlackNode(){
         color = BLACK;
         parent = null;
@@ -27,6 +34,12 @@ public class RedBlackNode<T extends Comparable<T>> {
         right = null;
     }
 
+    /**
+     * Public constructor for RedBlackNode that does take the key and sets the key of this node as well as
+     * setting parent/children to null
+     *
+     * @param key
+     */
     public RedBlackNode(T key){
         this();
         this.key = key;
@@ -83,6 +96,14 @@ public class RedBlackNode<T extends Comparable<T>> {
         this.right = right;
     }
 
+    /**
+     * Getter for the parent node of a node.
+     *
+     * NOTE: THIS MAY RETURN NIL! THERE MUST BE A CHECK FOR THIS
+     * WHENEVER CALLING THIS GETTER!!!!!! (see rbt class for this!)
+     *
+     * @return          the parent node of this node
+     */
     public RedBlackNode<T> getParent() {
         return parent;
     }
@@ -99,6 +120,11 @@ public class RedBlackNode<T extends Comparable<T>> {
         this.circle = circle;
     }
 
+    /**
+     * Public toString for an individual node
+     *
+     * @return
+     */
     public String toString() {
         String colorStr;
         if (color == BLACK) {

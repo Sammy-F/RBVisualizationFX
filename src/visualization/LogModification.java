@@ -1,5 +1,8 @@
 package visualization;
 
+/**
+ * Authors: Samantha Fritsche and Katya Gurgel
+ */
 public class LogModification {
 
     //CASES

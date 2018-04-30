@@ -4,7 +4,12 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 /**
- * Red-Black Tree
+ * Red-Black Tree with all your typical red-black tree shenanigans as well as some extra stuff to inform our graphics
+ * controller class
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
+ *
+ * Referenced: Cormen, Thomas H., et al. Introduction to Algorithms. 3rd ed., MIT Press.
  */
 public class RBTree<T extends Comparable<T>> {
 

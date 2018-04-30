@@ -10,14 +10,14 @@ import javafx.scene.text.Text;
 
 
 /**
- * Handles the graphical parts of a node
+ * Handles the graphical parts of a node (used for BST visualization)
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
  */
 public class NodeCircle extends StackPane {
 
-    //TODO: MAJOR IMPORTANT!!!!!!!!!!!! NEED TO REFACTOR FOR DIFFERENT NODE CLASS. ALSO, LATER WE MAY WANT TO CUT EXCESS STUFF, SINCE WE DON'T DO AS MUCH. WAIT WE STILL NEED THIS FOR BSTVISCONTROLLER. OMG I AM SORRY. MAYBE WE CAN JUST MAKE A COPY OF THIS CLASS FOR THE RBT DRAWING STUFF. IF WE GET SUPER AMBITIOUS WE COULD MAKE BOTH EXTEND THE SAME ABSTRACT CLASS OR SOMETHING WHO KNOWS. SORRY, I MESSED UP SOME CODE...
-
     private final int HEIGHT_SCALAR = 150;  //the height difference between nodes on different levels
-    private final int SHIFT_CONSTANT = 50;  //WHAT IS THIS FOR? ??????? (all caps so I won't forget this Q)
+    private final int SHIFT_CONSTANT = 50;
 
     private VisNode thisNode; //the node tied to this graphical representation
 
@@ -27,15 +27,15 @@ public class NodeCircle extends StackPane {
     private double radius; //radius of the circle for node
 
     double insertionX; //x value where the node will be displayed, this is tied to the level and left/rightness of node
-    double xSpacing;  //THIS TOO, WHAT IS THIS FOR? ??????????????
+    double xSpacing;
 
     /**
      * Constructor for the NodeCircle that sets the node, insertionX, xSpacing, and radius; initializes the circle and
      * text in the circle;
-     * @param initRadius
-     * @param thisNode
-     * @param insertionX
-     * @param xSpacing
+     * @param initRadius        radius of node
+     * @param thisNode          the node associated with this graphical element
+     * @param insertionX        the x value of the node's graphical element
+     * @param xSpacing          the x spacing
      */
     public NodeCircle(double initRadius, VisNode thisNode, double insertionX, double xSpacing) {
 
@@ -47,8 +47,6 @@ public class NodeCircle extends StackPane {
         initCircle(initRadius);
         initText(initRadius);
 
-//        super.setLayoutX(initX - initRadius);
-//        super.setLayoutY(initY - initRadius);
 
         getChildren().addAll(thisCircle, thisText);
         setAlignment(thisCircle, Pos.CENTER);
@@ -91,8 +89,6 @@ public class NodeCircle extends StackPane {
         } else {
             thisCircle.setFill(Color.RED);
         }
-
-//        thisCircle.setFill(Color.TRANSPARENT);
 
     }
 

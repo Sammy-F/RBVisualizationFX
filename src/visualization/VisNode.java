@@ -1,11 +1,13 @@
 package visualization;
 
 /**
- * Handles a Node Object
+ * Handles a Node Object (For the BSTVisController class)
  *
- * NOTE: I RENAMED THIS BECAUSE I DIDN'T WANT TO ACCIDENTALLY USE NODE INSTEAD OF REDBLACKNODE, VISNODE SEEMED MORE
+ * NOTE: RENAMED THIS BECAUSE I DIDN'T WANT TO ACCIDENTALLY USE NODE INSTEAD OF REDBLACKNODE, VISNODE SEEMED MORE
  * DISTINCTIVE AND IT DOES CONTAIN SOME VISUAL INFO WE DON'T NEED IT TO HAVE ANYMORE FOR RBTREE, FEEL FREE TO CHANGE
  * THE NAME
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
  */
 public class VisNode implements Comparable<VisNode> {
 
@@ -55,6 +57,9 @@ public class VisNode implements Comparable<VisNode> {
      * Public methods
      */
 
+    /**
+     * Notifies any connectors that need updating
+     */
     public void notifyConnectorsUpdated() {
         if (cToParent != null) {
             cToParent.notifyNodesUpdated();
@@ -162,6 +167,12 @@ public class VisNode implements Comparable<VisNode> {
     public void setHasRightChild(boolean hasRightChild) { this.hasRC = hasRightChild; }
 
 
+    /**
+     * Compare to method to allow comparisons of two nodes
+     *
+     * @param other
+     * @return
+     */
     @Override
     public int compareTo(VisNode other) {
         if (this.getValue() < other.getValue()) {
@@ -174,6 +185,11 @@ public class VisNode implements Comparable<VisNode> {
         }
     }
 
+    /**
+     * Public toString method
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return Double.toString(this.getValue());

@@ -12,15 +12,21 @@ import java.lang.Math;
 
 
 /**
- * Handles the connectors between nodes
+ * Handles the connectors between nodes for the Red-Black Tree visualization
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
  */
 public class RBConnector extends Line {
 
     private RBNodeCircle parentNode;
     private RBNodeCircle childNode;
 
-//    public static final int maxConnectors = 8; //maximum before connectors look bad
-
+    /**
+     * Public constructor for an RBConnector
+     *
+     * @param parentNode        the parent node the connector touches
+     * @param childNode         the child node the connector touches
+     */
     public RBConnector(RBNodeCircle parentNode, RBNodeCircle childNode) {
 
         this.parentNode = parentNode;
@@ -35,7 +41,6 @@ public class RBConnector extends Line {
      */
     private void initConnector() {
 
-//        setStrokeWidth(parentNode.getThisCircle().getStroke());
         setStrokeWidth(2);
 
         Insets childInsets = childNode.getInsets();
@@ -62,68 +67,6 @@ public class RBConnector extends Line {
             setEndX(childInsets.getLeft() + childNode.getThisCircle().getRadius());
             setEndY(childInsets.getTop());
         } catch (NullPointerException e) {}
-
-        //from the side:
-//        if (childNode.getThisNode().isLeftChild()) {
-//            setStartX(parentInsets.getLeft());
-//            setEndX(childInsets.getLeft() + childNode.getRadius());
-//
-//            setStartY(parentInsets.getTop() + parentNode.getRadius());
-//            setEndY(childInsets.getTop());
-//        }
-//
-//        if (childNode.getThisNode().isRightChild()) {
-//            setStartX(parentInsets.getLeft() + parentNode.getRadius()*2);
-//            setEndX(childInsets.getLeft() + childNode.getRadius());
-//
-//            setStartY(parentInsets.getTop() + parentNode.getRadius());
-//            setEndY(childInsets.getTop());
-//        }
-
-
-        //from the side of the bottom
-//        if (childNode.getThisNode().isLeftChild()) {
-//            setStartX(parentInsets.getLeft() + parentNode.getRadius() - parentNode.getRadius()*Math.cos(Math.PI/3));
-//            setEndX(childInsets.getLeft() + childNode.getRadius());
-//
-//            setStartY(parentInsets.getTop() + parentNode.getRadius() + parentNode.getRadius()*Math.sin(Math.PI/3));
-//            setEndY(childInsets.getTop());
-//        }
-//
-//        if (childNode.getThisNode().isRightChild()) {
-//            setStartX(parentInsets.getLeft() + parentNode.getRadius() + parentNode.getRadius()*Math.cos(Math.PI/3));
-//            setEndX(childInsets.getLeft() + childNode.getRadius());
-//
-//            setStartY(parentInsets.getTop() + parentNode.getRadius() + parentNode.getRadius()*Math.sin(Math.PI/3));
-//            setEndY(childInsets.getTop());
-//        }
-
-
-        //adjust angle for lower depths so it doesn't look weird
-//        double num = maxConnectors - childNode.getThisNode().getLevel();
-//
-//        if (num < 1) {
-//            num = 1;
-//        }
-//        double angleX = Math.cos(Math.PI/(2*num));
-//        double angleY = Math.sin(Math.PI/(2*num));
-//
-//        if (childNode.getThisNode().isLeftChild()) {
-//            setStartX(parentInsets.getLeft() + parentNode.getRadius() - parentNode.getRadius()*angleX);
-//            setEndX(childInsets.getLeft() + childNode.getRadius());
-//
-//            setStartY(parentInsets.getTop() + parentNode.getRadius() + parentNode.getRadius()*angleY);
-//            setEndY(childInsets.getTop());
-//        }
-//
-//        if (childNode.getThisNode().isRightChild()) {
-//            setStartX(parentInsets.getLeft() + parentNode.getRadius() + parentNode.getRadius()*angleX);
-//            setEndX(childInsets.getLeft() + childNode.getRadius());
-//
-//            setStartY(parentInsets.getTop() + parentNode.getRadius() + parentNode.getRadius()*angleY);
-//            setEndY(childInsets.getTop());
-//        }
-        // i did maths and i failed :( oh well
     }
 
     /**

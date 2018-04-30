@@ -14,14 +14,20 @@ import java.lang.Math;
 
 /**
  * Handles the connectors between nodes
+ *
+ * Authors: Samantha Fritsche and Katya Gurgel
  */
 public class Connector extends Line {
 
     private NodeCircle parentNode;
     private NodeCircle childNode;
 
-//    public static final int maxConnectors = 8; //maximum before connectors look bad
-
+    /**
+     * Public constructor for a connector between 2 nodes
+     *
+     * @param parentNode        the parent node the connector touches
+     * @param childNode         the child node the connector touches
+     */
     public Connector(NodeCircle parentNode, NodeCircle childNode) {
 
         this.parentNode = parentNode;
