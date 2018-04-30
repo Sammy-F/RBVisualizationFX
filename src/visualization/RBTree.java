@@ -93,7 +93,7 @@ public class RBTree<T extends Comparable<T>> {
             insertNode(node);
 
             //DEBUG:
-            System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: comment out when no longer needed for debugging
+//            System.out.println("INSERT: " + key.toString() + "\n" + this.toString() + "\n\n"); //comment out when no longer needed for debugging
 
         } else {
             mLog.addChange(CaseMod.NODEEXISTS, -1);
@@ -121,7 +121,7 @@ public class RBTree<T extends Comparable<T>> {
         }
 
         //DEBUG:
-        System.out.println("DELETE: " + key.toString() + "\n" + this.toString() + "\n\n"); //TODO: comment out when no longer needed for debugging
+//        System.out.println("DELETE: " + key.toString() + "\n" + this.toString() + "\n\n"); //comment out when no longer needed for debugging
     }
 
     //MYSTERIOUS MAGICAL PRIVATE BEHIND THE SCENES STUFF:
@@ -407,7 +407,7 @@ public class RBTree<T extends Comparable<T>> {
      */
     private void transplant(RedBlackNode<T> u, RedBlackNode<T> v) {
 
-        System.out.println("Transplanting");
+//        System.out.println("Transplanting");
         try {
             mLog.addChange(CaseMod.TRANSPLANT, (Double) u.getKey(), (Double) v.getKey());
         } catch (NullPointerException e) {
@@ -459,9 +459,9 @@ public class RBTree<T extends Comparable<T>> {
 
             y = treeMinimum(z.getRight());
 
-            if (y == nil) {
-                System.out.println("An error occurred in deleteNode where y = treeMinimum(z.getRight()) was nil"); //TODO: Remove after done debugging
-            }
+//            if (y == nil) {
+//                System.out.println("An error occurred in deleteNode where y = treeMinimum(z.getRight()) was nil"); //Remove after done debugging
+//            }
 
             yOriginalColor = y.getColor();
             x = y.getRight();
@@ -482,12 +482,12 @@ public class RBTree<T extends Comparable<T>> {
             y.setColor(z.getColor());
         }
 
-        System.out.println("here is z: " + z.toString());
-
-        System.out.println("here is y: " + y.toString());
+//        System.out.println("here is z: " + z.toString());
+//
+//        System.out.println("here is y: " + y.toString());
 
         if (yOriginalColor == RedBlackNode.BLACK) {
-            System.out.println("we fix the tree!");
+//            System.out.println("we fix the tree!");
             afterDeleteFixTree(x);
         }
     }
@@ -511,7 +511,7 @@ public class RBTree<T extends Comparable<T>> {
      * @param x
      */
     private void afterDeleteFixTree(RedBlackNode<T> x) {
-        System.out.println("Fixing");
+//        System.out.println("Fixing");
 
         boolean logOnce = false;
 
@@ -692,6 +692,14 @@ public class RBTree<T extends Comparable<T>> {
         return nil;
     }
 
+    /**
+     * Helper method for the toString
+     *
+     * @param rootStr
+     * @param root
+     * @param num
+     * @return
+     */
     public String traverseToString(String rootStr, RedBlackNode root, int num) {
         if (root != nil) {
 //            num = num + 1;
@@ -706,6 +714,11 @@ public class RBTree<T extends Comparable<T>> {
         return rootStr;
     }
 
+    /**
+     * Public toString Method for entire rbt, helpful for testing
+     *
+     * @return
+     */
     public String toString() {
         String toStr = "";
 
@@ -719,9 +732,17 @@ public class RBTree<T extends Comparable<T>> {
         return toStr;
     }
 
+    /**
+     * Getter for the log of caseMods
+     * @return
+     */
     public CaseModLog getLog() {
         return mLog;
     }
 
+    /**
+     * Setter for the log of caseMods
+     * @param newLog
+     */
     public void setLog(CaseModLog newLog) { this.mLog = newLog; }
 }

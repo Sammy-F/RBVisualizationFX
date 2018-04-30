@@ -135,6 +135,10 @@ public class RBRedrawVisController implements Initializable {
         }
     }
 
+    /**
+     * Resets the entire tree, memory, and visualization when reset is clicked
+     * @param event
+     */
     @FXML
     private void handleReset(ActionEvent event) {
         mTree.getLog().clearLog();
@@ -151,8 +155,10 @@ public class RBRedrawVisController implements Initializable {
         redraw(mTree.getRoot(), INIT_XSPACING, INIT_INSERTIONX, 0);
     }
 
-
-    //insert node by inserting into rbt data structure then redraw
+    /**
+     * insert node by inserting into rbt data structure then redraw
+     * @param value
+     */
     private void insertNode(Double value) {
         if (0 <= value && value <= 999) {
             mTree.insert(value);
@@ -164,7 +170,10 @@ public class RBRedrawVisController implements Initializable {
         }
     }
 
-    //delete node by deleting from rbt data structure then redraw
+    /**
+     * delete node by deleting from rbt data structure then redraw
+     * @param value
+     */
     private void deleteNode(double value) {
         if (0 <= value && value <= 999) {
             mTree.delete(value);
