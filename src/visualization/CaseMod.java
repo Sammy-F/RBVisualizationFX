@@ -94,10 +94,10 @@ public class CaseMod {
                 mStr.append("The deleted node's sibling is black and both of the sibling's children are black.");
                 break;
             case DELETEC3:
-                mStr.append("The deleted node's sibling is black and the sibling has a black left child and red right child.");
+                mStr.append("The deleted node's sibling is black and the sibling has a red left child and black right child.");
                 break;
             case DELETEC4:
-                mStr.append("The deleted node's sibling is black and the sibling has a red right child and black left child.");
+                mStr.append("The deleted node's sibling is black and the sibling has a red right child.");
                 break;
             case INSERTROOT:
                 mStr.append("Inserting a root.");
