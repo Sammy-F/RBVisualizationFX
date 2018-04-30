@@ -3,7 +3,7 @@ package visualization;
 /**
  * Authors: Samantha Fritsche and Katya Gurgel
  */
-public class LogModification {
+public class CaseMod {
 
     //CASES
 
@@ -36,14 +36,14 @@ public class LogModification {
     private double vNodeVal;
     private double uNodeVal;
 
-    public LogModification(int caseVal, double uNodeVal, double vNodeVal) {
+    public CaseMod(int caseVal, double uNodeVal, double vNodeVal) {
         this.caseVal = caseVal;
         this.uNodeVal = uNodeVal;
         this.vNodeVal = vNodeVal;
         nodeVal = -1;
     }
 
-    public LogModification(int caseVal, double nodeVal) {
+    public CaseMod(int caseVal, double nodeVal) {
         this.caseVal = caseVal;
         this.nodeVal = nodeVal;
 

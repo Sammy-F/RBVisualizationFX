@@ -77,7 +77,7 @@ public class RBRedrawVisController implements Initializable {
 
             }
         } catch (NumberFormatException e) {
-            mTree.getLog().addChange(LogModification.INVALIDINPUT, -1);
+            mTree.getLog().addChange(CaseMod.INVALIDINPUT, -1);
             infoText.setText(mTree.getLog().toString());
         }
 
@@ -159,7 +159,7 @@ public class RBRedrawVisController implements Initializable {
             updateTree();
             infoText.setText(mTree.getLog().getLogString());
         } else {
-            mTree.getLog().addChange(LogModification.NODEISNIL, value);
+            mTree.getLog().addChange(CaseMod.NODEISNIL, value);
             infoText.setText(mTree.getLog().getLogString());
         }
     }
@@ -171,7 +171,7 @@ public class RBRedrawVisController implements Initializable {
             updateTree();
             infoText.setText(mTree.getLog().getLogString());
         } else {
-            mTree.getLog().addChange(LogModification.NODEISNIL, value);
+            mTree.getLog().addChange(CaseMod.NODEISNIL, value);
             infoText.setText(mTree.getLog().getLogString());
         }
     }

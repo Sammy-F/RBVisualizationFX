@@ -6,14 +6,14 @@ import java.util.ArrayList;
  * This class stores our list of LogModifications and handles
  * formatting them into a String to display in our ScrollPane
  */
-public class ModificationLog {
+public class CaseModLog {
 
     //INSTANCE VARIABLES
 
-    private ArrayList<LogModification> modList;
+    private ArrayList<CaseMod> modList;
     private static StringBuilder strLog;
 
-    public ModificationLog() {
+    public CaseModLog() {
         modList = new ArrayList<>();
     }
 
@@ -24,7 +24,7 @@ public class ModificationLog {
      * For now, the new LogModifications basically just pops up, like the tree.
      * @return
      */
-    public ArrayList<LogModification> getLogArray() {
+    public ArrayList<CaseMod> getLogArray() {
         if (modList == null) {
             modList = new ArrayList<>();
         }
@@ -43,19 +43,19 @@ public class ModificationLog {
         if (modList == null) {
             System.out.println("Initializing mod log");
             modList = new ArrayList<>();
-            modList.add(new LogModification(caseVal, uVal, vVal));
+            modList.add(new CaseMod(caseVal, uVal, vVal));
         } else {
             System.out.println("Adding mod to log");
-            modList.add(new LogModification(caseVal, uVal, vVal));
+            modList.add(new CaseMod(caseVal, uVal, vVal));
         }
 
     }
 
     /**
-     * Add a LogModification to the modList Array
+     * Add a CaseMod to the modList Array
      * @param mod
      */
-    public void addChange(LogModification mod) {
+    public void addChange(CaseMod mod) {
         if (modList == null) {
             modList = new ArrayList<>();
         }
@@ -72,18 +72,18 @@ public class ModificationLog {
         if (modList == null) {
             System.out.println("Initializing mod log");
             modList = new ArrayList<>();
-            modList.add(new LogModification(caseVal, nodeVal));
+            modList.add(new CaseMod(caseVal, nodeVal));
         } else {
             System.out.println("Adding mod to log");
-            modList.add(new LogModification(caseVal, nodeVal));
+            modList.add(new CaseMod(caseVal, nodeVal));
         }
     }
 
     /**
-     * Remove and return the lest LogModification in modList
-     * @return LogModification oldMod
+     * Remove and return the lest CaseMod in modList
+     * @return CaseMod oldMod
      */
-    public LogModification removeChange() {
+    public CaseMod removeChange() {
         if (modList == null) {
             modList = new ArrayList<>();
             return null;
@@ -95,7 +95,7 @@ public class ModificationLog {
     }
 
     /**
-     * Converts the ModificationLog into a String that can be read into a
+     * Converts the CaseModLog into a String that can be read into a
      * graphical representation.
      * @return
      */
@@ -111,19 +111,19 @@ public class ModificationLog {
             }
             int changeNum = 0;
 
-            for (LogModification tLogModification : modList) {
-                if (tLogModification.getCaseVal() == LogModification.INSERTION ||
-                        tLogModification.getCaseVal() == LogModification.DELETION ||
-                        tLogModification.getCaseVal() == LogModification.NOCASE ||
-                        tLogModification.getCaseVal() == LogModification.INVALIDINPUT) {
+            for (CaseMod tCaseMod : modList) {
+                if (tCaseMod.getCaseVal() == CaseMod.INSERTION ||
+                        tCaseMod.getCaseVal() == CaseMod.DELETION ||
+                        tCaseMod.getCaseVal() == CaseMod.NOCASE ||
+                        tCaseMod.getCaseVal() == CaseMod.INVALIDINPUT) {
 
-                    System.out.println(tLogModification.toString());
-                    strLog.append(changeNum + ": " + tLogModification.toString() + "\n");
+                    System.out.println(tCaseMod.toString());
+                    strLog.append(changeNum + ": " + tCaseMod.toString() + "\n");
                     changeNum++;
 
                 } else {
-                    System.out.println(tLogModification.toString());
-                    strLog.append("   " + tLogModification.toString() + "\n");
+                    System.out.println(tCaseMod.toString());
+                    strLog.append("   " + tCaseMod.toString() + "\n");
                 }
             }
 
