@@ -79,13 +79,13 @@ public class CaseMod {
                 mStr.append("Node does not exist or is outside the range.");
                 break;
             case INSERTC1:
-                mStr.append("The inserted node's great aunt is red"); //Shouldn't it be great aunt since it's the parent's parent's sister?
+                mStr.append("The inserted node's aunt is red");
                 break;
             case INSERTC2:
-                mStr.append("The inserted node is a right child and its great aunt is black.");
+                mStr.append("The inserted node is a right child and its aunt is black.");
                 break;
             case INSERTC3:
-                mStr.append("The inserted node is a left child and its great aunt is black.");
+                mStr.append("The inserted node is a left child and its aunt is black.");
                 break;
             case DELETEC1:
                 mStr.append("The deleted node's sibling is red.");
