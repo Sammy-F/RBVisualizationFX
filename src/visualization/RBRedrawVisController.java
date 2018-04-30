@@ -61,7 +61,7 @@ public class RBRedrawVisController implements Initializable {
     private void handleAction(ActionEvent event) {
 
         RBTree copyTree = mTree.copy();
-        infoText.setText(mTree.getLog().toString());
+        infoText.setText(mTree.getLog().getLogString());
 
         backTreeStack.push(copyTree);                    //add old tree to back steps in case we choose to step back
         forwardTreeStack = new ArrayDeque<RBTree>();    //empty any stored forward steps
@@ -78,7 +78,7 @@ public class RBRedrawVisController implements Initializable {
             }
         } catch (NumberFormatException e) {
             mTree.getLog().addChange(CaseMod.INVALIDINPUT, -1);
-            infoText.setText(mTree.getLog().toString());
+            infoText.setText(mTree.getLog().getLogString());
         }
 
         scrollPane.setVvalue(1.0);
